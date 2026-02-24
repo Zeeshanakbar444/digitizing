@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice PDF</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 2cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            color: #333;
+            line-height: 1.4;
+        }
+        .container {
+            width: 100%;
+            position: relative;
+        }
+        .overdue-banner {
+            position: absolute;
+            top: -20px;
+            left: -40px;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            width: 150px;
+            padding: 5px 0;
+            transform: rotate(-45deg);
+        }
+        .header-table {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .logo {
+            max-height: 70px;
+        }
+        .invoice-box {
+            background-color: black;
+            color: white;
+            padding: 8px 15px;
+            display: inline-block;
+        }
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        /* Very simple table styling for maximum compatibility */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .items-table th {
+            background-color: black;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: normal;
+        }
+        .items-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .totals-table {
+            width: 350px;
+            margin-left: auto;
+        }
+        .totals-table td {
+            padding: 5px;
+        }
+        .balance-due {
+            background-color: black;
+            color: white;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .notes {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Overdue Banner (if needed) -->
+        {% if invoice.payment_status == 'OVERDUE' %}
+        <div class="overdue-banner">OVERDUE</div>
+        {% endif %}
+        
+        <!-- Header Section -->
+        <table class="header-table">
+            <tr>
+                <td width="50%">
+                    <img class="logo" src="https://portal.highfivedigitizing.com/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" alt="{{ company_name }}">
+                    <div class="company-name">{{ company_name }}</div>
+                    <div>
+                        Email: {{ company_email }}<br>
+                        Website: {{ company_website }}
+                    </div>
+                </td>
+                <td width="50%" align="right" valign="top">
+                    <div class="invoice-box">
+                        INVOICE #{{ invoice.invoice_id }}
+                    </div>
+                    <div style="margin-top: 10px;">
+                        Bill date: {{ invoice.date|date:"Y-m-d" }}<br>
+                        Due date: {{ invoice.due_date|date:"Y-m-d" }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+        <!-- Billing Info -->
+        <table width="100%">
+            <tr>
+                <td width="50%" valign="top">
+                    <!-- Left empty for spacing -->
+                </td>
+                <td width="50%" align="right" valign="top">
+                    <div class="section-title">Bill To</div>
+                    <div>
+                        {% if invoice.user %}{{ invoice.user.first_name }}{% else %}{{ invoice.customer_name }}{% endif %}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+        <!-- Invoice Items - SIMPLIFIED TABLE -->
+        <table class="items-table">
+            <tr>
+                <th width="50%">Item</th>
+                <th width="15%" class="text-right">Quantity</th>
+                <th width="15%" class="text-right">Rate</th>
+                <th width="20%" class="text-right">Total</th>
+            </tr>
+            
+            <!-- IMPORTANT: Simplified item loop -->
+            {% for item in items %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td class="text-right">{{ item.item_qty }}</td>
+                <td class="text-right">${{ item.item_amount }}</td>
+                <td class="text-right">${{ item.total }}</td>
+            </tr>
+            {% endfor %}
+            
+            <!-- If no items are present, show a placeholder -->
+            {% if not items %}
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">No items found</td>
+            </tr>
+            {% endif %}
+        </table>
+        
+        <!-- Totals Section -->
+        <table class="totals-table">
+            <tr>
+                <td align="right">Sub Total</td>
+                <td class="text-right">${{ invoice.subtotal }}</td>
+            </tr>
+            
+            {% if invoice.discount and invoice.discount > 0 %}
+            <tr>
+                <td align="right">{{ invoice.discount_title|default:"Discount" }}</td>
+                <td class="text-right">-${{ invoice.discount }}</td>
+            </tr>
+            {% endif %}
+            
+            {% if invoice.shipping and invoice.shipping > 0 %}
+            <tr>
+                <td align="right">{{ invoice.shipping_title|default:"Shipping" }}</td>
+                <td class="text-right">${{ invoice.shipping }}</td>
+            </tr>
+            {% endif %}
+            
+            {% if invoice.other_amount and invoice.other_amount > 0 %}
+            <tr>
+                <td align="right">{{ invoice.other_amount_title|default:"Other Charges" }}</td>
+                <td class="text-right">${{ invoice.other_amount }}</td>
+            </tr>
+            {% endif %}
+            
+            <tr class="balance-due">
+                <td align="right">Balance Due</td>
+                <td class="text-right">${{ invoice.total }}</td>
+            </tr>
+        </table>
+        
+        <!-- Notes Section (if available) -->
+        {% if invoice.notes %}
+        <div class="notes">
+            <div class="section-title">Notes:</div>
+            <div>{{ invoice.notes }}</div>
+        </div>
+        {% endif %}
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Thank you for your business!</p>
+        </div>
+    </div>
+</body>
+</html>

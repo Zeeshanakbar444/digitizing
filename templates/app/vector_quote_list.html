@@ -1,0 +1,1139 @@
+{% extends "app/base.html" %}
+{% block body %}
+
+<style>
+    .order-card .btn {
+    width: auto !important;
+    font-weight: 500;
+}
+.download_and_edit_button {
+    text-align: center;
+    /* padding: 55px 0px; */
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    padding: 11px 0px;
+}
+
+.btn {
+    padding: 5px 17px;
+    outline: 0;
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: .5px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    font-weight: 600;
+    border-radius: 0;
+}
+
+.edit_btn {
+    border: none;
+    background: #ffc107;
+    padding: 5px 6px;
+    border-radius: 0;
+    min-width: 85px;
+    text-align: center;
+}
+.download_btn {
+    border: none;
+    background: #080285;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 0;
+    /* margin: 24px 6px; */
+    display: block;
+}
+</style>
+
+
+                <div class="container-fluid">
+                    <div class="layout-specing">
+                        {% if messages %}
+    {% for message in messages|slice:"1" %}
+        <div class="message bg-soft-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} text-center p-2">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+                       
+                        <div class="d-md-flex justify-content-between align-items-center">
+                            <h5 class="mb-3">Your Vector Quotes</h5>
+
+                            <nav aria-label="breadcrumb" class="d-inline-block">
+                                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                                    <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                                    <li class="breadcrumb-item text-capitalize"><a href="/vector_quote_list/">Your Vector Quotes</a></li>
+                                    {% comment %} <li class="breadcrumb-item text-capitalize active" aria-current="page">List</li> {% endcomment %}
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <div class="row d-none">
+                            <div class="col-12 mt-4">
+                                <div class="table-responsive shadow rounded">
+                                    {% if estimates %}
+                                    <table class="table table-center bg-white mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center border-bottom p-3">Job ID.</th>
+                                                <th class="text-center border-bottom p-3" >Date</th>
+                                                <th class="text-center border-bottom p-3" style="min-width: 220px;">Design Name</th>
+                                                <th class="text-center border-bottom p-3" style="min-width: 150px;">Stitches</th>
+                                                {% comment %} <th class="text-center border-bottom p-3">Status</th> {% endcomment %}
+                                                {% comment %} <th class="text-center border-bottom p-3" style="min-width: 220px;">Type</th> {% endcomment %}
+                                                <th class="text-center border-bottom p-3">Amount</th>
+                                                <th class="text-center border-bottom p-3">Download</th>
+                                                <th class="text-end border-bottom p-3" style="min-width: 100px;">Preview</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Start -->
+                                            {% for order in estimates %}
+<tr class="text-center">
+    <th class="p-3">{{ order.estimate_id }}</th>
+    
+    <td class="p-3">
+        {{ order.created_at|date:"d/m/Y" }}
+    </td>
+    
+    <td class="text-center p-3">
+        {{ order.design_name }}
+    </td>
+    <td class="text-center p-3">
+        {% if order.stitches %}
+        {{ order.stitches }} <!-- Placeholder if you have a tracking number -->
+        {% else %}
+        Unspecified
+        {% endif %}
+    </td>
+    
+    {% comment %} <td class="text-center p-3">
+        {% if order.payment_status == "Pending Payment" %}
+        <div class="badge bg-soft-danger rounded px-3 py-1">
+            {{ order.payment_status }}
+        </div>
+        {% else %}
+        <div class="badge bg-soft-success rounded px-3 py-1">
+            {{ order.payment_status }}
+        </div>
+        {% endif %}
+    </td> {% endcomment %}
+    
+    {% comment %} <td>
+        {{ order.order_type }} 
+    </td> {% endcomment %}
+    
+    <td>
+        ${{order.amount}} <!-- You can show price here if it's available -->
+    </td>
+    
+    <td>
+        {% if order.amount > 0 %}
+                {% if order.converted_to_order %}
+                    <div class="badge bg-soft-success rounded px-3 py-1">
+                        <a href="#" class="no_border">
+                            Ordered
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="badge bg-soft-info rounded px-3 py-1">
+                        <a href="/estimate_preview/{{order.id}}?type={{order.order_type}}" class="no_border">
+                            Convert to order
+                        </a>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="badge bg-soft-danger rounded px-3 py-1">
+                    In Process
+                </div>
+            {% endif %}
+    </td>
+    
+    <td class="text-end p-3">
+        <a href="/estimate_preview/{{order.id}}?type={{order.order_type}}" class="btn btn-sm btn-primary">Preview</a>
+    </td>
+</tr>
+{% endfor %}
+
+                                            {% comment %} <tr class="text-center">
+                                                <th class="p-3">185487</th>
+                                                <td class="p-3">
+                                                    08/03/2025	
+                                                    <!-- <a href="index-dark.html#" class="text-primary">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                            <span class="ms-2">Howard Tanner</span>
+                                                        </div>
+                                                    </a> -->
+                                                </td>
+                                                <td class="text-center p-3">Devil-Wallpaper-Image</td>
+                                                <td class="text-center p-3">3728</td>
+                                                <td class="text-center p-3">
+                                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                        Pending Payment
+                                                    </div>
+                                                </td>
+                                                <td>Vector Conversion	</td>
+                                                <td>$45	</td>
+                                                <td>
+                                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                        Pay and Download
+                                                    </div>
+                                                </td>
+                                                <td class="text-end p-3">
+                                                    <a href="#" class="btn btn-sm btn-primary">Preview</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <th class="p-3">185487</th>
+                                                <td class="p-3">
+                                                    08/03/2025	
+                                                    <!-- <a href="index-dark.html#" class="text-primary">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                            <span class="ms-2">Howard Tanner</span>
+                                                        </div>
+                                                    </a> -->
+                                                </td>
+                                                <td class="text-center p-3">Devil-Wallpaper-Image</td>
+                                                <td class="text-center p-3">3728</td>
+                                                <td class="text-center p-3">
+                                                    <div class="badge bg-soft-success rounded px-3 py-1">
+                                                        Success Payment
+                                                    </div>
+                                                </td>
+                                                <td>Vector Conversion	</td>
+                                                <td>$45	</td>
+                                                <td>
+                                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                        Pay and Download
+                                                    </div>
+                                                </td>
+                                                <td class="text-end p-3">
+                                                    <a href="#" class="btn btn-sm btn-primary">Preview</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <th class="p-3">185487</th>
+                                                <td class="p-3">
+                                                    08/03/2025	
+                                                    <!-- <a href="index-dark.html#" class="text-primary">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                            <span class="ms-2">Howard Tanner</span>
+                                                        </div>
+                                                    </a> -->
+                                                </td>
+                                                <td class="text-center p-3">Devil-Wallpaper-Image</td>
+                                                <td class="text-center p-3">3728</td>
+                                                <td class="text-center p-3">
+                                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                        Pending Payment
+                                                    </div>
+                                                </td>
+                                                <td>Vector Conversion	</td>
+                                                <td>$45	</td>
+                                                <td>
+                                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                        Pay and Download
+                                                    </div>
+                                                </td>
+                                                <td class="text-end p-3">
+                                                    <a href="#" class="btn btn-sm btn-primary">Preview</a>
+                                                </td>
+                                            </tr> {% endcomment %}
+                                            <!-- End -->
+
+                                            <!-- Start -->
+                                            
+                                            <!-- End -->
+
+                                            
+                                            <!-- End -->
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                        <!-- <div class="badge badge-outline-success">
+                            You have not Placed any order
+                        </div> -->
+                        <div class="alert bg-soft-info fw-medium mx-3 my-3" role="alert">You have not Placed any Orders yet <a href="/place_order/" class="text-warning text-decoration-underline">Place Order</a></div>
+                        {% endif %}
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+
+                        <div class="row text-center d-none">
+                            <!-- PAGINATION START -->
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">
+                                        Showing {{ orders.start_index }} - {{ orders.end_index }} out of {{ orders.paginator.count }}
+                                    </span>
+                                    <ul class="pagination mb-0 justify-content-center mt-4 mt-sm-0">
+                                        {% if orders.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ orders.previous_page_number }}" aria-label="Previous">Prev</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Prev</span>
+                                            </li>
+                                        {% endif %}
+                            
+                                        {% for num in orders.paginator.page_range %}
+                                            {% if orders.number == num %}
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">{{ num }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        {% if orders.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ orders.next_page_number }}" aria-label="Next">Next</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
+
+                        {% include "app/search_bar.html" %}
+
+                        <div class="row g-3">
+                            {% if estimates %}
+                            {% for order in estimates %}
+                                <div class="col-md-6 col-lg-3">
+                                <div class="order-card">
+                                    <div class="order_card_img">
+                                        {% if order.thumbnail_image %}
+                                        <img src="{{order.thumbnail_image.url}}" alt="CVPP">
+                                        {% else %}
+                                        <img src="/static/app/assets/images/no-thumbnail.jpg" alt="CVPP">
+                                        {% endif %}
+                                    </div>
+                                    <div class="order-details mt-2">
+                                        <div class="single_row">
+                                            <p>Order No</p>
+                                            <p>{{order.estimate_id}}</p>
+                                        </div>
+                                        <div class="single_row">
+                                            <p>Design Name</p>
+                                            <p>{{order.design_name}}</p>
+                                        </div>
+                                        <div class="single_row">
+                                            <p>PO</p>
+                                            <p>{{order.po_no|default:"-"}}</p>
+                                        </div>
+                                        <div class="stitches_row">
+                                            <!-- <div class="stitch_detail" style="border-left: none;">
+                                                <h6>Sticthes</h6>
+                                                <p> {% if order.number_of_stitches %} {{order.number_of_stitches}} {% else %} - {% endif %}</p>
+                                            </div> -->
+                                            <div class="stitch_detail" style="border-left: none;">
+                                                <h6>Height</h6>
+                                                <p>{{order.height|default:"-"}}</p>
+                                            </div>
+                                            <div class="stitch_detail">
+                                                <h6>Width</h6>
+                                                <p>{{order.width|default:"-"}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="stitches_row">
+                                            <div class="stitch_detail" style="border-left: none;">
+                                                <h6>Price</h6>
+                                                <p>{% if order.amount %} {{ order.amount }} U.S.D {% else %} - {% endif %} </p>
+                                            </div>
+                                            <div class="stitch_detail">
+                                                <h6>Reference</h6>
+                                                <p> {% if order.reference %} {{order.reference}} {% else %} - {% endif %}</p>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="single_row">
+                                            <p>Status</p>
+                                            <div class="badge_div">
+
+                                                <div class="badge bg-info rounded px-3 py-1">
+                                                    {{order.order_status}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="single_row" style="border-bottom: 1px solid white;">
+                                            <p>Order Date</p>
+                                            <p>{{ order.created_at|date:"n/j/Y" }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="download_and_edit_button py-2 g-0" >
+                                        {% if order.converted_to_order %}
+                                        <a class="btn btn-success" href="#">
+                                            <div class="icon">
+
+                                                <i class="ti ti-check me-1"></i> 
+                                            </div>
+                                            Converted
+                                        </a>
+                                        {% else %}
+                                        <a class="btn btn-info" href="/estimate_preview/{{order.id}}?type={{order.order_type}}">
+                                            <div class="icon">
+                                                
+                                                <i class="ti ti-arrows-right-left me-2"></i>  
+                                            </div>
+                                            Convert
+                                        </a>
+                                        {% endif %}
+                                        <!-- <a class="btn btn-primary" href="/estimate_preview/{{order.id}}?type={{order.order_type}}">
+                                            <i class="ti ti-download me-2"></i> Download
+                                        </a> -->
+                                        <button class="download_btn" data-order-id="{{ order.id }}" data-bs-toggle="modal" data-bs-target="#orderModal{{order.id}}">
+                                            <div class="icon">
+
+                                                <i class="ti ti-download me-2"></i> 
+                                            </div>
+                                            Download
+                                        </button>
+                                        <a class="edit_btn" href="/vector_edit/{{order.id}}?type=quote">
+                                            <div class="icon">
+
+                                                <i class="ti ti-edit"></i> 
+                                            </div>
+                                            Edit
+                                            </a>
+                                    </div>
+                                </div>
+                                </div>
+
+                              
+                            {% endfor %}
+
+                            <div class="row text-center">
+                            <!-- PAGINATION START -->
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">
+                                        Showing {{ estimates.start_index }} - {{ estimates.end_index }} out of {{ estimates.paginator.count }}
+                                    </span>
+                                    <ul class="pagination mb-0 justify-content-center mt-4 mt-sm-0">
+                                        {% if estimates.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ estimates.previous_page_number }}" aria-label="Previous">Prev</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Prev</span>
+                                            </li>
+                                        {% endif %}
+                            
+                                        {% for num in estimates.paginator.page_range %}
+                                            {% if estimates.number == num %}
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">{{ num }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        {% if estimates.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ estimates.next_page_number }}" aria-label="Next">Next</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
+
+                            {% for order in estimates %}
+                            <div class="modal fade" id="orderModal{{order.id}}" tabindex="-1" aria-hidden="true" >
+                            <div class="modal-dialog modal-xl modal-dialog-top">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Vector Quote Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-close me-2"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs" id="orderTab{{order.id}}" role="tablist">
+                                    <li class="nav-item">
+                                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#files{{order.id}}" role="tab">Quote Files</button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#details{{order.id}}" role="tab">Quote Details</button>
+                                    </li>
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content mt-3">
+                                    <!-- Order Files Tab -->
+                                    <div class="tab-pane fade show active" id="files{{order.id}}" role="tabpanel">
+                                        <h3 style="text-align: left; margin-top: 5px;">Completed</h3>
+                                        <div class="date_and_download">
+
+                                            <p>{{ order.created_at|date:"n/j/Y g:i:s A" }}</p>
+                                            {% if order.files.all|length > 0 %}
+                                            <div class="download_all_btn">
+                                                <a href="/download-all/{{order.id}}/?type={{order.order_type}}" class="btn btn-success">
+                                                    <i class="ti ti-download"></i> Download All
+                                                </a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% with edited_files=order.files.all|dictsort:"file_status" %}
+                                            {% for file in edited_files %}
+                                                {% if file.is_visible and file.file_status == "after_edit" %}
+                                                    {% if forloop.first %}
+                                                        <h5 style="text-align: left; margin-top: 5px;">Edited Files</h5>
+                                                        <div class="d-flex flex-wrap mb-4">
+                                                    {% endif %}
+
+                                                    <div class="card me-2 mb-2" style="width: 250px;">
+                                                        <div class="card-body text-center main_download_card">
+                                                            <img src="/static/app/assets/images/file_icon.png" style="height: 37px;" alt="icon">
+                                                            <div class="download_card_detail">
+                                                                <p class="small mt-2">{{ file.file.name|slice:"12:30" }}..</p>
+                                                                <div class="size_and_download">
+                                                                    <p class="small text-muted">{{ file.file.size|filesizeformat }}</p>
+                                                                    <a href="{{ file.file.url }}" download>
+                                                                        <i class="ti ti-download"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                    <!-- {% if forloop.last %}
+                                                    {% endif %} -->
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                        <!-- Original Files Row -->
+                                        <h5 style="text-align: left; margin-top: 5px;">Original Files</h5>
+                                        <div class="d-flex flex-wrap">
+                                            {% for file in order.files.all %}
+                                                {% if file.is_visible and file.file_status == "original" %}
+                                                    <div class="card me-2 mb-2" style="width: 250px;">
+                                                        <div class="card-body text-center main_download_card">
+                                                            <img src="/static/app/assets/images/file_icon.png" style="height: 37px;" alt="icon">
+                                                            <div class="download_card_detail">
+                                                                <p class="small mt-2">{{ file.file.name|slice:"12:30" }}..</p>
+                                                                <div class="size_and_download">
+                                                                    <p class="small text-muted">{{ file.file.size|filesizeformat }}</p>
+                                                                    <a href="{{ file.file.url }}" download>
+                                                                        <i class="ti ti-download"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if not order.files.all|dictsort:"file_status"|yesno:"yes,no" == "yes" %}
+                                                <h6 class="text-muted">No original files available.</h6>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Order Details Tab -->
+                                    <div class="tab-pane fade" id="details{{order.id}}" role="tabpanel">
+                            <div class="custom-order-wrapper border p-3 mt-3 rounded">
+                                <div class="row">
+                                <!-- Image and Design Name -->
+                                <div class="col-md-3 text-center">
+                                    <div class="custom-order-image border rounded p-2">
+                                    {% if order.thumbnail_image %}
+                                        <img src="{{order.thumbnail_image.url}}" alt="CVPP">
+                                    {% else %}
+                                        <img src="/static/app/assets/images/no-thumbnail.jpg" class="img-fluid" alt="No Image">
+                                    {% endif %}
+                                    </div>
+                                    <div class="mt-2">
+                                    <strong>Design Name:</strong><br>
+                                    <span class="text-uppercase">{{ order.design_name }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Order Details -->
+                               <div class="col-md-9">
+                                    <div class="row custom-order-details g-3">
+                                    <div class="col-md-6">
+                                        <p><strong># Order No:</strong> {{ order.order_id }}</p>
+                                        <p><strong># Po No:</strong> {{ order.po_no|default:"-" }}</p>
+                                        <p><strong>Required Format:</strong> {{ order.design_format }}</p>
+                                        <p><strong>No Of Colors:</strong> {{ order.number_of_colors|default:"-" }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Unit:</strong> {{ order.unit|default:"-" }}</p>
+                                        <p><strong>Width:</strong> {{ order.width }}</p>
+                                        <p><strong>Height:</strong> {{ order.height }}</p>
+                                        <p><strong>Do you require Color Separartion:</strong> {{ order.color_separation }}</p>
+                                        <!-- <p><strong>Fabric:</strong> {{ order.type }}</p> -->
+                                    </div>
+                                    <!-- <div class="col-md-4">
+                                        
+                                        <p><strong>Placement:</strong> {{ order.placement }}</p>
+                                        
+                                        <p><strong>Real Sew Out:</strong> {{ order.real_sew_out|yesno:"Yes,No" }}</p>
+                                        <p><strong>Reference:</strong> {{ order.reference|default:"-" }}</p>
+                                    </div> -->
+                                    </div>
+
+                                    <!-- Additional Instructions -->
+                                    <div class="mt-3">
+                                    <p><strong>Additional Instructions:</strong></p>
+                                    <div class="border rounded p-2 bg-light" style="white-space: pre-line;">
+                                        {{ order.addtitoanl_instructions|default:"-" }}
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <hr class="my-4">
+
+                                <!-- Stitches, Size and Price -->
+                                <div class="row text-center">
+                                <div class="col-md-3">
+                                    <p><strong>🧵 Stitches:</strong><br>{{ order.number_of_stitches|default:"-" }}</p>
+                                </div>
+                                <!-- <div class="col-md-3">
+                                    <p><strong>↔️ Width:</strong><br>{{ order.width }}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p><strong>↕️ Height:</strong><br>{{ order.height }}</p>
+                                </div> -->
+                                <div class="col-md-3">
+                                    <p><strong>💰 Price:</strong><br>{{ order.amount }} USD</p>
+                                </div>
+                                </div>
+
+                                <!-- Designer Comments (if any) -->
+                                {% if order.designer_comments %}
+                                <div class="mt-3">
+                                <p><strong>📝 Designer Comments:</strong></p>
+                                <div class="border rounded p-2 bg-light" style="white-space: pre-line;">
+                                    {{ order.designer_comments }}
+                                </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            </div>
+                                    </div>
+                                    
+                                    <!-- end tab-content -->
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                        <!-- <div class="badge badge-outline-success">
+                            You have not Placed any order
+                        </div> -->
+                        {% if query and estimates.paginator.count == 0 %}
+    <div class="alert bg-soft-info fw-medium mx-3" role="alert">
+        No results found for "{{ query }}"
+    </div>
+{% elif not estimates %}
+    <div class="alert bg-soft-info fw-medium mx-3" role="alert">
+        You have not placed any Digitizing Quote yet
+    </div>
+{% endif %}
+                        {% endif %}
+    {% comment %} <div class="col-md-6 col-lg-3">
+      <div class="order-card">
+        <div class="order_card_img">
+
+            <img src="https://dummyimage.com/300x120/b10000/fff&text=CENTRAL+VALLEY" alt="CVPP">
+        </div>
+        <div class="order-details mt-2">
+            <div class="single_row">
+                <p>Order No</p>
+                <p>DO-25010032</p>
+            </div>
+            <div class="single_row">
+                <p>Design Name</p>
+                <p>Raiuse</p>
+            </div>
+            <div class="single_row">
+                <p>PO</p>
+                <p>-</p>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Sticthes</h6>
+                    <p>5668</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Height</h6>
+                    <p>100</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Width</h6>
+                    <p>50</p>
+                </div>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Price</h6>
+                    <p>1000 U.S.D</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Reference</h6>
+                    <p>-</p>
+                </div>
+                
+            </div>
+             <div class="single_row">
+                <p>Status</p>
+                <div class="badge_div">
+
+                    <div class="badge bg-info rounded px-3 py-1">
+                        In Process
+                    </div>
+                </div>
+            </div>
+             <div class="single_row" style="border-bottom: 1px solid white;">
+                <p>Order Date</p>
+                 <p>5/10/2025 3:00:48 PM</p>
+            </div>
+        </div>
+         <div class="download_and_edit_button py-2 g-0" >
+                                        {% if order.converted_to_order %}
+                                        <a class="btn btn-success" href="#">
+                                            <div class="icon">
+
+                                                <i class="ti ti-check me-1"></i> 
+                                            </div>
+                                            Converted
+                                        </a>
+                                        {% else %}
+                                        <a class="btn btn-info" href="/estimate_preview/{{order.id}}?type={{order.order_type}}">
+                                            <div class="icon">
+                                                
+                                                <i class="ti ti-arrows-right-left me-2"></i>  
+                                            </div>
+                                            Convert
+                                        </a>
+                                        {% endif %}
+                                        <!-- <a class="btn btn-primary" href="/estimate_preview/{{order.id}}?type={{order.order_type}}">
+                                            <i class="ti ti-download me-2"></i> Download
+                                        </a> -->
+                                        <button class="download_btn" data-order-id="{{ order.id }}" data-bs-toggle="modal" data-bs-target="#orderModal{{order.id}}">
+                                            <div class="icon">
+
+                                                <i class="ti ti-download me-2"></i> 
+                                            </div>
+                                            Download
+                                        </button>
+                                        <a class="edit_btn" href="/vector_edit/{{order.id}}?type=quote">
+                                            <div class="icon">
+
+                                                <i class="ti ti-edit"></i> 
+                                            </div>
+                                            Edit
+                                            </a>
+                                    </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="order-card">
+        <div class="order_card_img">
+
+            <img src="https://dummyimage.com/300x120/b10000/fff&text=CENTRAL+VALLEY" alt="CVPP">
+        </div>
+        <div class="order-details mt-2">
+            <div class="single_row">
+                <p>Order No</p>
+                <p>DO-25010032</p>
+            </div>
+            <div class="single_row">
+                <p>Design Name</p>
+                <p>Raiuse</p>
+            </div>
+            <div class="single_row">
+                <p>PO</p>
+                <p>-</p>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Sticthes</h6>
+                    <p>5668</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Height</h6>
+                    <p>100</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Width</h6>
+                    <p>50</p>
+                </div>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Price</h6>
+                    <p>1000 U.S.D</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Reference</h6>
+                    <p>-</p>
+                </div>
+                
+            </div>
+             <div class="single_row">
+                <p>Status</p>
+                <div class="badge_div">
+
+                    <div class="badge bg-info rounded px-3 py-1">
+                        In Process
+                    </div>
+                </div>
+            </div>
+             <div class="single_row" style="border-bottom: 1px solid white;">
+                <p>Order Date</p>
+                 <p>5/10/2025 3:00:48 PM</p>
+            </div>
+        </div>
+        <div class="download_and_edit_button">
+            <button class="download_btn"><i class="ti ti-download me-2"></i> Download</button>
+            <button class="edit_btn"><i class="ti ti-edit me-2"></i> Edit</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="order-card">
+        <div class="order_card_img">
+
+            <img src="https://dummyimage.com/300x120/b10000/fff&text=CENTRAL+VALLEY" alt="CVPP">
+        </div>
+        <div class="order-details mt-2">
+            <div class="single_row">
+                <p>Order No</p>
+                <p>DO-25010032</p>
+            </div>
+            <div class="single_row">
+                <p>Design Name</p>
+                <p>Raiuse</p>
+            </div>
+            <div class="single_row">
+                <p>PO</p>
+                <p>-</p>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Sticthes</h6>
+                    <p>5668</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Height</h6>
+                    <p>100</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Width</h6>
+                    <p>50</p>
+                </div>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Price</h6>
+                    <p>1000 U.S.D</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Reference</h6>
+                    <p>-</p>
+                </div>
+                
+            </div>
+             <div class="single_row">
+                <p>Status</p>
+                <div class="badge_div">
+
+                    <div class="badge bg-info rounded px-3 py-1">
+                        In Process
+                    </div>
+                </div>
+            </div>
+             <div class="single_row" style="border-bottom: 1px solid white;">
+                <p>Order Date</p>
+                 <p>5/10/2025 3:00:48 PM</p>
+            </div>
+        </div>
+        <div class="download_and_edit_button">
+            <button class="download_btn"><i class="ti ti-download me-2"></i> Download</button>
+            <button class="edit_btn"><i class="ti ti-edit me-2"></i> Edit</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="order-card">
+        <div class="order_card_img">
+
+            <img src="https://dummyimage.com/300x120/b10000/fff&text=CENTRAL+VALLEY" alt="CVPP">
+        </div>
+        <div class="order-details mt-2">
+            <div class="single_row">
+                <p>Order No</p>
+                <p>DO-25010032</p>
+            </div>
+            <div class="single_row">
+                <p>Design Name</p>
+                <p>Raiuse</p>
+            </div>
+            <div class="single_row">
+                <p>PO</p>
+                <p>-</p>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Sticthes</h6>
+                    <p>5668</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Height</h6>
+                    <p>100</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Width</h6>
+                    <p>50</p>
+                </div>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Price</h6>
+                    <p>1000 U.S.D</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Reference</h6>
+                    <p>-</p>
+                </div>
+                
+            </div>
+             <div class="single_row">
+                <p>Status</p>
+                <div class="badge_div">
+
+                    <div class="badge bg-info rounded px-3 py-1">
+                        In Process
+                    </div>
+                </div>
+            </div>
+             <div class="single_row" style="border-bottom: 1px solid white;">
+                <p>Order Date</p>
+                 <p>5/10/2025 3:00:48 PM</p>
+            </div>
+        </div>
+        <div class="download_and_edit_button">
+            <button class="download_btn"><i class="ti ti-download me-2"></i> Download</button>
+            <button class="edit_btn"><i class="ti ti-edit me-2"></i> Edit</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="order-card">
+        <div class="order_card_img">
+
+            <img src="https://dummyimage.com/300x120/b10000/fff&text=CENTRAL+VALLEY" alt="CVPP">
+        </div>
+        <div class="order-details mt-2">
+            <div class="single_row">
+                <p>Order No</p>
+                <p>DO-25010032</p>
+            </div>
+            <div class="single_row">
+                <p>Design Name</p>
+                <p>Raiuse</p>
+            </div>
+            <div class="single_row">
+                <p>PO</p>
+                <p>-</p>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Sticthes</h6>
+                    <p>5668</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Height</h6>
+                    <p>100</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Width</h6>
+                    <p>50</p>
+                </div>
+            </div>
+            <div class="stitches_row">
+                <div class="stitch_detail" style="border-left: none;">
+                    <h6>Price</h6>
+                    <p>1000 U.S.D</p>
+                </div>
+                <div class="stitch_detail">
+                    <h6>Reference</h6>
+                    <p>-</p>
+                </div>
+                
+            </div>
+             <div class="single_row">
+                <p>Status</p>
+                <div class="badge_div">
+
+                    <div class="badge bg-info rounded px-3 py-1">
+                        In Process
+                    </div>
+                </div>
+            </div>
+             <div class="single_row" style="border-bottom: 1px solid white;">
+                <p>Order Date</p>
+                 <p>5/10/2025 3:00:48 PM</p>
+            </div>
+        </div>
+        <div class="download_and_edit_button">
+            <button class="download_btn"><i class="ti ti-download me-2"></i> Download</button>
+            <button class="edit_btn"><i class="ti ti-edit me-2"></i> Edit</button>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    
+   
+
+    <!-- You can continue with more cards here -->
+
+  </div>
+
+
+
+                    </div>
+                </div><!--end container-->
+
+                <script>
+                    function showDownloadOptions(orderId) {
+                        document.getElementById('downloadModal_' + orderId).style.display = 'flex';
+                    }
+                    
+                    function closeDownloadOptions(orderId) {
+                        document.getElementById('downloadModal_' + orderId).style.display = 'none';
+                    }
+                    
+                    // Wait for DOM to load
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const buttons = document.querySelectorAll(".downloadExtractedBtn");
+                    
+                        buttons.forEach(button => {
+                            button.addEventListener("click", function () {
+                                const orderId = this.getAttribute('data-id');
+                                const orderType = this.getAttribute('data-type');
+                    
+                                fetch(`/prepare-extracted-files/${orderId}?type=${orderType}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.files) {
+                                            data.files.forEach((url, index) => {
+                                                const a = document.createElement("a");
+                                                a.href = url;
+                                                a.download = "";
+                                                a.style.display = "none";
+                                                document.body.appendChild(a);
+                                                setTimeout(() => {
+                                                    a.click();
+                                                    document.body.removeChild(a);
+                                                }, index * 500);
+                                            });
+                                        } else {
+                                            alert("No files to download.");
+                                        }
+                    
+                                        closeDownloadOptions(orderId);
+                                    })
+                                    .catch(() => {
+                                        alert("Error while downloading.");
+                                        closeDownloadOptions(orderId);
+                                    });
+                            });
+                        });
+                    });
+                    </script>
+
+             
+{% endblock body %}
+`
+        <!-- page-wrapper -->
+
+        <!-- Offcanvas Start -->
+        <div class="offcanvas offcanvas-end shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header p-4 border-bottom">
+                <h5 id="offcanvasLeftLabel" class="mb-0">
+                    <img src="/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" height="24" class="light-version" alt="">
+                    <img src="/static/app/assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                </h5>
+                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+            </div>
+            <div class="offcanvas-body p-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center">
+                            <h6 class="fw-bold">Theme Options</h6>
+
+                            <ul class="text-center style-switcher list-unstyled mt-4">
+                                <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="/static/app/assets/images/demos/rtl.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">RTL Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="/static/app/assets/images/demos/ltr.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">LTR Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="/static/app/assets/images/demos/dark-rtl.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">RTL Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="/static/app/assets/images/demos/dark.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">LTR Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="/static/app/assets/images/demos/dark.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">Dark Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="/static/app/assets/images/demos/ltr.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">Light Version</span></a></li>
+                                <li class="d-grid"><a href="https://shreethemes.in/landrick/landing/index.html" target="_blank" class="mt-4"><img src="/static/app/assets/images/demos/landing.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">Landing</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offcanvas-footer p-4 border-top text-center">
+                <ul class="list-unstyled social-icon social mb-0">
+                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/landrick" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.behance.net/shreethemes" target="_blank" class="rounded"><i class="uil uil-behance align-middle" title="behance"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://shreethemes.in" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                </ul><!--end icon-->
+            </div>
+        </div>
+        <!-- Offcanvas End -->
+        
+        <!-- javascript -->
+        <!-- JAVASCRIPT -->
+        <script src="/static/app/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/app/assets/libs/feather-icons/feather.min.js"></script>
+        <script src="/static/app/assets/libs/simplebar/simplebar.min.js"></script>
+        <!-- Main Js -->
+        <script src="/static/app/assets/js/plugins.init.js"></script>
+        <script src="/static/app/assets/js/app.js"></script>
+        
+    </body>
+
+</html>

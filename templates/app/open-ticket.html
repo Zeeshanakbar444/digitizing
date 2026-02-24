@@ -1,0 +1,252 @@
+{% extends "app/base.html" %}
+
+<!-- Loader -->
+<!-- <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div> -->
+<!-- Loader -->
+
+<!-- Start Page Content -->
+{% block body %}
+
+<!-- Top Header -->
+
+<div class="container-fluid">
+    <div class="layout-specing">
+
+        <div class="d-md-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Open Ticket</h5>
+
+            <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                    <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                    <li class="breadcrumb-item text-capitalize active" aria-current="page">Open Ticket</li>
+                </ul>
+            </nav>
+        </div>
+        
+
+        <div class="row row-cols-xl-4 row-cols-md-2 row-cols-1">
+            <div class="col mt-4">
+                <a href="#!"
+                class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon text-center rounded-pill">
+                        <i class="uil uil-shopping-bag fs-4 mb-0"></i>
+                    </div>
+                    <div class="flex-1 ms-3">
+                        <h6 class="mb-0 text-muted">Total Tickets</h6>
+                        <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
+                                data-target="{{total_tickets}}">{{total_tickets}}</span></p>
+                    </div>
+                </div>
+
+                <!-- <span class="text-success"><i class="uil uil-arrow-growth"></i> 1.46%</span> -->
+            </a>
+            </div>
+            <div class="col mt-4">
+                <a href="#!"
+                    class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon text-center rounded-pill">
+                            <i class="uil uil-user-circle fs-4 mb-0"></i>
+                        </div>
+                        <div class="flex-1 ms-3">
+                            <h6 class="mb-0 text-muted">Pending Tickets</h6>
+                            <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
+                                    data-target="{{total_pending_tickets}}">{{total_pending_tickets}}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- <span class="text-danger"><i class="uil uil-chart-down"></i> 0.5%</span> -->
+                </a>
+            </div><!--end col-->
+
+            <div class="col mt-4">
+                <a href="#!"
+                    class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon text-center rounded-pill">
+                            <i class="uil uil-usd-circle fs-4 mb-0"></i>
+                        </div>
+                        <div class="flex-1 ms-3">
+                            <h6 class="mb-0 text-muted">Answered Tickets</h6>
+                            <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
+                                    data-target="{{total_answered_tickets}}">{{total_answered_tickets}}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- <span class="text-success"><i class="uil uil-arrow-growth"></i> 3.84%</span> -->
+                </a>
+            </div><!--end col-->
+
+            <div class="col mt-4">
+                <a href="#!"
+                    class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon text-center rounded-pill">
+                            <i class="uil uil-shopping-bag fs-4 mb-0"></i>
+                        </div>
+                        <div class="flex-1 ms-3">
+                            <h6 class="mb-0 text-muted">Closed Tickets</h6>
+                            <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
+                                    data-target="{{total_closed_tickets}}">{{total_closed_tickets}}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- <span class="text-success"><i class="uil uil-arrow-growth"></i> 1.46%</span> -->
+                </a>
+            </div><!--end col-->
+
+            <!--end col-->
+
+            <!-- <div class="col mt-4">
+                                <a href="#!" class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon text-center rounded-pill">
+                                            <i class="uil uil-users-alt fs-4 mb-0"></i>
+                                        </div>
+                                        <div class="flex-1 ms-3">
+                                            <h6 class="mb-0 text-muted">Users</h6>
+                                            <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value" data-target="9">1.5</span>M</p>
+                                        </div>
+                                    </div>
+
+                                    <span class="text-danger"><i class="uil uil-chart-down"></i> 0.5%</span>
+                                </a>
+                            </div> -->
+
+            <!--end col-->
+        </div>
+        
+
+        <div class="row">
+            <!-- <div class="col-md-5 col-lg-4 order-md-last mt-4">
+                                <div class="card rounded shadow p-4 border-0">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="h5 mb-0">Your cart</span>
+                                        <span class="badge bg-primary rounded-pill">3</span>
+                                    </div>
+                                    <ul class="list-group mb-3 border">
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Product name</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$12</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Second product</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$8</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Third item</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between bg-light p-3 border-bottom">
+                                            <div class="text-success">
+                                                <h6 class="my-0">Promo code</h6>
+                                                <small>EXAMPLECODE</small>
+                                            </div>
+                                            <span class="text-success">−$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between p-3">
+                                            <span>Total (USD)</span>
+                                            <strong>$20</strong>
+                                        </li>
+                                    </ul>
+                            
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Promo code">
+                                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> -->
+            <!--end col-->
+
+            <div class="col-md-12 col-lg-12 mt-4 m-auto">
+                
+                <div class="card rounded shadow p-4 border-0">
+                    <h6 class="mb-3">If you are opening ticket for any design or edit please mention Design Name/JOB Id in subject field.</h6>
+                    <form class="needs-validation" novalidate method="POST">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-sm-12">
+                                <label for="Subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="Subject" name="Subject" placeholder="Subject" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid Subject is required.
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="Design" class="form-label">Design</label>
+                                <select class="form-select form-control" id="Design" name="Design" required>
+                                    <option value="">Choose...</option>
+                                    {% for order_type, order_id, design_name in orders %}
+                                        <option value="{{ order_type }}:{{ order_id }}">{{ design_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Valid Design is required.
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="Priority" class="form-label">Priority</label>
+                                <select class="form-select form-control" id="Priority" name="Priority" required>
+                                    <option value="">Choose...</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Valid Priority is required.
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mb-4">
+                                <label for="Message" class="form-label">Message</label>
+                                <textarea name="Message" id="Message" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <button class="w-100 btn btn-primary" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+
+
+
+    </div>
+</div><!--end container-->
+
+<script>
+    $(document).ready(function() {
+        $('#Design').select2({
+            placeholder: "Choose a design",
+            allowClear: true
+        });
+
+        $('#Design2').select2({
+            placeholder: "Choose a design",
+            allowClear: true
+        });
+    });
+</script>
+
+
+{% endblock body %}
+
+<!--End page-content" -->

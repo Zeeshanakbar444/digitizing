@@ -1,0 +1,372 @@
+{% extends "app/base.html" %}
+
+<!-- Loader -->
+<!-- <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div> -->
+<!-- Loader -->
+
+<!-- Start Page Content -->
+{% block body %}
+
+
+<body>
+    <style>
+        .order-summary h5{
+            color: white !important;
+        }
+        .payment_page p, .payment_page h1, .payment_page h2, .payment_page h3, .payment_page h4, .payment_page h5, .payment_page h6{
+            color:  black;
+        }
+        .form-check-label strong{
+            color: black;
+        }
+        /* Coupon and Order Summary Styles */
+.order-summary {
+  transition: all 0.3s ease;
+      background: #050280;
+}
+
+.coupon-section .input-group {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* #coupon-code {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+} */
+
+#coupon-code::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+#coupon-message.success {
+  color: #28a745;
+}
+
+#coupon-message.error {
+  color: #dc3545;
+}
+
+.coupon-discount {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse animation for apply button on hover */
+#apply-coupon:hover {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+    </style>
+    <!-- Loader -->
+    <!-- <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div> -->
+    <!-- Loader -->
+
+            <!-- Top Header -->
+
+            
+
+            <div class="container-fluid">
+  <div class="layout-specing">
+    {% if messages %}
+      {% for message in messages|slice:"1" %}
+        <div class="message bg-soft-{{ message.tags }} text-center p-2">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div class="d-md-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Pricing</h5>
+
+      <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+          <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+          <li class="breadcrumb-item text-capitalize active" aria-current="page">Pricing</li>
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="container my-5 payment_page p-0">
+      <div class="payment-box shadow-lg p-4 rounded-4 mx-auto text-white">
+        {% if is_paid %}
+          <div class="text-center">
+            <h2 class="mb-3 text-success">Payment Received</h2>
+            <p class="fs-5">Thank you! Your payment has been successfully received.</p>
+            <div class="my-4">
+              <i class="bi bi-check-circle-fill text-success display-1"></i>
+            </div>
+            <p class="small text-muted">You don't need to pay again. If you believe this is a mistake, please wait while we verify your payment.</p>
+          </div>
+        {% else %}
+          <h2 class="mb-2">Pay for Order</h2>
+          <p class="text-muted small">Pay for your order using our automated payment system</p>
+          
+          <!-- Order Summary Section -->
+          <div class="order-summary mt-4 p-3 rounded  bg-opacity-25">
+            <h5 class="border-bottom pb-2 mb-3">Order Summary</h5>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span id="subtotal">${{ get_inv.total }}</span>
+            </div>
+            {% if get_inv.coupon_discount %}
+            <div class="coupon-discount d-flex justify-content-between mb-2" id="discount-row">
+              <span>Discount:</span>
+              <span class="text-success" id="discount-amount">-${{get_inv.coupon_discount}}</span>
+            </div>
+            {% else %}
+            <div class="coupon-discount d-flex justify-content-between mb-2" id="discount-row" style="display: none !important;">
+              <span>Discount:</span>
+              <span class="text-success" id="discount-amount">-${{get_inv.coupon_discount}}</span>
+            </div>
+            {% endif %}
+            <div class="d-flex justify-content-between fw-bold mt-3 pt-2 border-top">
+              <span>Total:</span>
+              <span id="total-amount">
+                $
+                {% if get_inv.grand_total %}
+                {{ get_inv.grand_total }}
+                {% else %}
+                {{ get_inv.total }}
+                {% endif %}
+            
+            </span>
+            </div>
+          </div>
+          
+          <!-- Coupon Code Section -->
+          <div class="coupon-section mt-4">
+            <div class="input-group">
+              <input type="text" class="form-control" id="coupon-code" placeholder="Enter coupon code">
+              <button class="btn btn-success" type="button" id="apply-coupon">Apply Coupon</button>
+            </div>
+            <div id="coupon-message" class="mt-2 small"></div>
+          </div>
+
+          <form action="" method="post" class="mt-4">  
+            {% csrf_token %}
+    
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentOption" id="checkout2" value="paypal" />
+              <label class="form-check-label" for="checkout2">
+                <strong>2Checkout</strong> - <span class="text-success">Credit Cards & PayPal</span>
+              </label>
+            </div>
+        
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="radio" name="paymentOption" id="stripe" value="stripe" checked />
+              <label class="form-check-label" for="stripe">
+                <strong>Stripe</strong> - <span class="text-info">Credit Cards (If 2Checkout does not work)</span>
+              </label>
+            </div>
+            
+            <!-- Hidden field to store coupon code -->
+            <input type="hidden" name="applied_coupon" id="applied-coupon-field" value="">
+        
+            <button class="btn btn-primary w-100 mt-4 proceed-btn">Proceed to Checkout</button>
+          </form>
+    
+          <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 mt-4 payment-icons">
+            <img src="/static/app/assets/images/cards-removebg-preview.png" alt="Payment methods">
+          </div>
+    
+          <p class="text-center text-success small mt-3 mb-0">
+            We are processing payments through secure PayPal Express Checkout. You can pay through PayPal or by Cards without creating a PayPal account.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+            
+            <!--end container-->
+
+         
+          
+    <!-- page-wrapper -->
+
+    <!-- Offcanvas Start -->
+    <div class="offcanvas offcanvas-end shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header p-4 border-bottom">
+            <h5 id="offcanvasLeftLabel" class="mb-0">
+                <img src="assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                <img src="assets/images/logo-light.png" height="24" class="dark-version" alt="">
+            </h5>
+            <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas"
+                aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+        </div>
+        <div class="offcanvas-body p-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+                        <h6 class="fw-bold">Theme Options</h6>
+
+                        <ul class="text-center style-switcher list-unstyled mt-4">
+                            <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light"
+                                    onclick="setTheme('style-rtl')"><img src="assets/images/demos/rtl.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">RTL Version</span></a>
+                            </li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light"
+                                    onclick="setTheme('style')"><img src="assets/images/demos/ltr.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">LTR Version</span></a>
+                            </li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark"
+                                    onclick="setTheme('style-dark-rtl')"><img src="assets/images/demos/dark-rtl.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">RTL Version</span></a>
+                            </li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark"
+                                    onclick="setTheme('style-dark')"><img src="assets/images/demos/dark.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">LTR Version</span></a>
+                            </li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4"
+                                    onclick="setTheme('style-dark')"><img src="assets/images/demos/dark.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">Dark Version</span></a>
+                            </li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4"
+                                    onclick="setTheme('style')"><img src="assets/images/demos/ltr.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">Light Version</span></a>
+                            </li>
+                            <li class="d-grid"><a href="https://shreethemes.in/landrick/landing/index.html"
+                                    target="_blank" class="mt-4"><img src="assets/images/demos/landing.png"
+                                        class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;"
+                                        alt=""><span class="text-dark fw-medium mt-3 d-block">Landing</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="offcanvas-footer p-4 border-top text-center">
+            <ul class="list-unstyled social-icon social mb-0">
+                <li class="list-inline-item mb-0"><a href="https://1.envato.market/landrick" target="_blank"
+                        class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank"
+                        class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="https://www.behance.net/shreethemes" target="_blank"
+                        class="rounded"><i class="uil uil-behance align-middle" title="behance"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank"
+                        class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank"
+                        class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank"
+                        class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i
+                            class="uil uil-envelope align-middle" title="email"></i></a></li>
+                <li class="list-inline-item mb-0"><a href="https://shreethemes.in" target="_blank" class="rounded"><i
+                            class="uil uil-globe align-middle" title="website"></i></a></li>
+            </ul><!--end icon-->
+        </div>
+    </div>
+    <!-- Offcanvas End -->
+
+    <!-- javascript -->
+    <!-- JAVASCRIPT -->
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/feather-icons/feather.min.js"></script>
+    <script src="assets/libs/simplebar/simplebar.min.js"></script>
+    <!-- Main Js -->
+    <script src="assets/js/plugins.init.js"></script>
+    <script src="assets/js/app.js"></script>
+
+    <script>
+      function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // Get query parameter from URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  $(document).ready(function () {
+    $('#apply-coupon').on('click', function (e) {
+        e.preventDefault();
+      const couponCode = $('#coupon-code').val().trim();
+      const orderId = "{{get_inv.id}}";
+      const csrfToken = getCookie('csrftoken');  // Get CSRF token from cookie
+      console.log("csrfToken", orderId);
+      
+
+      if (!couponCode) {
+        $('#coupon-message').text("Please enter a coupon code.").css("color", "red");
+        return;
+      }
+
+      $.ajax({
+        url: '/apply_coupon_for_invoice/',
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        data: {
+          'coupon_code': couponCode,
+          'order_id': orderId,
+        },
+        success: function (response) {
+          if (response.success) {
+            $('#coupon-message').text(response.message).css("color", "green");
+            $('#discount-row').show();
+            $('#discount-amount').text("-$" + response.discount);
+            $('#total-amount').text("$" + response.new_total);
+
+            // Save applied coupon to hidden input in form (for payment submission)
+            $('#applied-coupon-field').val(couponCode);
+          } else {
+            $('#coupon-message').text(response.message).css("color", "red");
+            $('#discount-row').hide();
+            $('#applied-coupon-field').val("");  // Clear coupon if invalid
+          }
+        },
+        // error: function () {
+        //   $('#coupon-message').text("Something went wrong. Please try again.").css("color", "red");
+        // }
+      });
+    });
+  });
+
+    </script>
+
+</body>
+{% endblock body %}
+

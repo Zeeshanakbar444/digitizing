@@ -1,0 +1,124 @@
+
+<!doctype html>
+<html lang="en" dir="ltr">
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 5 Landing Page Template" />
+    <meta name="keywords" content="Saas, Software, multi-uses, HTML, Clean, Modern" />
+    <meta name="author" content="Shreethemes" />
+    <meta name="email" content="support@shreethemes.in" />
+    <meta name="website" content="https://shreethemes.in" />
+    <meta name="Version" content="v4.9.0" />
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" />
+    <!-- Css -->
+    <link href="/static/app/assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
+    <!-- Bootstrap Css -->
+    <!-- <link href="/static/app/assets/css/bootstrap-dark.min.css" class="theme-opt" rel="stylesheet" type="text/css" /> -->
+    <link href="/static/app/assets/css/bootstrap.min.css" class="theme-opt" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="/static/app/assets/libs/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/app/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/app/assets/libs/@iconscout/unicons/css/line.css" type="text/css" rel="stylesheet" />
+    <!-- Style Css-->
+    <link href="/static/app/assets/css/style.min.css" class="theme-opt" rel="stylesheet" type="text/css" />
+    <title>Login - High Five Digitizing</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <!-- Include Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Include jQuery -->
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <style>
+        .sidebar-brand a img {
+    width: 158px;
+}
+
+.sidebar-brand a {
+    text-align: center;
+}
+    </style>
+
+    </head>
+
+    <body>
+        
+
+        <!-- Loader -->
+        <!-- <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div> -->
+        <!-- Loader -->
+
+        <!-- Hero Start -->
+        <section class="bg-home bg-circle-gradiant d-flex align-items-center">
+            <div class="bg-overlay bg-overlay-white"></div>
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card form-signin p-4 rounded shadow">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <a href="/"><img src="/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" class="avatar avatar-small mb-4 d-block mx-auto main_my_logo" alt=""></a>
+                                {% comment %} <h3 class="text-center mb-4">Your Logo</h3> {% endcomment %}
+                                {% if messages %}
+            {% for message in messages|slice:"1" %}
+            <div class="message bg-soft-{% if message.tags == 'error' %}danger {% else %}{{ message.tags }}{% endif %} text-center p-2">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+                                <h5 class="mb-3 text-center">Please sign in</h5>
+                            
+                                <div class="form-floating mb-2">
+                                    <input type="text" name="identifier" class="form-control" id="floatingInput" placeholder="Email or Username" required>
+                                    <label for="floatingInput">Email or Username</label>
+                                </div>
+                            
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                                    <label for="floatingPassword">Password</label>
+                                </div>
+                            
+                                <div class="d-flex justify-content-between mb-2">
+                                    <p class="forgot-pass mb-0"><a href="/forgot_password/" class="text-dark small fw-bold">Forgot password ?</a></p>
+                                </div>
+                            
+                                <button class="btn btn-primary w-100" type="submit">Sign in</button>
+                            
+                                <div class="col-12 text-center mt-3">
+                                    <p class="mb-0 mt-3"><small class="text-dark me-2">Don't have an account ?</small> <a href="/signup/" class="text-dark fw-bold">Sign Up</a></p>
+                                </div>
+                            
+                                <p class="mb-0 text-muted mt-3 text-center">© <script>document.write(new Date().getFullYear())</script> High Five Digitizing.</
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div> <!--end container-->
+        </section><!--end section-->
+        <!-- Hero End -->
+        
+        <!-- javascript -->
+        <!-- JAVASCRIPT -->
+        <script src="/static/app/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/app/assets/libs/feather-icons/feather.min.js"></script>
+        <script src="/static/app/assets/libs/simplebar/simplebar.min.js"></script>
+        <!-- Main Js -->
+        <script src="/static/app/assets/js/plugins.init.js"></script>
+        <script src="/static/app/assets/js/app.js"></script>
+        
+    </body>
+
+</html>

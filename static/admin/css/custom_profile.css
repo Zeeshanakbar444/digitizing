@@ -1,0 +1,390 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    background: #f3f3f3;
+}
+
+.main_requirment_head {
+    background: #ffa800;
+    /* padding: 1px 10px; */
+    border-radius: 5px;
+}
+
+.single_cart_related {
+    width: 100%;
+
+}
+.main_reject_btn > h3 {
+    width: 95%;
+    border: none;
+    background: #ff000080;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    /* color: white; */
+}
+.card_image img {
+    width: 100%;
+    object-fit: cover;
+    height: 400px;
+}
+.cart_detail_glob {
+    font-size: 12px;
+}
+.submain_table {
+    width: 100%;
+    display: flex;
+}
+.main_category {
+    width: 100%;
+}
+.main_category > span {
+    margin: 10px 0px;
+}
+
+.main_category_desc >span {
+    margin: 10px 20px;
+}
+
+.card_image img {
+    width: 100%;
+}
+.main_category span {
+    display: block;
+    font-weight: bold;
+    /* border: 1px solid black; */
+}
+
+.main_category_desc span {
+    display: block;
+}
+
+.main_table {
+    display: flex;
+    justify-content: space-around;
+}
+
+.submain_cat {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.submain_cat:nth-child(odd){
+    background: #f3f3f3;
+    border: 1px solid white;
+}
+.submain_cat:nth-child(even){
+    background: #dfdfdf;
+    border: 1px solid white;
+}
+.cart_detail_glob {
+    margin: 0px 10px;
+    line-height: 30px;
+}
+
+.submain_cart_related {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 12px;
+}
+.add_more_btn {
+    margin: 10px 0px 0px 0px;
+}
+.main_btn_save {
+    background: white;
+    width: 1000px;
+    margin: auto;
+    margin: 10px auto;
+    padding: 20px 30px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.save_btn.red >a {
+    background: red;
+    padding: 10px 20px;
+    color: white;
+    font-size: 15px;
+    border-radius: 12px;
+}
+button.green {
+    background: #1a9d1a;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+.main_requirment_head > p {
+    padding: 5px 5px;
+    color: white;
+    /* border-radius: 18px; */
+}
+.requirements {
+    width: 1000px;
+    margin: auto !important;
+    background: white;
+    padding: 27px;
+    border-radius: 12px;
+}
+
+.profile_image img {
+    width: 106px;
+}
+
+.profile_image {
+    text-align: center;
+}
+
+.name {
+    text-align: center;
+}
+
+.name p {
+    margin: 0px;
+    font-size: 17px;
+    color: #363636;
+}
+
+#change_image {
+    display: none;
+}
+
+label.change_image {
+    position: relative;
+    bottom: 35px;
+    left: 31px;
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+i.bx.bx-edit {
+    text-align: center;
+}
+
+label.change_image i {
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 500;
+    background: #ffa800;
+    padding: 7px 7px;
+    border-radius: 50%;
+}
+
+.change_img i {
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 500;
+    background: #ffa800;
+    padding: 7px 7px;
+    border-radius: 50%;
+}
+
+.single_input label {
+    display: block;
+    margin: 10px 0px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.main_single_input {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.single_input {
+    width: 100%;
+    margin: 10px;
+}
+
+.single_input input {
+    width: 100%;
+    padding: 7px 11px;
+    border-radius: 4px;
+    border: 1px solid #838383;
+}
+
+.profile_form {
+    margin: auto;
+    width: 1000px;
+    background: #fff;
+    padding: 10px 35px 0px 16px;
+    border-radius: 13px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+}
+
+.requirements_form {
+    margin: auto;
+    background: #fff;
+    padding: 10px 27px;
+    border-radius: 13px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    overflow: auto;
+}
+
+select.form-select {
+    border: 1px solid #838383;
+    border-radius: 4px;
+    padding: 7px 11px;
+}
+
+.address {
+    width: 100%;
+    height: 100px;
+    border-radius: 4px;
+}
+
+.main_profile_form {
+    margin: 10px 0px;
+}
+
+.main_requirements_input {
+    display: flex;
+    width: 1600px;
+    align-items: center;
+
+}
+
+.mylabel label {
+    font-size: 12px;
+}
+
+.single_input.mylabel {
+    margin: 0px 20px;
+    width: 2000px !important;
+}
+
+.reject_btn button {
+    background: #ff000042;
+    padding: 10px 10px;
+    text-decoration: none;
+    color: red;
+    border-radius: 8px;
+    transition: all .4s ease-in-out;
+    border: none;
+}
+
+.reject_btn button:hover {
+    background: #ff000057;
+}
+
+.req_age_limit {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.req_age_limit > input {
+    height: 22px;
+}
+
+.reject_btn {
+    margin: 35px 0px 0px 10px;
+    width: 50%;
+}
+
+@media screen and (max-width:1200px) {
+    .main_btn_save{
+        width: auto;
+    }
+
+}
+@media screen and (max-width:990px) {
+    .profile_form {
+        width: auto;
+    }
+    .requirements_form{
+        box-shadow: none;
+    }
+
+    .requirements {
+        width: auto;
+    }
+    .submain_cart_related{
+        grid-template-columns: 50% 50%;
+    }
+
+}
+
+@media screen and (max-width:767px) {
+    .main_single_input {
+        flex-wrap: wrap;
+        gap: 0px;
+    }
+
+    .main_requirements_input {
+        width: 1140px;
+    }
+    .main_table{
+        flex-wrap: wrap;
+    }
+    .cart_detail_glob {
+        font-size: 11px;
+        line-height: 25px;
+    }
+
+
+}
+
+@media screen and (max-width:767px) {
+    .submain_cart_related{
+        grid-template-columns: 100%;
+    }
+}
+
+.profile_image {
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    border-radius: 50%;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-size: cover;
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600;700&display=swap');
+*{
+margin: 0%;
+padding: 0%;
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+} */
+
+.display {
+    border: 2px solid black;
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin: auto;
+}
+
+#upload {
+    display: none;
+}
+
+/* uploaded image */
+img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    object-fit: cover;
+}

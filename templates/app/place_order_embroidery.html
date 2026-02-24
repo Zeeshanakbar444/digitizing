@@ -1,0 +1,494 @@
+{% extends "app/base.html" %}
+
+
+{% block body %}
+<style>
+    body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        {% comment %} h1,h2,h3,h4,h5,h6{
+            color:black;
+        } {% endcomment %}
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .package-card {
+            height: 100%;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #2c3d51;
+    border: 1px solid #6e6e6e;
+    padding: 10px 10px;
+    border-radius: 11px;
+    color:white;
+        }
+        .package-card.selected {
+            background-color: #111923;
+            border-color: #1890ff;
+        }
+        .package-card .card-header {
+            text-align: center;
+            /* background-color: #f0f0f0; */
+            border-bottom: 1px solid #ddd;
+        }
+        .package-card .card-body {
+            padding: 0.5rem;
+        }
+        .package-card .card-body ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .package-card .card-body ul li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .package-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+        .border-option {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            height: 100%;
+            transition: all 0.2s;
+            border-radius: 12px;
+        }
+        .border-option.selected {
+            background-color: #111923;
+            border-color: #1890ff;
+            color:white;
+
+        }
+        .base-material-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            height: 100%;
+            transition: all 0.2s;
+            border-radius: 12px;
+        }
+        .base-material-card.selected {
+            background-color: #111923;
+            border-color: #1890ff;
+        }
+        .backing-material-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            height: 100%;
+            transition: all 0.2s;
+            border-radius: 12px;
+        }
+        .backing-material-card.selected {
+            background-color: #111923;
+            border-color: #1890ff;
+        }
+        .border-option img {
+            max-width: 100%;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        .border-option-title {
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+        .embroidery-option {
+            border: 1px solid #ddd;
+            padding: 20px 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            height: 100%;
+            transition: all 0.2s;
+            border-radius: 12px;
+        }
+        .embroidery-option.selected {
+            background-color: #111923;
+            border-color: #1890ff;
+        }
+        .embroidery-option img {
+            width: 167px;
+            margin-bottom: 10px;
+        }
+        .submit-btn {
+            background-color: #00a884;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+        }
+        .hidden-radio {
+            position: absolute;
+            opacity: 0;
+        }
+        .border-option img {
+    width: 148px;
+    height: auto;
+    filter: invert(1);
+}
+        .custom_options img {
+    width: 148px;
+    height: auto;
+    filter: invert(0) !important;
+}
+
+.custom_size {
+    display: none;
+}
+.breadcrumb .breadcrumb-item{
+    color: white;
+}
+h5{
+    color: white;
+}
+</style>
+<!-- Top Header -->
+
+<div class="container-fluid">
+    <div class="layout-specing">
+
+
+        <div class="row">
+            <!-- <div class="col-md-5 col-lg-4 order-md-last mt-4">
+                                <div class="card rounded shadow p-4 border-0">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="h5 mb-0">Your cart</span>
+                                        <span class="badge bg-primary rounded-pill">3</span>
+                                    </div>
+                                    <ul class="list-group mb-3 border">
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Product name</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$12</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Second product</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$8</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Third item</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between bg-light p-3 border-bottom">
+                                            <div class="text-success">
+                                                <h6 class="my-0">Promo code</h6>
+                                                <small>EXAMPLECODE</small>
+                                            </div>
+                                            <span class="text-success">−$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between p-3">
+                                            <span>Total (USD)</span>
+                                            <strong>$20</strong>
+                                        </li>
+                                    </ul>
+                            
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Promo code">
+                                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> -->
+            <!--end col-->
+
+            <div class="col-md-9 col-lg-9 mt-4 m-auto">
+                <div class="d-md-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0 text-black">Place Patch Order</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                            <li class="breadcrumb-item text-capitalize text-black">Place Order</li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">New Patch Order</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="card rounded shadow p-4 border-0">
+                    <!-- <h4 class="mb-3">Billing address</h4> -->
+                    <form class="needs-validation" method="post" novalidate enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Order Type -->
+                        {% comment %} <div class="form-section">
+                            <label class="section-title">Order Type</label>
+                            <select class="form-select form-control" id="order_type" name="order_type" required onchange="window.location.href=this.value">
+                                <!-- <option value="">Choose...</option> -->
+                                <option value="/place_order/">Digitizing</option>
+                                <option value="/place_order_vector/">Vector Conversion</option>
+                                <option value="/place_order_embroidery/">Embroidery Patches</option>
+                            </select>
+                        </div> {% endcomment %}
+            
+                        <!-- Design Name -->
+                         <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="section-title">Design Name</label>
+                            <input type="text" class="form-control" name="design_name" required>
+                            <div class="invalid-feedback"> Design Name is required. </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                                <label for="username" class="form-label">Po No</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="po_no" name="po_no"
+                                        placeholder="Po No">
+                                    {% comment %} <div class="invalid-feedback"> Po No is required. </div> {% endcomment %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">Patch type *</label>
+                                <select class="form-select form-control" id="patch_type" name="patch_type"
+                                    required onchange="handleOtherSelect(this)" data-toggle-target="other_patch_type">
+                                        <option value="">Please Select</option>
+                                        <option value="Embroidery Patch">Embroidery Patch</option>
+                                        <option value="PVC Silicon Patch">PVC Silicon Patch</option>
+                                        <option value="Sublimation Patch">Sublimation Patch</option>
+                                        <option value="Woven Patch">Woven Patch</option>
+                                        <option value="Faux Leather Patch">Faux Leather Patch</option>
+                                        <option value="Chenille Patche">Chenille Patche</option>
+                                        <option value="Other" id="other_patch_type_option">Other</option>
+                                    
+                                </select>
+                                <input type="text" name="other_patch_type" id="other_patch_type" class="form-control" style="display: none;" placeholder="Other...">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">Patch Border *</label>
+                                <select class="form-select form-control" id="Border" name="Border" disabled
+                                    required >
+                                        <option value="">Please Select</option>
+                                        <option value="Satin Border">Satin Border</option>
+                                        <option value="Merrowed Border">Merrowed Border</option>
+                                    
+                                </select>
+                                <small class="mt-2 mx-2 d-block">No Need to select border for PVC and Leather Patches.</small>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    $("#patch_type").change(function () {
+                                        const selectedValue = $(this).val().toLowerCase();
+                                        const $borderSelect = $("#Border");
+
+                                        if (selectedValue === "pvc silicon patch" || selectedValue === "faux leather patch") {
+                                            $borderSelect.prop("disabled", true).val(""); // disable and reset
+                                            $borderSelect.attr("required", false) // disable and reset
+                                        } else {
+                                            $borderSelect.prop("disabled", false);
+                                            $borderSelect.attr("required", true) // disable and reset
+                                        }
+                                    });
+                                });
+                            </script>
+                        <div class="col-sm-6">
+                            <label for="no_of_patches" class="form-label">No Of Patches (Min 50)</label>
+                            <div class="input-group has-validation">
+                                <input type="number" class="form-control" id="no_of_patches" min="50" name="no_of_patches" value="50" required>
+                                <div class="invalid-feedback" id="patchError">
+                                    Minimum 50 patches required.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-4">
+                            <label for="no_of_patches" class="form-label" style="font-weight: 500; color: gray;">Specified Quantity must be 50 or greater. Please Contact us for any concerns</label>
+                            
+                        </div> -->
+                        
+                            <div class="col-sm-6" style="display: none; ">
+                                <div id="patch_typeWrapper" >
+                                    <label for="address" class="form-label">Please Specify Other Patch type </label>
+                                    <input type="text" name="other_format" id="patch_type" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">Backing *</label>
+                                <select class="form-select form-control" id="patch_backing" name="patch_backing"
+                                    required >
+                                    <option value="">Please Select</option>
+                                    <option value="Heat Press">Heat Press</option>
+                                    <option value="Iron-On">Iron-On</option>
+                                    <option value="Sew-on">Sew-on</option>
+                                    <option value="Velcro">Velcro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                <label for="username" class="form-label">Number Of Colors *</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="no_of_colors" name="no_of_colors"
+                                        placeholder="Number Of Colors" >
+                                    <div class="invalid-feedback"> No Of Colors is required. </div>
+                                </div>
+                            </div>
+
+                            <div class="main_unit row mt-3">
+
+                                <div class="col-sm-4">
+                                    <label for="unit" class="form-label">Unit *</label>
+                                    <!-- <input type="text" class="form-control" id="Width" name="Width" placeholder="Width"> -->
+                                    <select class="form-select form-control" id="unit" name="unit" required>
+                                        <option value="">Choose...</option>
+                                        <option value="inches">Inches</option>
+                                        <option value="mm">mm</option>
+                                        <option value="cm">cm</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please choose a valid Unit
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="Height" class="form-label">Height *</label>
+                                    <input type="text" class="form-control" id="Height" name="Height" placeholder="Height">
+                                    <div class="invalid-feedback">
+                                                        Please enter a valid Height
+                                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="Width" class="form-label">Width *</label>
+                                    <input type="text" class="form-control" id="Width" name="Width" placeholder="Width">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid Width
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const patchInput = document.getElementById("no_of_patches");
+                            const patchError = document.getElementById("patchError");
+
+                            patchInput.addEventListener("input", function () {
+                                const value = parseInt(patchInput.value);
+                                if (value < 50 || isNaN(value)) {
+                                    patchInput.classList.add("is-invalid");
+                                    patchError.style.display = "block";
+                                    patchInput.value = 50;
+                                } else {
+                                    patchInput.classList.remove("is-invalid");
+                                    patchError.style.display = "none";
+                                }
+                            });
+                        });
+                        </script>
+            
+                        
+                        <!-- Additional Information -->
+                        <div class="form-section">
+                            <label class="section-title">Shipping Address (Optional)</label>
+                            <textarea class="form-control" rows="4" name="shipping_addr" placeholder="Your Complete Address"></textarea>
+                        </div>
+                        <div class="form-section">
+                            <label class="section-title">Additional Instructions</label>
+                            <textarea class="form-control" rows="4" name="add_inst"></textarea>
+                        </div>
+            
+                        <!-- Upload Your Artwork -->
+                        <div class="form-section">
+                            <label class="form-label">Attach Your Artwork</label>
+                                <div id="artwork-wrapper">
+                                    <input type="file" class="form-control mb-2" name="artwork[]">
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1" onclick="addArtwork()" style="margin-top: 5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1a6 6 0 1 0 0 12A6 6 0 0 0 8 2z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v2.5H11a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V8.5H5a.5.5 0 0 1 0-1h2.5V4.5A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                                Add More Artworks
+                            </button>
+                        </div>
+            
+                        <!-- Custom Code (if any) -->
+                        <!-- <div class="form-section">
+                            <label class="section-title">Custom Code (if any)</label>
+                            <input type="text" class="form-control">
+                        </div> -->
+            
+                        <!-- Submit Button -->
+                        <div class="text-center mt-4">
+                            <button class="w-100 btn btn-primary place-order-btn" type="submit">Place Order</button>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+</div><!--end container-->
+
+<script>
+    $(document).ready(function() {
+        // Package selection
+        $('input[name="package"]').change(function() {
+            $('.package-card').removeClass('selected');
+            $(this).closest('label').find('.package-card').addClass('selected');
+        });
+        $('input[name="base_material"]').change(function() {
+            $('.base-material-card').removeClass('selected');
+            $(this).closest('label').find('.base-material-card').addClass('selected');
+        });
+        $('input[name="backing_material"]').change(function() {
+            $('.backing-material-card').removeClass('selected');
+            $(this).closest('label').find('.backing-material-card').addClass('selected');
+        });
+
+        // Border selection
+        $('input[name="border"]').change(function() {
+            $('.border-option').removeClass('selected');
+            $(this).closest('label').find('.border-option').addClass('selected');
+        });
+
+        // Embroidery selection
+        $('input[name="embroidery"]').change(function() {
+            $('.embroidery-option').removeClass('selected');
+            $(this).closest('label').find('.embroidery-option').addClass('selected');
+        });
+    });
+</script>
+
+<script>
+   const checkbox = document.getElementById('custom_size_radio');
+const boxes = document.querySelectorAll('.custom_size');
+
+checkbox.addEventListener('change', function () {
+  boxes.forEach(function (box) {
+    if (checkbox.checked) {
+      box.style.display = "block";
+    } else {
+      box.style.display = "none";
+    }
+  });
+});
+
+  </script>
+  
+
+{% endblock body %}

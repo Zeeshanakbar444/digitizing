@@ -1,0 +1,39 @@
+<div style="background-color:#eeeeef;padding:50px 0">
+  <div style="max-width:640px;margin:0 auto">
+      
+    <!-- Header with company logo -->
+    <div style="text-align:center;background-color:#e0e0ef;padding:30px;border-top-left-radius:3px;border-top-right-radius:3px;margin:0">
+      <img src="{{site_url}}/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" alt="Company Logo" style="max-height:122px;">
+      <!-- <h2 style="color:#ffffff;margin:10px 0 0 0;font-weight:normal;">Your Company Name</h2> -->
+    </div>
+
+    <!-- Body -->
+    <div style="padding:20px;background-color:#ffffff">
+      <p style="color:#555;font-size:14px;line-height:20px">
+        Hello {% if user %} {{user.first_name}} {% else %}{{invoice.customer_name}} {% endif %},
+      </p>
+      <p style="font-size:14px;line-height:20px">Thank you for your business cooperation.</p>
+      <p style="color:#555;font-size:14px;line-height:20px">
+        Your invoice for the project has been generated and is attached here.
+      </p>
+
+      <!-- Invoice number placed here -->
+      <p style="font-size:14px;line-height:20px;font-weight:bold;margin-top:20px;">
+        Invoice #: {{invoice.invoice_id}}
+      </p>
+
+      <!-- Call to action button -->
+      <p>
+        <a href="{{payment_url}}" target="_blank" rel="noreferrer"
+           style="background-color:#00b393;padding:10px 15px;color:#ffffff;text-decoration:none;border-radius:3px;">
+          Show Invoice
+        </a>
+      </p>
+
+      <p style="font-size:14px;line-height:20px">Invoice balance due is ${{invoice.total}}</p>
+      <p style="color:#555;font-size:14px;line-height:20px">
+        Please pay this invoice within {{invoice.due_date|date:"Y-m-d"}}.
+      </p>
+    </div>
+  </div>
+</div>

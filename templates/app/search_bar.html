@@ -1,0 +1,11 @@
+<div class="main_search_bar">
+<form method="get" class="mb-3 d-flex">
+    <input 
+        type="text" 
+        name="q" 
+        class="form-control me-2" 
+        placeholder="Search by Order No, Design Name, PO..." 
+        value="{{ request.GET.q|default:'' }}">
+    <button type="submit" class="btn btn-primary rounded">Search</button>
+</form>
+</div>

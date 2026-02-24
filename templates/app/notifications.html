@@ -1,0 +1,91 @@
+{% extends "app/base.html" %}
+{% block body %}
+
+
+
+            <div class="container-fluid">
+                <div class="layout-specing">
+                    
+                   
+                    <div class="d-md-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Notifications</h5>
+
+                        <nav aria-label="breadcrumb" class="d-inline-block">
+                            <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                                <li class="breadcrumb-item text-capitalize"><a href="/notifications/">Notifications</a></li>
+                                {% comment %} <li class="breadcrumb-item text-capitalize active" aria-current="page">List</li> {% endcomment %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 card rounded p-3">
+                            <h5>Your notification</h5>
+                             <table class="table table-center bg-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <!-- <th class="border-bottom p-3">Job ID.</th> -->
+                                        <th class="border-bottom p-3 " >title</th>
+                                        <th class=" border-bottom p-3" style="min-width: 220px;">Message</th>
+                                        {% comment %} <th class="text-center border-bottom p-3" style="min-width: 150px;">Stitches</th> {% endcomment %}
+                                        <th class=" border-bottom p-3">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Start -->
+                                     {% for i in user_noti %}
+                                    <tr  class="">
+                                        <!-- <th class="p-3">185487</th> -->
+                                        <td class="p-3">
+                                            {{i.title|truncatechars:"60"}}
+                                            <!-- <a href="index-dark.html#" class="text-primary">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                    <span class="ms-2">Howard Tanner</span>
+                                                </div>
+                                            </a> -->
+                                        </td>
+                                        <td class=" p-3">
+                                            {% autoescape off %}
+                                            {{i.message|truncatechars:"60"}}    
+                                            {% endautoescape %}
+
+                                        </td>
+                                        
+                                        <td class=" p-3">
+                                            {{i.created_at|date:"d/m/y"}}
+                                        </td>
+                                        <!-- <td>Vector Conversion	</td> -->
+                                        {% comment %} <td>$45	</td> {% endcomment %}
+                                        <!-- <td>
+                                            <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                Pay and Download
+                                            </div>
+                                        </td> -->
+                                        <td class="text-end p-3">
+                                            <a href="/noti_preview/{{i.id}}" class="btn btn-sm btn-primary">Preview</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                            
+                          
+                              <!-- Notification 2 -->
+                              {% comment %} <div class="alert alert-info" role="alert">
+                                📦 Estimate #VEC-EST-45 has been generated and sent to your email.
+                              </div>
+                          
+                              <!-- Notification 3 -->
+                              <div class="alert alert-warning" role="alert">
+                                ⚠️ Reminder: Payment for order #VEC-122 is still pending.
+                              </div> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+
+{% endblock body %}

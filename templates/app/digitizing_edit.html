@@ -1,0 +1,375 @@
+{% extends "app/base.html" %}
+
+
+{% block body %}
+
+<!-- Top Header -->
+
+<div class="container-fluid">
+    <div class="layout-specing">
+
+
+        <div class="row">
+            <!-- <div class="col-md-5 col-lg-4 order-md-last mt-4">
+                                <div class="card rounded shadow p-4 border-0">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="h5 mb-0">Your cart</span>
+                                        <span class="badge bg-primary rounded-pill">3</span>
+                                    </div>
+                                    <ul class="list-group mb-3 border">
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Product name</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$12</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Second product</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$8</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Third item</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between bg-light p-3 border-bottom">
+                                            <div class="text-success">
+                                                <h6 class="my-0">Promo code</h6>
+                                                <small>EXAMPLECODE</small>
+                                            </div>
+                                            <span class="text-success">−$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between p-3">
+                                            <span>Total (USD)</span>
+                                            <strong>$20</strong>
+                                        </li>
+                                    </ul>
+                            
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Promo code">
+                                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> -->
+            <!--end col-->
+
+            <div class="col-md-9 col-lg-9 mt-4 m-auto">
+                <div class="d-md-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Place Digitizing Edit</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                            <!-- <li class="breadcrumb-item text-capitalize">Place Order</li> -->
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">Place Digitizing Edit</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="card rounded shadow p-4 border-0">
+                    {% comment %} <h4 class="mb-3">Billing address</h4> {% endcomment %}
+                    <form class="needs-validation" novalidate method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% comment %} <div class="col-sm-12">
+                                <label for="firstName" class="form-label">Order Type</label>
+                                <!-- <input type="text" class="form-control" id="firstName" placeholder="First Name" value=""
+                                                    required> -->
+                                    <select class="form-select form-control" id="order_type" name="order_type" required onchange="window.location.href=this.value">
+                                        <!-- <option value="">Choose...</option> -->
+                                        <option value="/place_order/">Digitizing</option>
+                                        <option value="/place_order_vector/">Vector Conversion</option>
+                                        <option value="/place_order_embroidery/">Embroidery Patches</option>
+                                    </select>
+                                <div class="invalid-feedback">
+                                    Valid Order Type is required.
+                                </div>
+                            </div> {% endcomment %}
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">Design name</label>
+                                <input type="text" class="form-control" id="design_name" {% if order.estimate_id %} value="{{order.estimate_id}}" {% else %} value="{{order.order_id}}" {% endif %} name="design_name" readonly style="background: rgb(228, 228, 228);"
+                                    placeholder="Design Name" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid Design name is required.
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="username" class="form-label">Po No</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="po_no" name="po_no" value="{{order.po_no}}" readonly style="background: rgb(228, 228, 228);"
+                                        placeholder="Po No">
+                                    {% comment %} <div class="invalid-feedback"> Po No is required. </div> {% endcomment %}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="username" class="form-label">Number Of Colors</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="no_of_colors" name="no_of_colors" disabled
+                                        placeholder="Number Of Colors" required value="{{order.number_of_colors}}">
+                                    <div class="invalid-feedback"> No Of Colors is required. </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">Placement </label>
+                                <select class="form-select form-control" id="placement" name="placement" disabled onchange="handleOtherSelect(this)" data-toggle-target="other_placement" required>
+                                    <!-- <option value="" {% if     order.placement %} selected {% endif %}>~ Select</option> -->
+                                     
+                                    <option value="Chest" {% if order.placement == 'Chest' %} selected {% endif %} >Chest</option>
+                                    <option value="Cap" {% if order.placement == 'Cap' %} selected {% endif %} >Cap</option>
+                                    <option value="Gloves" {% if order.placement == 'Gloves' %} selected {% endif %} >Gloves</option>
+                                    <option value="Front Cap" {% if order.placement == 'Front Cap' %} selected {% endif %} >Front Cap </option>
+                                    <option value="Back Cap" {% if order.placement == 'Back Cap' %} selected {% endif %} >Back Cap </option>
+                                    <option value="Side Cap" {% if order.placement == 'Side Cap' %} selected {% endif %} >Side Cap </option>
+                                    <option value="Visor" {% if order.placement == 'Visor' %} selected {% endif %} >Visor </option>
+                                    <option value="Jacket Back" {% if order.placement == 'Jacket Back' %} selected {% endif %} >Jacket Back </option>
+                                    <option value="Sleeve" {% if order.placement == 'Sleeve' %} selected {% endif %} >Sleeve </option>
+                                    <option value="Towel" {% if order.placement == 'Towel' %} selected {% endif %} >Towel </option>
+                                    <option value="Hand Glove" {% if order.placement == 'Hand Glove' %} selected {% endif %} >Hand Glove </option>
+                                    <option value="Other" {% if order.placement|slice:":6" == "Other:" %}selected{% endif %} id="other_placement_option">Other</option>
+
+                                    
+                                </select>
+                                <input type="text" name="other_placement" id="other_placement" readonly
+                                class="form-control"
+                                style="display: {% if order.placement|slice:":6" == "Other:" %}block{% else %}none{% endif %};"
+                                placeholder="Other.."
+                                value="{% if order.placement|slice:":6" == "Other:" %}{{ order.placement|cut:'Other:' }}{% endif %}">
+                            </div>
+                            <div class="col-sm-6" style="display: none; ">
+                                <div id="other_placementWrapper" >
+                                    <label for="address" class="form-label">Please Specify Other Placement </label>
+                                    <input type="text" name="other_placement" id="other_placement" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">Required Format</label>
+                                <select class="form-select form-control" id="design_format" name="design_format" disabled required onchange="handleOtherSelect(this)" data-toggle-target="other_format">
+                                    <!-- <option value="" {% if not order.design_format %}selected{% endif %}>~ Select</option> -->
+                                    <option value="dst" {% if order.design_format == 'dst' %}selected{% endif %}>dst</option>
+                                    <option value="cnd" {% if order.design_format == 'cnd' %}selected{% endif %}>cnd</option>
+                                    <option value="dsb" {% if order.design_format == 'dsb' %}selected{% endif %}>dsb</option>
+                                    <option value="exp" {% if order.design_format == 'exp' %}selected{% endif %}>exp</option>
+                                    <option value="jef" {% if order.design_format == 'jef' %}selected{% endif %}>jef</option>
+                                    <option value="xxx" {% if order.design_format == 'xxx' %}selected{% endif %}>xxx</option>
+                                    <option value="emb" {% if order.design_format == 'emb' %}selected{% endif %}>emb</option>
+                                    <option value="pxf" {% if order.design_format == 'pxf' %}selected{% endif %}>pxf</option>
+                                    <option value="pof" {% if order.design_format == 'pof' %}selected{% endif %}>pof</option>
+                                    <option value="Other"
+                                    {% if order.design_format|slice:":6" == "Other:" %}selected{% endif %}>
+                                    Other
+                                    </option>
+                                </select>
+                                <input type="text" name="other_format" id="other_format"
+                                class="form-control"
+                                style="display: {% if order.design_format|slice:":6" == "Other:" %}block{% else %}none{% endif %};"
+                                placeholder="Other..."
+                                value="{% if order.design_format|slice:":6" == "Other:" %}{{ order.design_format|cut:'Other:' }}{% endif %}">
+                            </div>
+                            <div class="col-sm-6" style="display: none; ">
+                                <div id="other_formatWrapper" >
+                                    <label for="address" class="form-label">Please Specify Other Format </label>
+                                    <input type="text" name="other_format" id="other_format" class="form-control">
+                                </div>
+                            </div>
+                            
+                            
+                        <div class="col-sm-6">
+                            <label for="address" class="form-label">Fabric</label>
+                            <select class="form-select form-control" id="type" name="type" required disabled onchange="handleOtherSelect(this)" data-toggle-target="other_type">
+                                <option value="" {% if not order.type %}selected{% endif %}>~ Select</option>
+                                <option value="Cotton" {% if order.type == 'Cotton' %}selected{% endif %}>Cotton</option>
+                                <option value="Pique" {% if order.type == 'Pique' %}selected{% endif %}>Pique</option>
+                                <option value="Twill" {% if order.type == 'Twill' %}selected{% endif %}>Twill</option>
+                                <option value="Fleece" {% if order.type == 'Fleece' %}selected{% endif %}>Fleece</option>
+                                <option value="Polyester" {% if order.type == 'Polyester' %}selected{% endif %}>Polyester</option>
+                                <option value="Jersey" {% if order.type == 'Jersey' %}selected{% endif %}>Jersey</option>
+                                <option value="Cotton Woven" {% if order.type == 'Cotton Woven' %}selected{% endif %}>Cotton Woven</option>
+                                <option value="Sherpa" {% if order.type == 'Sherpa' %}selected{% endif %}>Sherpa</option>
+                                <option value="Leather" {% if order.type == 'Leather' %}selected{% endif %}>Leather</option>
+                                <option value="Suti" {% if order.type == 'Suti' %}selected{% endif %}>Suti</option>
+                                <option value="Towel" {% if order.type == 'Towel' %}selected{% endif %}>Towel</option>
+                                <option value="Jarci" {% if order.type == 'Jarci' %}selected{% endif %}>Jarci</option>
+                                <option value="Silk" {% if order.type == 'Silk' %}selected{% endif %}>Silk</option>
+                                <option value="Flannel" {% if order.type == 'Flannel' %}selected{% endif %}>Flannel</option>
+                                <option value="Denim" {% if order.type == 'Denim' %}selected{% endif %}>Denim</option>
+                                <option value="Other" {% if order.type|slice:":6" == "Other:" %}selected{% endif %} id="other_type_option">Other</option>
+                            </select>
+                            <input type="text" name="other_type" id="other_type"
+                            class="form-control"
+                            style="display: {% if order.type|slice:":6" == "Other:" %}block{% else %}none{% endif %};"
+                            placeholder="Other..."
+                            value="{% if order.type|slice:":6" == "Other:" %}{{ order.type|cut:'Other:' }}{% endif %}">
+                        </div>
+                            
+                            
+                            <div class="col-sm-6" style="display: none; ">
+                                <div id="other_typeWrapper" >
+                                    <label for="address" class="form-label">Please Specify Other Fabric </label>
+                                    <input type="text" name="other_type" id="other_type" class="form-control">
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-sm-6">
+                                <label for="username" class="form-label">Name Of Colors</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="name_of_colors" name="name_of_colors"
+                                        placeholder="Name Of Colors" required>
+                                    <div class="invalid-feedback"> Name Of Colors is required. </div>
+                                </div>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-12">
+                                <p>
+                                <h5>Size Of The Design</h5> Please write down prop in any ONE box to have it done
+                                proportionately to the other.</p>
+                            </div> {% endcomment %}
+
+                            <div class="col-sm-4">
+    <label for="Width" class="form-label">Unit</label>
+    <select class="form-select form-control" id="unit" name="unit" required disabled>
+        <option value="" {% if not order.unit %}selected{% endif %}>Choose...</option>
+        <option value="inches" {% if order.unit == 'inches' %}selected{% endif %}>Inches</option>
+        <option value="mm" {% if order.unit == 'mm' %}selected{% endif %}>mm</option>
+        <option value="cm" {% if order.unit == 'cm' %}selected{% endif %}>cm</option>
+    </select>
+    <div class="invalid-feedback">
+        Please choose a valid Unit
+    </div>
+</div>
+                            <div class="col-sm-4">
+                                <label for="Height" class="form-label">Height</label>
+                                <input type="text" class="form-control" id="Height" name="Height" placeholder="Height" value="{{order.height}}" disabled>
+                                <div class="invalid-feedback">
+                                                    Please enter a valid Height
+                                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="Width" class="form-label">Width</label>
+                                <input type="text" class="form-control" id="Width" name="Width" placeholder="Width" value="{{order.width}}" disabled>
+                                <div class="invalid-feedback">
+                                    Please enter a valid Width
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-6">
+    <label for="blending" class="form-label">Do You Require Blending</label>
+    <div class="d-flex gap-3 align-items-center">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="blending" value="Yes" disabled
+                {% if order.required_blending == 'Yes' %}checked{% endif %}>
+            <label class="form-check-label">Yes</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="blending" value="No" disabled
+                {% if order.required_blending == 'No' %}checked{% endif %}>
+            <label class="form-check-label">No</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="blending" value="Not Sure" disabled
+                {% if order.required_blending == 'Not Sure' %}checked{% endif %}>
+            <label class="form-check-label">Not Sure</label>
+        </div>
+    </div>
+</div>
+
+{% comment %} <div class="col-sm-6">
+    <label for="sew_out_sample" class="form-label">Real Sew Out</label>
+    <div class="d-flex gap-3 align-items-center">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sew_out_sample" value="Yes" disabled
+                {% if order.sew_out_sample == 'Yes' %}checked{% endif %} checked>
+            <label class="form-check-label">Yes</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sew_out_sample" value="No" disabled
+                {% if order.sew_out_sample == 'No' %}checked{% endif %}>
+            <label class="form-check-label">No</label>
+        </div>
+    </div>
+</div> {% endcomment %}
+                            <div class="col-sm-12 mt-3" id="stitchesRow" style="display: none;">
+                                <label for="kind_stitches" class="form-label">Kind Stitches</label>
+                                <select class="form-select form-control" id="kind_stitches" name="kind_stitches">
+                                    <option value="">Choose...</option>
+                                    <option value="Zig Zag Stitch">Zig Zag Stitch</option>
+                                    <option value="Satin Stitch">Satin Stitch</option>
+                                    <option value="Run Stitch">Run Stitch</option>
+                                </select>
+                            </div>
+                            
+                          
+
+                            <!-- </div> -->
+
+                            <div class="col-12">
+                                <label for="address2" class="form-label">Additional Instructions</label>
+
+                                <textarea name="add_inst" id="" class="form-control" readonly style="background: rgb(228, 228, 228);">{{order.addtitoanl_instructions}}</textarea>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <label for="address2" class="form-label">Edit Remarks</label>
+
+                                <textarea name="edit_remarks" id="" class="form-control" placeholder="Edit Remarks">{{order.edit_remarks}}</textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Attach Your Artwork</label>
+                                <div id="artwork-wrapper">
+                                    <input type="file" class="form-control mb-2" name="artwork[]" required>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1" onclick="addArtwork()" style="margin-top: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1a6 6 0 1 0 0 12A6 6 0 0 0 8 2z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v2.5H11a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V8.5H5a.5.5 0 0 1 0-1h2.5V4.5A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                    Add More Artworks
+                                </button>
+                            </div>
+
+                            
+
+
+                        </div>
+
+                        <button class="w-100 btn btn-primary" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+</div><!--end container-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const yesOption = document.getElementById('yesOption');
+        const noOption = document.getElementById('noOption');
+        const stitchesRow = document.getElementById('stitchesRow');
+        const kindStitches = document.getElementById('kind_stitches');
+
+        function toggleStitchesRow() {
+            if (yesOption.checked) {
+                stitchesRow.style.display = 'block';
+            } else {
+                stitchesRow.style.display = 'none';
+                kindStitches.value = ""; // Reset the dropdown
+            }
+        }
+
+        yesOption.addEventListener('change', toggleStitchesRow);
+        noOption.addEventListener('change', toggleStitchesRow);
+    });
+</script>
+
+
+{% endblock body %}

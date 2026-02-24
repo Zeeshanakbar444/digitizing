@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - High Five Digitizing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary-color: #06b6d4;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .registration-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .registration-card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            max-width: 1400px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-section {
+            padding: 60px 50px;
+            position: relative;
+            background: var(--white);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 5px;
+        }
+
+        .brand-tagline {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        .illustration-section {
+            background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 50%, #81d4fa 100%);
+            padding: 60px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .illustration-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+        }
+
+        .illustration-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .illustration-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .illustration-highlight {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .illustration-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: var(--white);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            color: var(--gray-600);
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 400;
+            background: var(--white);
+            transition: all 0.3s ease;
+            color: var(--gray-800);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background: var(--white);
+        }
+
+        .form-control::placeholder {
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--danger-color);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-control.is-valid {
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .custom-select {
+            position: relative;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 400;
+            background: var(--white);
+            transition: all 0.3s ease;
+            color: var(--gray-800);
+            cursor: pointer;
+            appearance: none;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .custom-select::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            pointer-events: none;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select:focus-within::after {
+            transform: translateY(-50%) rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .textarea-wrapper {
+            position: relative;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 400;
+            background: var(--white);
+            transition: all 0.3s ease;
+            color: var(--gray-800);
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: none;
+            letter-spacing: 0.025em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            color: var(--white);
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .progress-indicators {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 40px 0 30px;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .progress-dot.active {
+            background: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+        }
+
+        .progress-dot.completed {
+            background: var(--success-color);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .progress-line {
+            width: 40px;
+            height: 2px;
+            background: var(--gray-300);
+            transition: all 0.3s ease;
+        }
+
+        .progress-line.active {
+            background: var(--primary-color);
+        }
+
+        .step-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .step-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--gray-50);
+            border-radius: 12px;
+            color: var(--gray-600);
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .form-check-input:checked {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-check-label {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .terms-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: none;
+            padding: 16px 20px;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            gap: 16px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 1.1rem;
+        }
+
+        .form-control.has-icon {
+            padding-left: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .registration-container{
+                    padding: 4px !important; 
+            }
+            .registration-card {
+                margin: 10px;
+                border-radius: 16px;
+            }
+            
+            .form-section {
+                padding: 40px 30px;
+            }
+            
+            .illustration-section {
+                display: none;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+
+            .illustration-text {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-card">
+            <div class="row g-0">
+                <div class="col-lg-6">
+                    <div class="form-section">
+                        <!-- Logo Section -->
+                        <div class="logo-section">
+                            <div class="logo">
+                                <i class="fas fa-cut"></i>
+                            </div>
+                            <div class="brand-name">High Five Digitizing</div>
+                            <div class="brand-tagline">Your Design, Our Expertise</div>
+                        </div>
+
+                        <h1 class="form-title">Create Account</h1>
+                        
+                        <!-- Display Django messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{% if message.tags == 'error' %}danger {% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST" id="registrationForm">
+                            {% csrf_token %}
+                            
+                            <!-- Step 1: User Information -->
+                            <div class="step-section active" id="step1">
+                                <p class="form-subtitle">User Information</p>
+                                
+                                <!-- <div class="form-group">
+                                    <label class="form-label required">Username</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-user input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="username" placeholder="Enter your username" required>
+                                    </div>
+                                </div> -->
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Full Name</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-id-card input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="contact_name" placeholder="Enter your full name" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Company Name</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-building input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="company" placeholder="Enter your company name" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Password</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" class="form-control has-icon" name="password" placeholder="Create a strong password" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Confirm Password</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" class="form-control has-icon" name="confirm_password" placeholder="Confirm your password" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="button-group">
+                                    <div></div>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                        Next <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Business Information -->
+                            <div class="step-section" id="step2">
+                                <p class="form-subtitle">Business Information</p>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Phone Number</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-phone input-icon"></i>
+                                        <input type="tel" class="form-control has-icon" name="mobile_no" placeholder="Enter your phone number" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Office Number</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-phone input-icon"></i>
+                                        <input type="tel" class="form-control has-icon" name="business_phone_no" placeholder="Enter office number (optional)">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Website</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-globe input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="website" placeholder="https://yourwebsite.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Email Address</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-envelope input-icon"></i>
+                                        <input type="email" class="form-control has-icon" name="email" placeholder="Enter your email address" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Invoice Email</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-receipt input-icon"></i>
+                                        <input type="email" class="form-control has-icon" name="invoice_email" placeholder="Email for invoices" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-outline-primary" onclick="prevStep(1)">
+                                        <i class="fas fa-arrow-left"></i> Previous
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+                                        Next <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3: User Locations -->
+                            <div class="step-section" id="step3">
+                                <p class="form-subtitle">Location & Preferences</p>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">How did you hear about us?</label>
+                                    <div class="custom-select">
+                                        <select class="form-select" name="reference">
+                                            <option value="">Select reference</option>
+                                            <option value="search_engine">Search Engine</option>
+                                            <option value="customer_reference">Customer Reference</option>
+                                            <option value="salesman">Salesman</option>
+                                            <option value="social_media">Social Media</option>
+                                            <option value="advertisement">Advertisement</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label required">Country</label>
+                                    <div class="custom-select">
+                                        <select class="form-select" name="country" required>
+                                            <option value="">Select your country</option>
+                                            <option value="US">United States</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="FR">France</option>
+                                            <option value="IN">India</option>
+                                            <option value="PK">Pakistan</option>
+                                            <option value="AE">United Arab Emirates</option>
+                                            <option value="SA">Saudi Arabia</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">State/Province</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-map-marker-alt input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="state" placeholder="Enter your State/Province">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-city input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="city" placeholder="Enter your City">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <div class="textarea-wrapper">
+                                        <textarea class="form-textarea" name="address" rows="3" placeholder="Enter your complete address"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div class="form-group">
+                                    <label class="form-label">Postal Code</label>
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-map-pin input-icon"></i>
+                                        <input type="text" class="form-control has-icon" name="postal_code" placeholder="Enter postal code">
+                                    </div>
+                                </div> -->
+                                
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="agree_terms" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        I agree to the <a href="#" class="terms-link">Terms & Conditions</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-outline-primary" onclick="prevStep(2)">
+                                        <i class="fas fa-arrow-left"></i> Previous
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-user-plus"></i> Create Account
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Progress Indicators -->
+                        <div class="progress-indicators">
+                            <div class="progress-dot active" id="dot1"></div>
+                            <div class="progress-line" id="line1"></div>
+                            <div class="progress-dot" id="dot2"></div>
+                            <div class="progress-line" id="line2"></div>
+                            <div class="progress-dot" id="dot3"></div>
+                        </div>
+                        
+                        <div class="login-link">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Already have an account? <a href="{% url 'login' %}">Sign in here</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="illustration-section">
+                        <div class="illustration-bg"></div>
+                        <div class="floating-shapes">
+                            <div class="shape">
+                                <i class="fas fa-cut fa-2x" style="color: var(--primary-color);"></i>
+                            </div>
+                            <div class="shape">
+                                <i class="fas fa-palette fa-2x" style="color: var(--secondary-color);"></i>
+                            </div>
+                            <div class="shape">
+                                <i class="fas fa-magic fa-2x" style="color: var(--success-color);"></i>
+                            </div>
+                        </div>
+                        <div class="illustration-content">
+                            <div class="illustration-text">
+                                <div class="main_logo">
+                                    <img src="/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" alt="">
+                                </div>
+                                <span class="illustration-highlight">YOUR DESIGN</span><br>
+                                <span class="illustration-highlight">OUR EXPERTISE</span><br>
+                                <strong>JOIN US</strong>
+                            </div>
+                            <p style="color: var(--gray-600); font-size: 1.1rem; margin-bottom: 30px;">
+                                Transform your creative ideas into stunning digital embroidery designs with our professional services.
+                            </p>
+                            <div class="illustration-icons">
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-cut fa-lg" style="color: var(--primary-color);"></i>
+                                </div>
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-palette fa-lg" style="color: var(--secondary-color);"></i>
+                                </div>
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-magic fa-lg" style="color: var(--success-color);"></i>
+                                </div>
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-award fa-lg" style="color: var(--warning-color);"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show current step
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Update progress indicators
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`dot${i}`);
+                const line = document.getElementById(`line${i}`);
+                
+                if (i < step) {
+                    dot.classList.add('completed');
+                    dot.classList.remove('active');
+                    if (line) line.classList.add('active');
+                } else if (i === step) {
+                    dot.classList.add('active');
+                    dot.classList.remove('completed');
+                    if (line) line.classList.remove('active');
+                } else {
+                    dot.classList.remove('active', 'completed');
+                    if (line) line.classList.remove('active');
+                }
+            }
+            
+            currentStep = step;
+        }
+        
+        function nextStep(step) {
+            if (validateCurrentStep()) {
+                showStep(step);
+            }
+        }
+        
+        function prevStep(step) {
+            showStep(step);
+        }
+        
+        function validateCurrentStep() {
+            const currentStepElement = document.getElementById(`step${currentStep}`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    field.classList.remove('is-valid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                }
+            });
+            
+            // Additional validation for password confirmation
+            if (currentStep === 1) {
+                const password = document.querySelector('input[name="password"]').value;
+                const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+                
+                if (password !== confirmPassword) {
+                    document.querySelector('input[name="confirm_password"]').classList.add('is-invalid');
+                    document.querySelector('input[name="confirm_password"]').classList.remove('is-valid');
+                    showNotification('Passwords do not match!', 'error');
+                    isValid = false;
+                } else if (password.length > 0) {
+                    document.querySelector('input[name="confirm_password"]').classList.remove('is-invalid');
+                    document.querySelector('input[name="confirm_password"]').classList.add('is-valid');
+                }
+            }
+            
+            return isValid;
+        }
+        
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'} me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insert at the top of the form
+            const form = document.getElementById('registrationForm');
+            form.insertBefore(notification, form.firstChild);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+        
+        // Form submission validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            if (!validateCurrentStep()) {
+                e.preventDefault();
+            }
+        });
+        
+        // Real-time validation
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('blur', function() {
+                if (this.hasAttribute('required')) {
+                    if (this.value.trim()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    } else {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    }
+                }
+            });
+            
+            field.addEventListener('input', function() {
+                if (this.classList.contains('is-invalid') && this.value.trim()) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+            });
+        });
+        
+        // Password strength indicator
+        document.querySelector('input[name="password"]').addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            // You can add password strength indicator here
+        });
+        
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            return strength;
+        }
+    </script>
+</body>
+</html>

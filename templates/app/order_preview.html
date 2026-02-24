@@ -1,0 +1,342 @@
+{% extends "app/base.html" %}
+
+
+{% block body %}
+
+<!-- Top Header -->
+
+<div class="container-fluid">
+    <div class="layout-specing">
+
+
+        <div class="row">
+            <!-- <div class="col-md-5 col-lg-4 order-md-last mt-4">
+                                <div class="card rounded shadow p-4 border-0">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="h5 mb-0">Your cart</span>
+                                        <span class="badge bg-primary rounded-pill">3</span>
+                                    </div>
+                                    <ul class="list-group mb-3 border">
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Product name</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$12</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Second product</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$8</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Third item</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between bg-light p-3 border-bottom">
+                                            <div class="text-success">
+                                                <h6 class="my-0">Promo code</h6>
+                                                <small>EXAMPLECODE</small>
+                                            </div>
+                                            <span class="text-success">−$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between p-3">
+                                            <span>Total (USD)</span>
+                                            <strong>$20</strong>
+                                        </li>
+                                    </ul>
+                            
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Promo code">
+                                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> -->
+            <!--end col-->
+
+            <div class="col-md-9 col-lg-9 mt-4 m-auto">
+                <div class="d-md-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Order Preview</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                            {% comment %} <li class="breadcrumb-item text-capitalize">Order Preview</li> {% endcomment %}
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">Order Preview</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="card rounded shadow p-4 border-0">
+                    <div class="details_of_order">
+
+                            <h4 class="mb-3">Details for your order {{ get_order.design_name }}</h4>
+                            {% if get_order.amount > 0 %}
+                            {% if get_order.payment_status == "Success Payment" %}
+                            <a href="/media/{{get_order.stitched_image}}" download="" class="btn btn-outline-success">Download</a>
+                            {% else %}
+                            <a href="/payment/?order_id={{get_order.id}}&type={{get_order.order_type}}" class="btn btn-primary">Pay to Download</a>
+                            {% endif %}
+                            {% endif %}
+
+                    </div>
+                    <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% if get_order.get_order_type_display %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Order Type</label>
+                                <div class="form-control-plaintext">{{ get_order.get_order_type_display }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.design_name %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Design name</label>
+                                <div class="form-control-plaintext">{{ get_order.design_name }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.number_of_colors %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Number Of Colors</label>
+                                <div class="form-control-plaintext">{{ get_order.number_of_colors }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.name_of_colors %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Name Of Colors</label>
+                                <div class="form-control-plaintext">{{ get_order.name_of_colors }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.height or get_order.width or get_order.get_unit_display %}
+                            <div class="col-12">
+                                <h5>Size Of The Design</h5>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.height %}
+                            <div class="col-sm-4">
+                                <label class="form-label">Height</label>
+                                <div class="form-control-plaintext">{{ get_order.height }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.width %}
+                            <div class="col-sm-4">
+                                <label class="form-label">Width</label>
+                                <div class="form-control-plaintext">{{ get_order.width }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.get_unit_display %}
+                            <div class="col-sm-4">
+                                <label class="form-label">Unit</label>
+                                <div class="form-control-plaintext">{{ get_order.get_unit_display }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.type %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Type</label>
+                                <div class="form-control-plaintext">{{ get_order.type }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.placement %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Placement</label>
+                                <div class="form-control-plaintext">{{ get_order.placement }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.get_tackle_or_applique_display %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Is this a tackle or applique?</label>
+                                <div class="form-control-plaintext">{{ get_order.get_tackle_or_applique_display }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.get_Sew_Out_Sample_display %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Sew-Out Sample</label>
+                                <div class="form-control-plaintext">{{ get_order.get_Sew_Out_Sample_display }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.Kind_Stitches %}
+                            <div class="col-sm-12 mt-3">
+                                <label class="form-label">Kind Stitches</label>
+                                <div class="form-control-plaintext">{{ get_order.Kind_Stitches }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.design_format %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Design Format</label>
+                                <div class="form-control-plaintext">{{ get_order.design_format }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.amount %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Amount</label>
+                                <div class="form-control-plaintext">{{ get_order.amount }}</div>
+                            </div>
+                            {% endif %}
+
+                    
+                            {% if get_order.color_separation %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Color Separation</label>
+                                <div class="form-control-plaintext">{{ get_order.color_separation }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.time_frame %}
+                            <div class="col-sm-6">
+                                <label class="form-label">Time Frame</label>
+                                <div class="form-control-plaintext">{{ get_order.time_frame }}</div>
+                            </div>
+                            {% endif %}
+
+                            
+                            {% if get_order.order_size %}
+                            <div class="col-sm-12">
+                                <label class="form-label">Order Size</label>
+                                <div class="form-control-plaintext">{{ get_order.order_size }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.embroidery %}
+                            <div class="col-sm-12">
+                                <label class="form-label">Embroidery</label>
+                                <div class="form-control-plaintext">{{ get_order.embroidery }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.border_edge %}
+                            <div class="col-sm-12">
+                                <label class="form-label">Border Edge</label>
+                                <div class="form-control-plaintext">{{ get_order.border_edge }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.base_material %}
+                            <div class="col-sm-12">
+                                <label class="form-label">Base Material</label>
+                                <div class="form-control-plaintext">{{ get_order.base_material }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.backing_material %}
+                            <div class="col-sm-12">
+                                <label class="form-label">Backing Material</label>
+                                <div class="form-control-plaintext">{{ get_order.backing_material }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.auto_thread_cutting %}
+                            <div class="col-12">
+                                <label class="form-label">Auto Thread Cutting</label>
+                                <div class="form-control-plaintext">{{ get_order.auto_thread_cutting }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.addtitoanl_instructions %}
+                            <div class="col-12">
+                                <label class="form-label" >Additional Instructions</label>
+                                <div class="form-control-plaintext" style="height: 100px;">{{ get_order.addtitoanl_instructions }}</div>
+                            </div>
+                            {% endif %}
+                            <!-- {{instructions_for_user}} -->
+                            {% if get_order.instructions_for_user %}
+                            <div class="col-12">
+                                <label class="form-label">Instructions For You</label>
+                                <div class="form-control-plaintext" style="height: 100px;">{{ get_order.instructions_for_user }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.use_for %}
+                            <div class="col-12">
+                                <label class="form-label">What will you use it for:</label>
+                                <div class="form-control-plaintext">{{ get_order.use_for }}</div>
+                            </div>
+                            {% endif %}
+
+                            {% if get_order.Color_Scheme %}
+                            <div class="col-12">
+                                <label class="form-label">Color Scheme:</label>
+                                <div class="form-control-plaintext">{{ get_order.Color_Scheme }}</div>
+                            </div>
+                            {% endif %}
+                    
+                            {% if get_order.artwork %}
+                            <div class="col-12">
+                                <label class="form-label">Attached Artwork</label>
+                                <div>
+                                    <a href="{{ get_order.artwork.url }}" target="_blank" class="btn btn-primary">
+                                        View Artwork
+                                    </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if get_order.preview_image %}
+                            <div class="col-12">
+                                <label class="form-label">Design Preview</label>
+                                <div>
+                                    <img src="{{get_order.preview_image.url}}" alt="">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if get_order.preview_pdf %}
+                            <div class="col-12">
+                                <label class="form-label">PDF</label>
+                                <div>
+                                    <a href="{{ get_order.preview_pdf.url }}" target="_blank" class="btn btn-primary">
+                                        Download Pdf
+                                    </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+</div><!--end container-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const yesOption = document.getElementById('yesOption');
+        const noOption = document.getElementById('noOption');
+        const stitchesRow = document.getElementById('stitchesRow');
+        const kindStitches = document.getElementById('kind_stitches');
+
+        function toggleStitchesRow() {
+            if (yesOption.checked) {
+                stitchesRow.style.display = 'block';
+            } else {
+                stitchesRow.style.display = 'none';
+                kindStitches.value = ""; // Reset the dropdown
+            }
+        }
+
+        yesOption.addEventListener('change', toggleStitchesRow);
+        noOption.addEventListener('change', toggleStitchesRow);
+    });
+</script>
+
+
+{% endblock body %}

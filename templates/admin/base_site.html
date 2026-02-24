@@ -1,0 +1,112 @@
+
+
+
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+  {% if request.user.apparence_set.first.color_theme == "Dark" %}
+    <link href="/static/admin/css/dark.css" type="text/css" rel="stylesheet">
+  {% elif request.user.apparence_set.first.color_theme == "System Color" %}
+    <link href="/static/admin/css/dark.css" type="text/css" media="(prefers-color-scheme:dark)" rel="stylesheet">
+  {% endif %}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <link href="/static/admin/css/vendor/select2/select2.css" type="text/css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+  <script src="/static/admin/js/vendor/select2/select2.full.js"></script>
+  <script src="https://cdn.tiny.cloud/1/zsutbdqe0l03pa71voln7037dy7qcwakv2uwu9xqr51sy1vv/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="/static/app/assets/js/custom.js"></script>
+  <link rel="stylesheet" href="https://cdn.tiny.cloud/1/ox8s3wr1pyh0vxvbfqikol02ode8o6gdpbh6epsq9t3m9x72/tinymce/5/skins/ui/oxide/skin.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+  .select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 39px !important;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 7px !important;
+    right: 1px;
+    width: 20px;
+}
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  
+ 
+{% endblock %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+
+{% block branding %}
+  {{ block.super }}
+{% endblock %}
+
+{% block usertools %}
+  {% if has_permission %}
+    <div class="main_dashboard_button">
+      <a href="/admin/" class="button" style="margin-left: 20px;">Dashboard</a>
+    </div>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+
+{% include "admin/color_theme_toggle.html" %}
+
+
+{% block userlinks %}
+{{ block.super }}
+
+<span> : Theme ({{request.user.apparence_set.first.color_theme}})</span>
+
+<script>
+  setTimeout(function () {
+    $('form select:not(#changelist-form select, #user_form select, .field-file_status select, .inline-related select)').select2({
+        width: '100%',
+        placeholder: 'Select an option',
+        allowClear: true
+    });
+  }, 500);
+  document.addEventListener('DOMContentLoaded', function () {
+    const path = window.location.pathname;
+
+    // Match any of the 3: digitizingorder, vectororder, patchesorder
+    const regex = /^\/admin\/app\/(digitizingorder|vectororder|patchesorder)\/\d+\/change\/$/;
+
+    if (regex.test(path)) {
+      const submitBtn = document.querySelector('.submit-row input[type="submit"]');
+      if (submitBtn) {
+        submitBtn.value = 'Submit';
+      }
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    const path = window.location.pathname;
+
+    // Match add URLs for the 3 models
+    const addUrlRegex = /^\/admin\/app\/(vectororder|digitizingorder|patchesorder)\/add\/$/;
+
+    if (addUrlRegex.test(path)) {
+      // Loop through all `.module.aligned` sections
+      document.querySelectorAll('.module.aligned').forEach(section => {
+        const instructionField = section.querySelector('#id_instructions_for_user');
+
+        if (instructionField) {
+          // Hide this specific section
+          section.style.display = 'none';
+          document.getElementById("files-group").style.display = 'none'
+        }
+      });
+    }
+  });
+</script>
+
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .container {
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Hello {{ user.first_name|default:user.first_name }},</h2>
+    <p>Your {{order_type}} order <strong>{{ design_name }}</strong> has been updated.</p>
+
+    <p><strong>Amount:</strong> ${{ amount }}</p>
+    {% if instructions %}
+    <p><strong>Instructions:</strong><br>{{ instructions }}</p>
+    {% endif %}
+
+    {% comment %} <a href="{{ order_link }}" class="btn">View Order</a> {% endcomment %}
+
+    <p style="margin-top: 30px;">Thanks,<br>New Digitizing Team</p>
+  </div>
+</body>
+</html>

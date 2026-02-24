@@ -1,0 +1,18 @@
+======= DATABASE ======
+name : pakistangarments_high_five_database
+username : highfive_database_user
+password : {ohhrnsM%@Z{q9Wm!#
+
+
+==== ADMIN ACCESS =====
+username : digitize.pakgs@gmail.com
+password : dC3jQ6mPzGffkpV
+
+===== EMAIL ======
+email : info@highfivedigitizing.com
+password : f}jMSytbNM]87tI2
+
+======= SERVER ACCESS =====
+link : https://pakistangarmentsource.com:2083/
+username : pakistangarments
+password : ekRt@p^lIMy&

@@ -1,0 +1,766 @@
+{% extends "admin/base_site.html" %}
+
+{% block content_title %}
+
+
+
+{% comment %} <div class="row">
+
+    <div class="titel_row">
+        <h1> Welcome To SFA Dashboard </h1>
+        <div class="filter_form">
+            <form>
+
+                <div class="flex_form">
+                    <div class="date_inp_box">
+                        <input type="date" value="{{date_from}}" name="From_date" id="From_date">
+                    </div>
+                    <div class="date_inp_box">
+                        <input type="date" value="{{date_to}}" name="To_date" id="To_date">
+                    </div>
+                    <div class="date_submit_btn">
+                        <button type="submit"><i class="fas fa-filter"></i> Filter</button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div> {% endcomment %}
+
+{% endblock %}
+
+{% block content %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --card-hover-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+        }
+
+        .premium-dashboard-wrapper {
+            /* padding: 2rem 0; */
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .elegant-welcome-section {
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .elegant-welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .elegant-welcome-section .welcome-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .elegant-welcome-section .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .premium-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(211px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .luxury-stat-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .luxury-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        .luxury-stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+
+        .luxury-stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .luxury-stat-card:hover::after {
+            opacity: 1;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .luxury-stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .luxury-stat-card .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            display: flex
+        ;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: #667eea;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 3;
+        }
+
+        .luxury-stat-card:hover .stat-icon {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .luxury-stat-card .stat-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 3;
+            transition: color 0.3s ease;
+        }
+
+        .luxury-stat-card:hover .stat-title {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .luxury-stat-card .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0;
+            position: relative;
+            z-index: 3;
+            transition: color 0.3s ease;
+        }
+
+        .luxury-stat-card:hover .stat-number {
+            color: white;
+        }
+
+        .luxury-stat-card .stat-trend {
+            font-size: 0.8rem;
+            color: #28a745;
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 3;
+            transition: color 0.3s ease;
+        }
+
+        .luxury-stat-card:hover .stat-trend {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .elegant-table-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .elegant-table-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .elegant-table-header .table-title {
+            margin: 0;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .elegant-table {
+            margin: 0;
+        }
+
+        .elegant-table .table-head {
+            background: #f8f9fa;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .elegant-table .table-cell {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+
+        .elegant-table .table-row {
+            transition: all 0.2s ease;
+        }
+
+        .elegant-table .table-row:hover {
+            background: rgba(102, 126, 234, 0.05);
+            transform: scale(1.01);
+        }
+
+        .elegant-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .elegant-badge.success {
+            background: var(--success-gradient);
+            color: white;
+        }
+
+        .elegant-badge.info {
+            background: var(--info-gradient);
+            color: white;
+        }
+
+        .elegant-badge.warning {
+            background: var(--warning-gradient);
+            color: white;
+        }
+
+        .elegant-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .elegant-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .premium-dashboard-wrapper {
+                padding: 1rem;
+            }
+            
+            .elegant-welcome-section {
+                padding: 1.5rem;
+            }
+            
+            .elegant-welcome-section .dashboard-title {
+                font-size: 2rem;
+            }
+            
+            .premium-stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            
+            .luxury-stat-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Icon variations for different card types */
+        .luxury-stat-card.digitizing .stat-icon {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            color: #667eea;
+        }
+
+        .luxury-stat-card.vector .stat-icon {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            color: #11998e;
+        }
+
+        .luxury-stat-card.patch .stat-icon {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            color: #f093fb;
+        }
+
+        .luxury-stat-card.quote .stat-icon {
+            background: linear-gradient(135deg, rgba(250, 112, 154, 0.1) 0%, rgba(254, 225, 64, 0.1) 100%);
+            color: #fa709a;
+        }
+    </style>
+
+    <div class="premium-dashboard-wrapper">
+        <!-- Enhanced Welcome Section -->
+        <div class="elegant-welcome-section animate-on-scroll">
+            <h1 class="welcome-title">Welcome back, admin!</h1>
+            <h2 class="dashboard-title">Dashboard</h2>
+        </div>
+
+        <!-- Enhanced Stats Grid with Dynamic Data -->
+        <div class="premium-stats-grid animate-on-scroll">
+            <div class="luxury-stat-card digitizing">
+                <div class="stat-icon">
+                    <i class="uil uil-edit"></i>
+                </div>
+                <h6 class="stat-title">Digitizing Order</h6>
+                <h4 class="stat-number">{{digitizing_on_progress}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Progress Orders
+                </div>
+            </div>
+
+            <div class="luxury-stat-card quote">
+                <div class="stat-icon">
+                    <i class="uil uil-file-alt"></i>
+                </div>
+                <h6 class="stat-title">Digitizing Quote</h6>
+                <h4 class="stat-number">{{digitizing_on_progress_quote}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Progress Quotes
+                </div>
+            </div>
+
+            <div class="luxury-stat-card vector">
+                <div class="stat-icon">
+                    <i class="uil uil-vector-square"></i>
+                </div>
+                <h6 class="stat-title">Vector Order</h6>
+                <h4 class="stat-number">{{vector_on_progress}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Progress Orders
+                </div>
+            </div>
+
+            <div class="luxury-stat-card quote">
+                <div class="stat-icon">
+                    <i class="uil uil-clipboard-notes"></i>
+                </div>
+                <h6 class="stat-title">Vector Quote</h6>
+                <h4 class="stat-number">{{vector_on_progress_quote}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Progress Quotes
+                </div>
+            </div>
+
+            <div class="luxury-stat-card patch">
+                <div class="stat-icon">
+                    <i class="uil uil-layer-group"></i>
+                </div>
+                <h6 class="stat-title">Patch Order</h6>
+                <h4 class="stat-number">{{patch_on_progress}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Progress Orders
+                </div>
+            </div>
+
+            <div class="luxury-stat-card quote">
+                <div class="stat-icon">
+                    <i class="uil uil-document-info"></i>
+                </div>
+                <h6 class="stat-title">Patch Quote</h6>
+                <h4 class="stat-number">{{patch_on_progress_quote}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Progress Quotes
+                </div>
+            </div>
+
+
+            <div class="luxury-stat-card digitizing">
+                <div class="stat-icon">
+                    <i class="uil uil-edit"></i>
+                </div>
+                <h6 class="stat-title">Digitizing Order Edits</h6>
+                <h4 class="stat-number">{{digitizing_on_edit}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Edits Orders
+                </div>
+            </div>
+
+            <div class="luxury-stat-card quote">
+                <div class="stat-icon">
+                    <i class="uil uil-file-alt"></i>
+                </div>
+                <h6 class="stat-title">Digitizing Quote Edits</h6>
+                <h4 class="stat-number">{{digitizing_on_edit_quote}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Edits     Quotes
+                </div>
+            </div>
+
+            <div class="luxury-stat-card vector">
+                <div class="stat-icon">
+                    <i class="uil uil-vector-square"></i>
+                </div>
+                <h6 class="stat-title">Vector Order Edits</h6>
+                <h4 class="stat-number">{{vector_on_edit}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Edits Orders
+                </div>
+            </div>
+
+            <div class="luxury-stat-card quote">
+                <div class="stat-icon">
+                    <i class="uil uil-clipboard-notes"></i>
+                </div>
+                <h6 class="stat-title">Vector Quote Edits</h6>
+                <h4 class="stat-number">{{vector_on_edit_quote}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Edits Quotes
+                </div>
+            </div>
+
+            <div class="luxury-stat-card patch">
+                <div class="stat-icon">
+                    <i class="uil uil-layer-group"></i>
+                </div>
+                <h6 class="stat-title">Patch Order Edits</h6>
+                <h4 class="stat-number">{{patch_on_edit}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Edits Orders
+                </div>
+            </div>
+
+            <div class="luxury-stat-card quote">
+                <div class="stat-icon">
+                    <i class="uil uil-document-info"></i>
+                </div>
+                <h6 class="stat-title">Patch Quote Edits</h6>
+                <h4 class="stat-number">{{patch_on_edit_quote}}</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> On Edits Quotes
+                </div>
+            </div>
+
+            <!-- <div class="luxury-stat-card digitizing">
+                <div class="stat-icon">
+                    <i class="uil uil-process"></i>
+                </div>
+                <h6 class="stat-title">Digitizing OnProgress</h6>
+                <h4 class="stat-number">13</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> In Progress
+                </div>
+            </div>
+
+            <div class="luxury-stat-card digitizing">
+                <div class="stat-icon">
+                    <i class="uil uil-check-circle"></i>
+                </div>
+                <h6 class="stat-title">Digitizing Complete</h6>
+                <h4 class="stat-number">1</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-check-circle"></i> Completed
+                </div>
+            </div>
+
+            <div class="luxury-stat-card vector">
+                <div class="stat-icon">
+                    <i class="uil uil-process"></i>
+                </div>
+                <h6 class="stat-title">Vector OnProgress</h6>
+                <h4 class="stat-number">5</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> In Progress
+                </div>
+            </div>
+
+            <div class="luxury-stat-card vector">
+                <div class="stat-icon">
+                    <i class="uil uil-check-circle"></i>
+                </div>
+                <h6 class="stat-title">Vector Complete</h6>
+                <h4 class="stat-number">2</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-check-circle"></i> Completed
+                </div>
+            </div>
+
+            <div class="luxury-stat-card patch">
+                <div class="stat-icon">
+                    <i class="uil uil-process"></i>
+                </div>
+                <h6 class="stat-title">Patch OnProgress</h6>
+                <h4 class="stat-number">5</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-clock"></i> In Progress
+                </div>
+            </div>
+
+            <div class="luxury-stat-card patch">
+                <div class="stat-icon">
+                    <i class="uil uil-check-circle"></i>
+                </div>
+                <h6 class="stat-title">Patch Complete</h6>
+                <h4 class="stat-number">5</h4>
+                <div class="stat-trend">
+                    <i class="bi bi-check-circle"></i> Completed
+                </div>
+            </div> -->
+        </div>
+
+        <!-- Enhanced Tables with Dynamic Data -->
+        <!-- Enhanced Tables with Dynamic Data -->
+<div class="row g-4">
+    <!-- Recent Orders -->
+    <div class="col-lg-6 mb-4">
+        <div class="elegant-table-container animate-on-scroll">
+            <div class="elegant-table-header">
+                <h5 class="table-title">Recent Orders</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="elegant-table table">
+                    <thead>
+                        <tr>
+                            <th class="table-head">Job ID</th>
+                            <th class="table-head">Date</th>
+                            <th class="table-head">Customer</th>
+                            <th class="table-head">Status</th>
+                            <th class="table-head">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in orders %}
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <a class="elegant-link" href="{% if i.type == 'Digitizing' %}/admin/app/digitizingorder/{{i.id}}/change/ {% elif i.type == 'Vector' %}/admin/app/vectororder/{{i.id}}/change/ {% elif i.type == 'Patches' %}/admin/app/patchesorder/{{i.id}}/change/ {% endif %}">{{i.order_id}}</a>
+                            </td>
+                            <td class="table-cell">{{i.created_at}}</td>
+                            <td class="table-cell">{{i.user}}</td>
+                            <td class="table-cell">
+                                <span class="elegant-badge {% if i.order_status == 'On Progress' or i.order_status == 'on Progress' %}info{% else %}success{% endif %}">{{i.order_status}}</span>
+                            </td>
+                            <td class="table-cell">${{i.amount}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Estimates -->
+    <div class="col-lg-6 mb-4">
+        <div class="elegant-table-container animate-on-scroll">
+            <div class="elegant-table-header">
+                <h5 class="table-title">Recent Quotes</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="elegant-table table">
+                    <thead>
+                        <tr>
+                            <th class="table-head">Job ID</th>
+                            <th class="table-head">Date</th>
+                            <th class="table-head">Customer</th>
+                            <th class="table-head">Status</th>
+                            <th class="table-head">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in estimates %}
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <a class="elegant-link" href="{% if i.type == 'Digitizing' %}/admin/app/digitizingestimate/{{i.id}}/change/ {% elif i.type == 'Vector' %}/admin/app/vectorestimate/{{i.id}}/change/ {% elif i.type == 'Patches' %}/admin/app/patchesestimates/{{i.id}}/change/ {% endif %}">{{i.estimate_id}}</a>
+                            </td>
+                            <td class="table-cell">{{i.created_at}}</td>
+                            <td class="table-cell">{{i.user}}</td>
+                            <td class="table-cell">
+                                <span class="elegant-badge {% if i.order_status == 'In Process' %}info{% else %}success{% endif %}">{{i.order_status}}</span>
+                            </td>
+                            <td class="table-cell">${{i.amount}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Edits -->
+    <div class="col-lg-6 mb-4 d-none">
+        <div class="elegant-table-container animate-on-scroll">
+            <div class="elegant-table-header">
+                <h5 class="table-title">Recent Edits</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="elegant-table table">
+                    <thead>
+                        <tr>
+                            <th class="table-head">User</th>
+                            <th class="table-head">Date</th>
+                            <th class="table-head">Edit Instructions</th>
+                            <th class="table-head">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in all_edits %}
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <a class="elegant-link" href="/admin/app/edits/{{i.id}}/change/">{{i.user}}</a>
+                            </td>
+                            <td class="table-cell">{{i.created_at}}</td>
+                            <td class="table-cell">{{i.edit_instructions|truncatechars:"20"}}...</td>
+                            <td class="table-cell">
+                                <span class="elegant-badge {% if i.order_status == 'In Process' %}info{% else %}success{% endif %}">{{i.order_status}}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Support Tickets -->
+    <div class="col-lg-6 mb-4 d-none">
+        <div class="elegant-table-container animate-on-scroll">
+            <div class="elegant-table-header">
+                <h5 class="table-title">Recent Support Tickets</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="elegant-table table">
+                    <thead>
+                        <tr>
+                            <th class="table-head">Subject</th>
+                            <th class="table-head">Ticket ID</th>
+                            <th class="table-head">Date</th>
+                            <th class="table-head">Customer</th>
+                            <th class="table-head">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in all_tickets %}
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <a class="elegant-link" href="/admin/app/openticket/{{i.id}}/change/">{{i.subject}}</a>
+                            </td>
+                            <td class="table-cell">{{i.id}}</td>
+                            <td class="table-cell">{{i.created_at}}</td>
+                            <td class="table-cell">{{i.user}}</td>
+                            <td class="table-cell">
+                                <span class="elegant-badge {% if i.ticket_status == 'Pending' %}info{% elif i.ticket_status == 'Answered' %}success{% elif i.ticket_status == 'Closed' %}warning{% endif %}">{{i.ticket_status}}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Scroll animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            handleScrollAnimations();
+        });
+
+        // Add enhanced hover effects to stat cards
+        document.querySelectorAll('.luxury-stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+{% endblock %}

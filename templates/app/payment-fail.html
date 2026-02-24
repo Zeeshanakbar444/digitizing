@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Failed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ff4d4d, #590000);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background-color: #1c1c1c;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: fadeIn 0.7s ease;
+        }
+
+        .card h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ff4d4d;
+        }
+
+        .card p {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .card .icon {
+            font-size: 50px;
+            color: #ff4d4d;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #e63946;
+        }
+
+        @keyframes fadeIn {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card h1 {
+                font-size: 1.5rem;
+            }
+            .card p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">❌</div>
+        <h1>Payment Failed</h1>
+        <p>Unfortunately, your payment could not be processed at this time. Please try again or contact support if the issue persists.</p>
+        <a href="/" class="btn">Return to Homepage</a>
+    </div>
+</body>
+</html>

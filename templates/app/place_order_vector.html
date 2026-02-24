@@ -1,0 +1,308 @@
+{% extends "app/base.html" %}
+
+
+{% block body %}
+
+<!-- Top Header -->
+
+<div class="container-fluid">
+    <div class="layout-specing">
+
+
+        <div class="row">
+            <!-- <div class="col-md-5 col-lg-4 order-md-last mt-4">
+                                <div class="card rounded shadow p-4 border-0">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="h5 mb-0">Your cart</span>
+                                        <span class="badge bg-primary rounded-pill">3</span>
+                                    </div>
+                                    <ul class="list-group mb-3 border">
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Product name</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$12</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Second product</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$8</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                                            <div>
+                                                <h6 class="my-0">Third item</h6>
+                                                <small class="text-muted">Brief description</small>
+                                            </div>
+                                            <span class="text-muted">$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between bg-light p-3 border-bottom">
+                                            <div class="text-success">
+                                                <h6 class="my-0">Promo code</h6>
+                                                <small>EXAMPLECODE</small>
+                                            </div>
+                                            <span class="text-success">−$5</span>
+                                        </li>
+                                        <li class="d-flex justify-content-between p-3">
+                                            <span>Total (USD)</span>
+                                            <strong>$20</strong>
+                                        </li>
+                                    </ul>
+                            
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Promo code">
+                                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> -->
+            <!--end col-->
+
+            <div class="col-md-9 col-lg-9 mt-4 m-auto">
+                <div class="d-md-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Place Vector Order</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                            <li class="breadcrumb-item text-capitalize">Place Order</li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">New Vector Order</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="card rounded shadow p-4 border-0">
+                    {% comment %} <h4 class="mb-3">Billing address</h4> {% endcomment %}
+                    <form class="needs-validation" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% comment %} <div class="col-sm-12">
+                                <label for="firstName" class="form-label">Order Type</label>
+                                <!-- <input type="text" class="form-control" id="firstName" placeholder="First Name" value=""
+                                                    required> -->
+                                    <select class="form-select form-control" id="order_type" name="order_type" required onchange="window.location.href=this.value">
+                                        <!-- <option value="">Choose...</option> -->
+                                        <option value="/place_order/">Digitizing</option>
+                                        <option value="/place_order_vector/">Vector Conversion</option>
+                                        <option value="/place_order_embroidery/">Embroidery Patches</option>
+                                    </select>
+                                <div class="invalid-feedback">
+                                    Valid Order Type is required.
+                                </div>
+                            </div> {% endcomment %}
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">Design name</label>
+                                <input type="text" class="form-control" id="design_name" name="design_name"
+                                    placeholder="Design Name" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid Design name is required.
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="username" class="form-label">Po No</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="po_no" name="po_no"
+                                        placeholder="Po No">
+                                    {% comment %} <div class="invalid-feedback"> Po No is required. </div> {% endcomment %}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">Required Format </label>
+                                <select class="form-select form-control" id="design_format" name="design_format"
+                                    required onchange="handleOtherSelect(this)" data-toggle-target="other_format">
+                                        <option value="" selected="">~ Select</option>
+                                        <option value="pdf">pdf</option>
+                                        <option value="emf">emf</option>
+                                        <option value="png">png</option>
+                                        <option value="cdr">cdr</option>
+                                        <option value="ai">ai</option>
+                                        <option value="eps">eps</option>
+                                        <option value="psd">psd</option>
+                                        <option value="svg">svg</option>
+                                        <option value="Other" id="other_format_option">Other</option>
+    
+                                    
+                                    
+                                </select>
+                                <input type="text" name="other_format" id="other_format" class="form-control" style="display: none;" placeholder="Other...">
+                            </div>
+                            <div class="col-sm-6" style="display: none; ">
+                                <div id="other_formatWrapper" >
+                                    <label for="address" class="form-label">Please Specify Other Format </label>
+                                    <input type="text" name="other_format" id="other_format" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="username" class="form-label">Number Of Colors</label>
+                                <div class="input-group has-validation">
+                                    <!-- <span class="input-group-text bg-light text-muted border">@</span> -->
+                                    <input type="text" class="form-control" id="no_of_colors" name="no_of_colors"
+                                        placeholder="Number Of Colors">
+                                    <div class="invalid-feedback"> No Of Colors is required. </div>
+                                </div>
+                            </div>
+                           
+
+                          
+                           
+
+                            <div class="col-sm-12">
+                                <label for="address" class="form-label">Do You Required Color Separation </label>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="color_separation"
+                                             value="No" checked>
+                                        <label class="form-check-label" for="noOption">No</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="color_separation"
+                                             value="Yes">
+                                        <label class="form-check-label" for="yesOption">Yes</label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="main_unit row">
+
+                                <div class="col-sm-4">
+                                    <label for="Width" class="form-label">Unit</label>
+                                    <!-- <input type="text" class="form-control" id="Width" name="Width" placeholder="Width"> -->
+                                    <select class="form-select form-control" id="unit" name="unit">
+                                        <option value="">Choose...</option>
+                                        <option value="inches">Inches</option>
+                                        <option value="mm">mm</option>
+                                        <option value="cm">cm</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please choose a valid Unit
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="Height" class="form-label">Height</label>
+                                    <input type="text" class="form-control" id="Height" name="Height" placeholder="Height">
+                                    <div class="invalid-feedback">
+                                                        Please enter a valid Height
+                                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="Width" class="form-label">Width</label>
+                                    <input type="text" class="form-control" id="Width" name="Width" placeholder="Width">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid Width
+                                    </div>
+                                </div>
+
+                            </div>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        $('.main_unit').hide(); // Hide by default
+
+                                        $('input[name="color_separation"]').change(function() {
+                                            if ($(this).val() === 'Yes') {
+                                                $('.main_unit').show();
+                                            } else {
+                                                $('.main_unit').hide();
+                                            }
+                                        });
+                                    });
+                                </script>
+
+                            
+
+                            <div class="col-12">
+                                <label for="address2" class="form-label">Additional Instructions</label>
+
+                                <textarea name="add_inst" id="" class="form-control"></textarea>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Attach Your Artwork</label>
+                                <div id="artwork-wrapper">
+                                    <input type="file" class="form-control mb-2" name="artwork[]" required>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1" onclick="addArtwork()" style="margin-top: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1a6 6 0 1 0 0 12A6 6 0 0 0 8 2z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v2.5H11a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V8.5H5a.5.5 0 0 1 0-1h2.5V4.5A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                    Add More Artworks
+                                </button>
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- <div class="form-check mt-4 pt-4 border-top">
+                                            <input type="checkbox" class="form-check-input" id="same-address">
+                                            <label class="form-check-label" for="same-address">Shipping address is the same as my
+                                                billing address</label>
+                                        </div>
+        
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="save-info">
+                                            <label class="form-check-label" for="save-info">Save this information for next
+                                                time</label>
+                                        </div> -->
+
+
+                        
+
+                        {% comment %} <div class="row gy-3">
+                            <div class="col-md-6">
+                                <label for="cc-name" class="form-label">Name on card</label>
+                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                <small class="text-muted">Full name as displayed on card</small>
+                                <div class="invalid-feedback">
+                                    Name on card is required
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="cc-number" class="form-label">Credit card number</label>
+                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Credit card number is required
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="cc-expiration" class="form-label">Expiration</label>
+                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Expiration date required
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="cc-cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Security code required
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <button class="w-100 btn btn-primary place-order-btn" type="submit">Place Order</button>
+                    </form>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+
+
+
+</div><!--end container-->
+
+
+
+{% endblock body %}

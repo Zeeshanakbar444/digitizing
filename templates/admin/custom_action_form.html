@@ -1,0 +1,224 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+
+    <h2>Apply Bulk Changes</h2>
+    <div class="bulk_action_form_container">
+
+    <form method="post">
+
+        <input type="hidden" name="post" value="True">
+
+        {% csrf_token %}
+        <div class="inpt_box">
+        <label for="">Select 3PL</label>
+        <select name="selected_courier" id="">
+            <option value="" selected >------------</option>
+            {% for i in all_courier_tpl %}
+            <option value="{{i.id}}">{{i.Company_Name}}</option>
+            {% endfor %}
+        </select>
+         </div>
+
+        <div class="inpt_box">
+        <label for="">3PL Payment Status</label>
+        <select name="selected_3pl_pay_status" id="">
+            <option value="" selected >------------</option>
+            {% for i in tpl_pay_status %}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="inpt_box">
+        <label for="">Select Destination</label>
+        <select name="selected_destination" id="">
+            <option value="" selected >------------</option>
+            {% for i in all_destination %}
+            <option value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+        </select>   
+    </div>
+
+    <div class="inpt_box">
+        <label for="">Api Shipment Type</label>
+        <select name="selected_api_sp_type" id="">
+            <option value="" selected >------------</option>
+            {% for i in api_shipment_type %}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="inpt_box">
+        <label for="">{{name}} Payment Status</label>
+        <select name="selected_com_pay_status" id="">
+            <option value="" selected >------------</option>
+            {% for i in tpl_pay_status %}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="inpt_box">
+        <label for="">Parcel Status</label>
+        <select name="selected_parcel_status" id="">
+            <option value="" selected >------------</option>
+            {% for i in parcel_status %}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="inpt_box">
+        <label for="">Active Status</label>
+        <select name="selected_parcel_active" id="">
+            <option value="" selected >------------</option>
+            {% for i in active %}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="inpt_box">
+        <label for="">Pickup Rider</label>
+        <select name="selected_rider" id="">
+            <option value="" selected >------------</option>
+            {% for i in rider %}
+            <option value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+        <button type="submit" name="apply" class="button" id="bulk_submit_change_btn">Apply Changes</button>
+    </form>
+
+            
+</div>
+
+<div class="show_seletec_parcel">
+
+    <div class="table_title">
+        Selected Parcel: Total Item {{queryset.count}}
+    </div>
+    <table style="width: 100%;" class="table table-hover mb-0">
+        <thead>
+          <tr>
+              
+              <th scope="col">#CN</th>
+              <th scope="col">Shipment Date</th>
+              <th scope="col">3PL Rider</th>
+              <th scope="col">3PL Shipment Type</th>
+              <th scope="col">3PL Payment Status</th>
+              <th scope="col">Status</th>
+              <th scope="col">Active</th>
+              <th scope="col">Payment Status</th>
+              <th scope="col">Destination</th>
+              
+              <th scope="col">COD</th>
+              <th scope="col">Total Weight</th>
+              <th scope="col">Delivery charges</th>
+              <th scope="col">Net Total charges</th>
+              <!-- <th scope="col">More</th> -->
+
+          </tr>
+      </thead>
+      <tbody>
+
+        {% if queryset %}
+        {% for i in  queryset  %}
+          <tr>
+          
+            <td> <a href="/my_parcel_view/{{i.id}}/{{i.customer_parcel_CN_NUMBER}}/"> <i class="fa fa-map-marker" aria-hidden="true"></i> {{i.customer_parcel_CN_NUMBER}}</a> </td>
+            <td>{{i.Shipment_Date.date}}</td>
+            <td>{{i.DELIVERY_RIDER.Company_Name}}</td>
+            <td>{{i.Api_Sp_Type}}</td>
+
+            {% if i.TPL_Payment_status == "Paid" %}
+            
+            <td >
+              <p style="background:#2cdd0036;padding: 4px 0px ; border-radius:12px;color:#26b602 ;text-align: center;">
+                {{i.TPL_Payment_status}}
+              </p>
+            </td>
+            {% else %}
+            <td >
+              <p style="background:#dd000036;padding: 4px 0px ; border-radius:12px; color:#dd0000f0 ;text-align: center;">
+                {{i.TPL_Payment_status}}
+              </p>
+            </td>
+            {% endif %}
+            
+            {% if i.DELIVERY_RIDER and i.Api_Tracking_No %}
+              {% if i.Status != "Delivered" or i.Status != "RTS Parcel" %}
+                <td><div style="    text-align: center;">{{i.Parcel_Status}}</div></td>
+              {% else %}
+              <td>{{i.Parcel_Status}}<td>
+              {% endif %}
+            {% else %}
+            <td> {{i.Parcel_Status}}</td>
+            {% endif %}
+
+
+            {% if i.Active == "Yes" %}
+            <td><p title="{{i.Active}}" style="color: #1b8900;white-space: nowrap; background: #2cdd0036;padding: 4px 7px;border-radius: 10px;margin: 0px 0px;text-align: center;">{{i.Active}}</p></td>
+
+            {% else %}
+
+            <td><p title="{{i.Active}}" style="color: #890000;white-space: nowrap; background: #dd000036;padding: 4px 7px;border-radius: 10px;margin: 0px 0px;text-align: center;">{{i.Active}}</p></td>
+
+            {% endif %}
+            {% if i.payment_status == "Paid" %}
+            
+            <td >
+              <p style="background:#2cdd0036;padding: 4px 0px ; border-radius:12px;color:#26b602 ;text-align: center;">
+                {{i.payment_status}}
+              </p>
+            </td>
+            {% else %}
+            <td >
+              <p style="background:#dd000036;padding: 4px 0px ; border-radius:12px; color:#dd0000f0 ;text-align: center;">
+                {{i.payment_status}}
+              </p>
+            </td>
+            {% endif %}
+
+            <td>{{i.destination.name}}</td>
+
+
+            
+            <td>{{i.receive_cash}}</td>
+            <td>{{i.Total_Weight}}</td>
+            <td>{{i.Total_Delivery_charges}}</td>
+
+            <td>
+
+
+              {% if i.Net_Total > 0 %}
+              <p style="color: #f30c0c; white-space: nowrap;padding: 4px 7px;border-radius: 10px;margin: 0px 0px; text-align: center; ">Rs.{{i.Net_Total}} <img class="arrow_cridit_debit_img" src="/static/app/images/down-arrow-red.svg"></p>
+              {% else %}
+              <p style="color: #1b8900;white-space: nowrap ;padding: 4px 7px;border-radius: 10px;margin: 0px 0px;text-align: center;">Rs.{{i.Net_Total}} <img class="arrow_cridit_debit_img" src="/static/app/images/up-arrow-green.svg"> </p>
+              {% endif %}
+
+
+            </td>
+
+           
+
+            {% comment %} {% if i.Delivery_Date %}
+            <td> {{i.Delivery_Date}} </td>
+            {% else %}
+            <td>--dd--mm--yy--</td>
+            {% endif %}
+
+            <td> {{i.Last_Update}} </td> {% endcomment %}
+
+          </tr>
+        {% endfor %}
+        {% endif %}
+       
+      </tbody>
+    </table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+</head>
+<body>
+
+    <h4 style="text-align: center; margin: 20px 0px;">Loading ...</h4>
+    <form name="PrePage" id="authorize_payment_form" method="post" action="https://Simplecheckout.authorize.net/payment/CatalogPayment.aspx"> 
+        
+        <input type="hidden" name="LinkId" value="2cee3322-c070-45a7-b2f4-6b75779e57f9"> 
+        
+        <!-- <input type="submit" value="PAY NOW">  -->
+    
+    </form>
+    
+</body>
+
+
+<script>
+
+var form_target = document.getElementById('authorize_payment_form').submit();
+
+</script>
+
+
+</html>

@@ -1,0 +1,224 @@
+{% extends "app/base.html" %}
+
+
+    <div class="page-wrapper toggled">
+        <!-- sidebar-wrapper -->
+       
+        <!-- sidebar-wrapper  -->
+
+        <!-- Start Page Content -->
+       
+            <!-- Top Header -->
+            {% block body %}
+
+                <div class="container-fluid">
+                    <div class="layout-specing">
+                        
+                       
+                        <div class="d-md-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Edits</h5>
+
+                            <nav aria-label="breadcrumb" class="d-inline-block">
+                                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                                    <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                                    <li class="breadcrumb-item text-capitalize"><a href="/edits/">Edits</a></li>
+                                    {% comment %} <li class="breadcrumb-item text-capitalize active" aria-current="page">List</li> {% endcomment %}
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <div class="table-responsive shadow rounded-bottom" data-simplebar>
+                            {% if all_edits %}
+                            <table class="table table-center bg-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <!-- <th class="border-bottom p-3">Job ID.</th> -->
+                                        <th class="border-bottom p-3 text-center" >Date</th>
+                                        <th class="text-center border-bottom p-3" style="min-width: 220px;">Design Name</th>
+                                        {% comment %} <th class="text-center border-bottom p-3" style="min-width: 150px;">Stitches</th> {% endcomment %}
+                                        <th class="text-center border-bottom p-3">Edit Instructions</th>
+                                        <th class="text-center border-bottom p-3">Status</th>
+                                        <!-- <th class="text-center border-bottom p-3" style="min-width: 220px;">Type</th> -->
+                                        <!-- <th class="text-center border-bottom p-3">Convert</th> -->
+                                        <!-- <th class="text-center border-bottom p-3">Download</th> -->
+                                        <th class="text-end border-bottom p-3" style="min-width: 100px;">Preview</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Start -->
+                                     {% for i in all_edits %}
+                                    <tr  class="text-center">
+                                        <!-- <th class="p-3">185487</th> -->
+                                        <td class="p-3">
+                                            {{i.created_at|date:"d/m/y"}}
+                                            <!-- <a href="index-dark.html#" class="text-primary">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                    <span class="ms-2">Howard Tanner</span>
+                                                </div>
+                                            </a> -->
+                                        </td>
+                                        <td class="text-center p-3">
+                                            {% if i.design_digitizing %}
+                                            {{i.design_digitizing.design_name}}
+                                            {% elif i.design_vector %}
+                                            {{i.design_vector.design_name}}
+                                            {% elif i.design_patches %}
+                                            {{i.design_patches.design_name}}
+                                            {% endif %}
+
+                                        </td>
+                                        
+                                        <td class="text-center p-3">{{i.edit_instructions|truncatechars:"100"}}..</td>
+                                        <td class="text-center p-3">
+                                            {% if i.order_status == "In Process" %}
+                                            <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                {{i.get_order_status_display}}
+                                            </div>
+                                            {% elif i.order_status == "Completed" %}
+                                            <div class="badge bg-soft-success rounded px-3 py-1">
+                                                {{i.get_order_status_display}}
+                                            </div>
+                                            {% endif %}
+                                        </td>
+                                        <!-- <td>Vector Conversion	</td> -->
+                                        {% comment %} <td>$45	</td> {% endcomment %}
+                                        <!-- <td>
+                                            <div class="badge bg-soft-danger rounded px-3 py-1">
+                                                Pay and Download
+                                            </div>
+                                        </td> -->
+                                        <td class="text-end p-3">
+                                            <a href="/edit_preview/{{i.id}}" class="btn btn-sm btn-primary">Preview</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                            {% else %}
+                        <!-- <div class="badge badge-outline-success">
+                            You have not Placed any order
+                        </div> -->
+                        <div class="alert bg-soft-info fw-medium mx-3 my-3" role="alert">You have not made any Edits yet <a href="/place_edit/" class="text-warning text-decoration-underline">Place Edit</a></div>
+                        {% endif %}
+                        </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+
+                        <div class="row text-center">
+                            <!-- PAGINATION START -->
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">
+                                        Showing {{ all_edits.start_index }} - {{ all_edits.end_index }} out of {{ all_edits.paginator.count }}
+                                    </span>
+                                    <ul class="pagination mb-0 justify-content-center mt-4 mt-sm-0">
+                                        {% if all_edits.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ all_edits.previous_page_number }}" aria-label="Previous">Prev</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Prev</span>
+                                            </li>
+                                        {% endif %}
+                            
+                                        {% for num in all_edits.paginator.page_range %}
+                                            {% if all_edits.number == num %}
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">{{ num }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        {% if all_edits.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ all_edits.next_page_number }}" aria-label="Next">Next</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
+                    </div>
+                </div>
+
+                
+                {% endblock body %}<!--end container-->
+
+               
+            <!--End page-content" -->
+        </div>
+
+`
+        <!-- page-wrapper -->
+
+        <!-- Offcanvas Start -->
+        <div class="offcanvas offcanvas-end shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header p-4 border-bottom">
+                <h5 id="offcanvasLeftLabel" class="mb-0">
+                    <img src="/static/app/assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                    <img src="/static/app/assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                </h5>
+                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+            </div>
+            <div class="offcanvas-body p-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center">
+                            <h6 class="fw-bold">Theme Options</h6>
+
+                            <ul class="text-center style-switcher list-unstyled mt-4">
+                                <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light" onclick="setTheme('style-rtl')"><img src="/static/app/assets/images/demos/rtl.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">RTL Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light" onclick="setTheme('style')"><img src="/static/app/assets/images/demos/ltr.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">LTR Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark" onclick="setTheme('style-dark-rtl')"><img src="/static/app/assets/images/demos/dark-rtl.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">RTL Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark" onclick="setTheme('style-dark')"><img src="/static/app/assets/images/demos/dark.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">LTR Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4" onclick="setTheme('style-dark')"><img src="/static/app/assets/images/demos/dark.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">Dark Version</span></a></li>
+                                <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4" onclick="setTheme('style')"><img src="/static/app/assets/images/demos/ltr.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">Light Version</span></a></li>
+                                <li class="d-grid"><a href="https://shreethemes.in/landrick/landing/index.html" target="_blank" class="mt-4"><img src="/static/app/assets/images/demos/landing.png" class="img-fluid rounded-md shadow-md d-block mx-auto" style="width: 230px;" alt=""><span class="text-dark fw-medium mt-3 d-block">Landing</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offcanvas-footer p-4 border-top text-center">
+                <ul class="list-unstyled social-icon social mb-0">
+                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/landrick" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.behance.net/shreethemes" target="_blank" class="rounded"><i class="uil uil-behance align-middle" title="behance"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                    <li class="list-inline-item mb-0"><a href="https://shreethemes.in" target="_blank" class="rounded"><i class="uil uil-globe align-middle" title="website"></i></a></li>
+                </ul><!--end icon-->
+            </div>
+        </div>
+        <!-- Offcanvas End -->
+        
+        <!-- javascript -->
+        <!-- JAVASCRIPT -->
+        <script src="/static/app/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/app/assets/libs/feather-icons/feather.min.js"></script>
+        <script src="/static/app/assets/libs/simplebar/simplebar.min.js"></script>
+        <!-- Main Js -->
+        <script src="/static/app/assets/js/plugins.init.js"></script>
+        <script src="/static/app/assets/js/app.js"></script>
+        
+    </body>
+
+</html>

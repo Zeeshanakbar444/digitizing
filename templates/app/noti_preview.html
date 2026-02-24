@@ -1,0 +1,48 @@
+{% extends "app/base.html" %}
+{% block body %}
+
+
+
+            <div class="container-fluid">
+                <div class="layout-specing">
+                    
+                   
+                    <div class="d-md-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Notifications</h5>
+
+                        <nav aria-label="breadcrumb" class="d-inline-block">
+                            <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                                <li class="breadcrumb-item text-capitalize"><a href="/notifications/">Notifications</a></li>
+                                {% comment %} <li class="breadcrumb-item text-capitalize active" aria-current="page">List</li> {% endcomment %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 card rounded p-3">
+                            <!-- <h5>Your notification</h5> -->
+                            <div>{{noti.title}}</div>
+                            {% autoescape off %}
+
+                            <div class="message_div mt-3">{{noti.message}}</div>
+
+                            {% endautoescape %}
+                            
+                          
+                              <!-- Notification 2 -->
+                              {% comment %} <div class="alert alert-info" role="alert">
+                                📦 Estimate #VEC-EST-45 has been generated and sent to your email.
+                              </div>
+                          
+                              <!-- Notification 3 -->
+                              <div class="alert alert-warning" role="alert">
+                                ⚠️ Reminder: Payment for order #VEC-122 is still pending.
+                              </div> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+
+{% endblock body %}

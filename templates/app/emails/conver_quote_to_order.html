@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Converted to Order - High Five Digitizing</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: Arial, sans-serif; color: #333;">
+    
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f5f5f5; padding: 20px;">
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; background-color: #ffffff; border: 1px solid #ddd;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #06015c0a; padding: 20px; text-align: center;">
+                            <img src="{{site_url}}/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" alt="High Five Digitizing" style="max-width: 210px; height: auto;">
+                        </td>
+                    </tr>
+                    
+                    <!-- Greeting -->
+                    <tr>
+                        <td style="padding: 20px;">
+                            <h2 style="margin: 0 0 10px 0; font-size: 18px;">Hello {{user.first_name}}!</h2>
+                            <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">Great news! Your quote has been successfully converted to an order.</p>
+                            <p style="margin: 0; font-size: 14px; color: #666;">We're now processing your {{order.order_type}} order and will get started right away.</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Order Details Table -->
+                    <tr>
+                        <td style="padding: 0 20px 20px 20px;">
+                            <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #ccc;">
+                                
+                                <!-- Order No & PO Number Row -->
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; width: 50%; border: 1px solid #ccc;">Order No</td>
+                                    {% if order.po_no %}
+                                    <td style="background-color: #e8e8e8; font-weight: bold; width: 50%; border: 1px solid #ccc;">PO Number</td>
+                                    {% else %}
+                                    <td style="background-color: #e8e8e8; font-weight: bold; width: 50%; border: 1px solid #ccc;">Order Date</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;">{{order.order_id}}</td>
+                                    {% if order.po_no %}
+                                    <td style="border: 1px solid #ccc;">{{order.po_no}}</td>
+                                    {% else %}
+                                    <td style="border: 1px solid #ccc;">{{order.created_at|date:"M j, Y"}}</td>
+                                    {% endif %}
+                                </tr>
+                                
+                                <!-- Quote Reference Row -->
+                                {% if order.quote_id %}
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Original Quote Reference</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;" colspan="2">Quote #{{order.quote_id}}</td>
+                                </tr>
+                                {% endif %}
+                                
+                                <!-- Design Name Row -->
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Design Name</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;" colspan="2">{{order.design_name}}</td>
+                                </tr>
+                                
+                                <!-- Required Format, Placement, Fabric Row (for Digitizing) -->
+                                {% if order.order_type == 'Digitizing' %}
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Required Format</td>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Placement</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;">{{order.design_format}}</td>
+                                    <td style="border: 1px solid #ccc;">{{order.placement}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Fabric</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;" colspan="2">{{order.type}}</td>
+                                </tr>
+                                {% endif %}
+                                
+                                <!-- Design Format Row (for Vector) -->
+                                {% if order.order_type == 'Vector Conversion' %}
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Design Format</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;" colspan="2">{{order.design_format}}</td>
+                                </tr>
+                                {% endif %}
+                                
+                                <!-- Width & Height Row -->
+                                {% if order.width or order.height %}
+                                <tr>
+                                    {% if order.width %}<td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Width</td>{% endif %}
+                                    {% if order.height %}<td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Height</td>{% endif %}
+                                </tr>
+                                <tr>
+                                    {% if order.width %}<td style="border: 1px solid #ccc;">{{order.width}} {% if order.unit %}({{order.unit}}){% endif %}</td>{% endif %}
+                                    {% if order.height %}<td style="border: 1px solid #ccc;">{{order.height}} {% if order.unit %}({{order.unit}}){% endif %}</td>{% endif %}
+                                </tr>
+                                {% endif %}
+                                
+                                <!-- No Of Colors & Additional Fields Row -->
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">No Of Colors</td>
+                                    {% if order.order_type == 'Digitizing' %}
+                                        {% if order.required_blending %}
+                                        <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Blending Required</td>
+                                        {% endif %}
+                                    {% elif order.order_type == 'Vector Conversion' %}
+                                        {% if order.color_separation %}
+                                        <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Color Separation</td>
+                                        {% endif %}
+                                    {% elif order.order_type == 'Embroidery Patches' %}
+                                        {% if order.number_of_patches %}
+                                        <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">No Of Patches</td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;">{{order.number_of_colors}}</td>
+                                    {% if order.order_type == 'Digitizing' %}
+                                        {% if order.required_blending %}
+                                        <td style="border: 1px solid #ccc;">{{order.required_blending}}</td>
+                                        {% endif %}
+                                    {% elif order.order_type == 'Vector Conversion' %}
+                                        {% if order.color_separation %}
+                                        <td style="border: 1px solid #ccc;">{{order.color_separation}}</td>
+                                        {% endif %}
+                                    {% elif order.order_type == 'Embroidery Patches' %}
+                                        {% if order.number_of_patches %}
+                                        <td style="border: 1px solid #ccc;">{{order.number_of_patches}}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                                
+                                <!-- Blending Row (for Digitizing only) -->
+                                <!-- {% if order.order_type == 'Digitizing' and order.required_blending %}
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Blending Required</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;" colspan="2">{{order.required_blending}}</td>
+                                </tr>
+                                {% endif %} -->
+                                
+                                <!-- Patches Specific Fields -->
+                                {% if order.order_type == 'Embroidery Patches' %}
+                                    {% if order.patch_type or order.patch_backing %}
+                                    <tr>
+                                        {% if order.patch_type %}<td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Patch Type</td>{% endif %}
+                                        {% if order.patch_backing %}<td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;">Patch Backing</td>{% endif %}
+                                    </tr>
+                                    <tr>
+                                        {% if order.patch_type %}<td style="border: 1px solid #ccc;">{{order.patch_type}}</td>{% endif %}
+                                        {% if order.patch_backing %}<td style="border: 1px solid #ccc;">{{order.patch_backing}}</td>{% endif %}
+                                    </tr>
+                                    {% endif %}
+                                    
+                                    {% if order.border %}
+                                    <tr>
+                                        <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Border</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc;" colspan="2">{{order.border}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    
+                                    {% if order.delivery_address %}
+                                    <tr>
+                                        <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Shipping Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc;" colspan="2">{{order.delivery_address}}</td>
+                                    </tr>
+                                    {% endif %}
+                                {% endif %}
+                                
+                                <!-- Additional Instructions -->
+                                {% if order.addtitoanl_instructions %}
+                                <tr>
+                                    <td style="background-color: #e8e8e8; font-weight: bold; border: 1px solid #ccc;" colspan="2">Additional Instructions</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ccc;" colspan="2">{{order.addtitoanl_instructions}}</td>
+                                </tr>
+                                {% endif %}
+                                
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Next Steps -->
+                    <tr>
+                        <td style="padding: 20px; background-color: #f0f8ff; border-left: 4px solid #667eea;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #333;">What happens next?</h3>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #666;">
+                                <li>Our team will begin working on your order immediately</li>
+                                <li>You'll receive updates on the progress via email</li>
+                                <li>We'll notify you once your order is completed and ready for delivery</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    
+                    <!-- Support -->
+                    <tr>
+                        <td style="padding: 20px; background-color: #f9f9f9; text-align: center;">
+                            <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold;">Need Help?</p>
+                            <p style="margin: 0; font-size: 13px;">
+                                <a href="mailto:info@highfivedigitizing.com" style="color: #667eea; text-decoration: none;">Contact Support</a>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #333; padding: 15px; text-align: center; color: #fff;">
+                            <p style="margin: 0; font-size: 12px;">© High Five Digitizing. All rights reserved.</p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>

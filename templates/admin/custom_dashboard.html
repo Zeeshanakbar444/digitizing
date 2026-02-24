@@ -1,0 +1,47 @@
+{% extends "admin/index.html" %}
+
+{% block sidebar %}
+  {% include "admin/nav_sidebar.html" %}
+{% endblock %}
+
+
+{% block content %}
+  <div id="content-main">
+    <h1>Custom Admin Dashboard</h1>
+
+    <h2>Digitizing Orders ({{ all_digitizing_orders.count }})</h2>
+    <ul>
+      {% for order in all_digitizing_orders %}
+        <li>{{ order.design_name }} - {{ order.order_status }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Pending Orders ({{ pending_orders.count }})</h2>
+    <ul>
+      {% for order in pending_orders %}
+        <li>{{ order.design_name }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Estimates</h2>
+    <ul>
+      {% for estimate in all_estimates %}
+        <li>ID: {{ estimate.id }} | Amount: {{ estimate.amount }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Edits</h2>
+    <ul>
+      {% for edit in all_edits %}
+        <li>{{ edit.description }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Tickets</h2>
+    <ul>
+      {% for ticket in all_tickets %}
+        <li>{{ ticket.title }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

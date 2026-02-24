@@ -1,0 +1,268 @@
+{% extends "app/base.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="layout-specing">
+
+
+        <div class="d-md-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Estimates</h5>
+
+            <nav aria-label="breadcrumb" class="d-inline-block">
+                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                    <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                    <li class="breadcrumb-item text-capitalize"><a href="/estimates/">Estimates</a></li>
+                    {% comment %} <li class="breadcrumb-item text-capitalize active" aria-current="page">List</li>
+                    {%endcomment %}
+                </ul>
+            </nav>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div class="table-responsive shadow rounded">
+                    {% if orders %}
+                    <table class="table table-center bg-white mb-0">
+                        <thead>
+                            <tr>
+                                <th class="border-bottom p-3">Job ID.</th>
+                                <th class="border-bottom p-3">Date</th>
+                                <th class="text-center border-bottom p-3" style="min-width: 220px;">Design Name</th>
+                                <th class="text-center border-bottom p-3" style="min-width: 150px;">Stitches</th>
+                                <th class="text-center border-bottom p-3">Status</th>
+                                <th class="text-center border-bottom p-3" style="min-width: 220px;">Type</th>
+                                <th class="text-center border-bottom p-3">Amount</th>
+                                <th class="text-center border-bottom p-3">Download</th>
+                                <th class="text-end border-bottom p-3" style="min-width: 100px;">Preview</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Start -->
+                            {% for order in orders %}
+                            <tr class="text-center">
+                                <th class="p-3">{{ order.estimate_id }}</th>
+
+                                <td class="p-3">
+                                    {{ order.created_at|date:"d/m/Y" }}
+                                </td>
+
+                                <td class="text-center p-3">
+                                    {{ order.design_name }}
+                                </td>
+                                <td class="text-center p-3">
+                                    {% if order.stitches %}
+                                    {{ order.stitches }} <!-- Placeholder if you have a tracking number -->
+                                    {% else %}
+                                    Unspecified
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center p-3">
+                                    {% if order.converted == True %}
+                                    <div class="badge bg-soft-success rounded px-3 py-1">
+                                        Ordered
+                                    </div>
+                                    {% else %}
+                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                        In Process
+                                    </div>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {{ order.type }}
+                                </td>
+
+                                <td>
+                                    ${{order.amount}} <!-- You can show price here if it's available -->
+                                </td>
+
+                                <td>
+                                    {% if order.amount > 0 %}
+    {% if order.converted %}
+        <div class="badge bg-soft-success rounded px-3 py-1">
+            <a href="#" class="no_border">
+                Ordered
+            </a>
+        </div>
+    {% else %}
+        <div class="badge bg-soft-info rounded px-3 py-1">
+            <a href="/estimate_preview/{{order.id}}?type={{order.type}}" class="no_border">
+                Convert to order
+            </a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="badge bg-soft-danger rounded px-3 py-1">
+        In Process
+    </div>
+{% endif %}
+
+                                </td>
+
+                                <td class="text-end p-3">
+                                    <a href="/estimate_preview/{{order.id}}?type={{order.type}}"
+                                        class="btn btn-sm btn-primary">Preview</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            {% comment %} <tr class="text-center">
+                                <th class="p-3">185487</th>
+                                <td class="p-3">
+                                    08/03/2025
+                                    <!-- <a href="index-dark.html#" class="text-primary">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                    <span class="ms-2">Howard Tanner</span>
+                                                </div>
+                                            </a> -->
+                                </td>
+                                <td class="text-center p-3">Devil-Wallpaper-Image</td>
+                                <td class="text-center p-3">3728</td>
+                                <td class="text-center p-3">
+                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                        Pending Payment
+                                    </div>
+                                </td>
+                                <td>Vector Conversion </td>
+                                <td>$45 </td>
+                                <td>
+                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                        Pay and Download
+                                    </div>
+                                </td>
+                                <td class="text-end p-3">
+                                    <a href="#" class="btn btn-sm btn-primary">Preview</a>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <th class="p-3">185487</th>
+                                <td class="p-3">
+                                    08/03/2025
+                                    <!-- <a href="index-dark.html#" class="text-primary">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                    <span class="ms-2">Howard Tanner</span>
+                                                </div>
+                                            </a> -->
+                                </td>
+                                <td class="text-center p-3">Devil-Wallpaper-Image</td>
+                                <td class="text-center p-3">3728</td>
+                                <td class="text-center p-3">
+                                    <div class="badge bg-soft-success rounded px-3 py-1">
+                                        Success Payment
+                                    </div>
+                                </td>
+                                <td>Vector Conversion </td>
+                                <td>$45 </td>
+                                <td>
+                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                        Pay and Download
+                                    </div>
+                                </td>
+                                <td class="text-end p-3">
+                                    <a href="#" class="btn btn-sm btn-primary">Preview</a>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <th class="p-3">185487</th>
+                                <td class="p-3">
+                                    08/03/2025
+                                    <!-- <a href="index-dark.html#" class="text-primary">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-ex-small rounded-circle shadow" alt="">
+                                                    <span class="ms-2">Howard Tanner</span>
+                                                </div>
+                                            </a> -->
+                                </td>
+                                <td class="text-center p-3">Devil-Wallpaper-Image</td>
+                                <td class="text-center p-3">3728</td>
+                                <td class="text-center p-3">
+                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                        Pending Payment
+                                    </div>
+                                </td>
+                                <td>Vector Conversion </td>
+                                <td>$45 </td>
+                                <td>
+                                    <div class="badge bg-soft-danger rounded px-3 py-1">
+                                        Pay and Download
+                                    </div>
+                                </td>
+                                <td class="text-end p-3">
+                                    <a href="#" class="btn btn-sm btn-primary">Preview</a>
+                                </td>
+                            </tr> {% endcomment %}
+                            <!-- End -->
+
+                            <!-- Start -->
+
+                            <!-- End -->
+
+
+                            <!-- End -->
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <!-- <div class="badge badge-outline-success">
+                            You have not Placed any order
+                        </div> -->
+                        <div class="alert bg-soft-info fw-medium mx-3 my-3" role="alert">You have not Placed any Estimate yet <a href="/place_estimate/" class="text-warning text-decoration-underline">New Quote</a></div>
+                        {% endif %}
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+
+        <div class="row text-center">
+            <!-- PAGINATION START -->
+            <div class="col-12 mt-4">
+                <div class="d-md-flex align-items-center text-center justify-content-between">
+                    <span class="text-muted me-3">
+                        Showing {{ orders.start_index }} - {{ orders.end_index }} out of {{ orders.paginator.count }}
+                    </span>
+                    <ul class="pagination mb-0 justify-content-center mt-4 mt-sm-0">
+                        {% if orders.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ orders.previous_page_number }}" aria-label="Previous">Prev</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Prev</span>
+                            </li>
+                        {% endif %}
+            
+                        {% for num in orders.paginator.page_range %}
+                            {% if orders.number == num %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">{{ num }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+            
+                        {% if orders.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ orders.next_page_number }}" aria-label="Next">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+
+            <!--end col-->
+            <!-- PAGINATION END -->
+        </div><!--end row-->
+    </div>
+</div>
+
+{% endblock body %}

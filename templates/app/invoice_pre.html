@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Preview</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+    --primary-color: #3b82f6;
+    --secondary-color: #f8fafc;
+    --accent-color: #ef4444;
+    --text-color: #475569;
+    --border-color: #e2e8f0;
+    --dark-color: #1e293b;
+    --light-color: #ffffff;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f1f5f9;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.invoice-container {
+    background-color: var(--light-color);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.invoice-header {
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--secondary-color);
+}
+
+.invoice-body {
+    padding: 2.5rem;
+}
+
+.currency-badge {
+    display: inline-flex;
+    background-color: #eef2ff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.1);
+}
+
+.payment-btn {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+.payment-btn:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.25);
+}
+
+.overdue-badge {
+    position: absolute;
+    top: -15px;
+    left: -40px;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 2rem 4rem 0.5rem 1rem;
+    transform: rotate(-45deg);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+    z-index: 10;
+}
+
+.company-logo {
+    max-width: 200px;
+    margin-bottom: 1.5rem;
+}
+
+.company-name {
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.company-details a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.company-details a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.company-details i {
+    color: var(--primary-color);
+    width: 20px;
+}
+
+.invoice-number {
+    background-color: var(--dark-color);
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 6px rgba(30, 41, 59, 0.2);
+}
+
+.invoice-dates {
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.bill-to h6 {
+    color: var(--text-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.bill-to h5 {
+    font-weight: 700;
+    color: var(--dark-color);
+    font-size: 1.25rem;
+}
+
+.invoice-table {
+    margin-top: 2.5rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.invoice-table thead th {
+    background-color: var(--secondary-color);
+    border: none;
+    padding: 1.25rem 1rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.invoice-table thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.invoice-table thead th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.invoice-table tbody td {
+    padding: 1.25rem 1rem;
+    vertical-align: middle;
+    border-color: var(--border-color);
+}
+
+.invoice-table tfoot td {
+    padding: 1.25rem 1rem;
+    border-color: var(--border-color);
+    font-weight: 600;
+}
+
+.balance-due td {
+    background-color: var(--dark-color);
+    color: white;
+    font-weight: 700;
+    border: none;
+}
+
+.balance-due td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.balance-due td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.item-description {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.invoice-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .invoice-body {
+        padding: 1.75rem;
+    }
+    
+    .invoice-header {
+        padding: 1.25rem;
+    }
+    
+    .overdue-badge {
+        padding: 1.5rem 3rem 0.3rem 0.5rem;
+        font-size: 0.7rem;
+        top: -10px;
+        left: -30px;
+    }
+    
+    .invoice-table thead th,
+    .invoice-table tbody td,
+    .invoice-table tfoot td {
+        padding: 1rem 0.75rem;
+    }
+    
+    .company-name {
+        font-size: 1.25rem;
+    }
+    
+    .bill-to h5 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .currency-badge {
+        margin-top: 0.5rem;
+    }
+    
+    .invoice-number {
+        margin-top: 1.5rem;
+    }
+    
+    .invoice-body {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .invoice-container {
+        box-shadow: none;
+    }
+    
+    .container {
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="invoice-container">
+            <!-- Invoice Header -->
+            <div class="invoice-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <h4 class="mb-0 me-3">Pay Invoice:</h4>
+                            <div class="currency-badge">
+                                <span>$</span>
+                                <span>{{ get_inv.total }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                        {% if get_inv.payment_status == "Pending Payment" %}
+                        <a href="/pay/?invoice_id={{get_inv.id}}" class="btn btn-primary payment-btn">
+                            Pay
+                        </a>
+                        {% elif get_inv.payment_status == "Success Payment" %}
+                        <a href="#" class="btn  payment-btn btn-success">
+                            Paid
+                        </a>
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Body -->
+            <div class="invoice-body position-relative">
+                <!-- Overdue Badge -->
+                <!-- <div class="overdue-badge">
+                    <span>Overdue</span>
+                </div> -->
+
+                <div class="row mb-5">
+                    <!-- Company Info -->
+                    <div class="col-md-6">
+                        <div class="company-logo mb-3">
+                            <img src="/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" alt="Company Logo" class="img-fluid">
+                        </div>
+                        <h5 class="company-name">New Digitizing</h5>
+                        <div class="company-details">
+                            <p class="mb-1"><i class="far fa-envelope me-2"></i>Email: <a href="mailto:info@artloomdigitizing.com">info@artloomdigitizing.com</a></p>
+                            <p class="mb-1"><i class="fas fa-globe me-2"></i>Website: <a href="https://artloomdigitizing.com/" target="_blank">https://artloomdigitizing.com/</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Details -->
+                    <div class="col-md-6 text-md-end mt-4 mt-md-0">
+                        <div class="invoice-number">
+                            <h4>INVOICE #{{get_inv.invoice_id}}</h4>
+                        </div>
+                        <div class="invoice-dates">
+                            <p class="mb-1">Bill date: {{get_inv.date|date:"M j,Y"}}</p>
+                            <p class="mb-1">Due date: {{get_inv.due_date|date:"M j,Y"}}</p>
+                        </div>
+                        <div class="bill-to mt-4">
+                            <h6>Bill To</h6>
+                            
+                           
+                            <h5>{% if get_inv.user %}{{get_inv.user}} {% else %}{{get_inv.customer_name}} {% endif %}</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Table -->
+                <div class="table-responsive">
+                    <table class="table invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Rate</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in get_inv_items %}
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">{{i.item_name}}</div>
+                                    {% comment %} <div class="item-description">FOR DIGITIZING & VECTOR SERVICES</div> {% endcomment %}
+                                </td>
+                                <td class="text-center">{{i.item_qty}}</td>
+                                <td class="text-end">${{i.item_amount}}</td>
+                                <td class="text-end">$ {{ i.formatted_total }}</td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="text-end">Sub Total</td>
+                                <td class="text-end">${{ get_inv.subtotal }}</td>
+                            </tr>
+                            {% if get_inv.other_amount and get_inv.other_amount > 0 %}
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="text-end">{{ get_inv.other_amount_title|default:"Other Charges" }}</td>
+                                <td class="text-end">${{ get_inv.other_amount }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if get_inv.shipping and get_inv.shipping > 0 %}
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="text-end">{{ get_inv.shipping_title|default:"Shipping" }}</td>
+                                <td class="text-end">${{ get_inv.shipping }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if get_inv.discount and get_inv.discount > 0 %}
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="text-end">{{ get_inv.discount_title|default:"Discount" }}</td>
+                                <td class="text-end text-danger">- ${{ get_inv.discount }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr class="fw-bold">
+                                <td colspan="2"></td>
+                                <td class="text-end">Total</td>
+                                <td class="text-end">${{ get_inv.total }}</td>
+                            </tr>
+                            <tr class="balance-due">
+                                <td colspan="2"></td>
+                                <td class="text-end">Balance Due</td>
+                                <td class="text-end">${{ get_inv.total }}</td>
+                            </tr>
+                        </tfoot>
+                        
+                    </table>
+                </div>
+
+                <!-- Invoice Footer -->
+                <div class="invoice-footer text-center mt-5">
+                    <p class="mb-0">Thank you for your business!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

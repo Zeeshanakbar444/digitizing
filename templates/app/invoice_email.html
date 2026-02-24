@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .invoice-box {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .total {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            color: white;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <div class="title">Hello {{ user.first_name }},</div>
+        <p>Thank you for your order. Here are the invoice details:</p>
+
+        <p><strong>Invoice ID:</strong> {{ invoice.invoice_id }}</p>
+        <p><strong>Customer:</strong> {{ invoice.customer_name }}</p>
+        <p><strong>Other Charges:</strong> ${{ invoice.other_amount }}</p>
+        <p class="total"><strong>Total Amount:</strong> ${{ invoice.total }}</p>
+
+        <a href="{{ payment_url }}" class="button">Pay Now</a>
+
+        <p>We appreciate your business!</p>
+    </div>
+</body>
+</html>

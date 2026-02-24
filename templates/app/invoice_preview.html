@@ -1,0 +1,568 @@
+{% extends "app/base.html" %}
+
+{% block body %}
+<div class="container-fluid" style="background: #1f2d3d;">
+    <div class="layout-specing">
+        <div class="d-md-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Invoice Details</h5>
+
+            <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                    <li class="breadcrumb-item text-capitalize"><a href="index.html">New Digitizing</a></li>
+                    <li class="breadcrumb-item text-capitalize"><a href="/invoice_list/">Invoice</a></li>
+                    <!-- <li class="breadcrumb-item text-capitalize"><a href="profile.html">Billing</a></li> -->
+                    <li class="breadcrumb-item text-capitalize active" aria-current="page">Invoice #INV-001-123</li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-0 rounded shadow" id="invoice-content">
+                    <div class="card-body p-4">
+                        <div class="invoice-top pb-4 border-bottom">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="logo-invoice mb-4">
+                                        <img src="/static/app/assets/images/high_five_FINALLL__1_-removebg-preview.png" height="50" alt="New Digitizing">
+                                    </div>
+                                    <div>
+                                        <!-- <h5 class="mb-2">New Digitizing</h5> -->
+                                        <p class="text-muted mb-0">123 Embroidery Lane, Suite 101</p>
+                                        <p class="text-muted mb-0">Beijing, China 100000</p>
+                                        <p class="text-muted mb-0">+86 10 1234 5678</p>
+                                        <p class="text-muted mb-0">info@digitizing.com</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-md-end mt-4 mt-md-0">
+                                    <h4 class="text-primary mb-0">Invoice</h4>
+                                    <h5 class="mt-2 mb-0">#INV-001-123</h5>
+                                    <p class="text-muted mb-0">Issue Date: August 03, 2025</p>
+                                    <p class="text-muted mb-0">Due Date: August 03, 2025</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-success rounded-pill px-3 py-2">Paid</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="invoice-middle py-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-2">Billed To:</h5>
+                                    <div>
+                                        <p class="text-muted mb-0 fw-bold">Kashan</p>
+                                        <p class="text-muted mb-0">Custom Embroidery Co.</p>
+                                        <p class="text-muted mb-0">123 Main Street, Apt 4B</p>
+                                        <p class="text-muted mb-0">New York, NY 10001</p>
+                                        <p class="text-muted mb-0">United States</p>
+                                        <p class="text-muted mb-0">kashan@example.com</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-md-end mt-4 mt-md-0">
+                                    <h5 class="mb-2">Payment Method:</h5>
+                                    <div>
+                                        <p class="text-muted mb-0">Visa ending in 4242</p>
+                                        <p class="text-muted mb-0">kashan@example.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="invoice-table pb-4">
+                            <div class="table-responsive bg-white rounded">
+                                <table class="table table-center table-padding mb-0">
+                                    <thead class="bg-dark text-white">
+                                        <tr>
+                                            <th class="text-start py-3" style="min-width: 300px;">Description</th>
+                                            <th class="text-center py-3" style="min-width: 130px;">Stitches</th>
+                                            <th class="text-center py-3" style="min-width: 130px;">Format</th>
+                                            <th class="text-center py-3" style="min-width: 130px;">Qty</th>
+                                            <th class="text-end py-3" style="min-width: 130px;">Rate</th>
+                                            <th class="text-end py-3" style="min-width: 130px;">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-start p-3">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/static/app/assets/images/client/01.jpg" class="avatar avatar-small rounded shadow" style="height: auto;" alt="">
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-0">Devil-Wallpaper-Image</h6>
+                                                        <p class="text-muted mb-0">Left Chest Digitizing</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">3,728</td>
+                                            <td class="text-center p-3">DST, PES</td>
+                                            <td class="text-center p-3">1</td>
+                                            <td class="text-end p-3">$35.00</td>
+                                            <td class="text-end p-3">$35.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start p-3">
+                                                <div class="ms-3">
+                                                    <h6 class="mb-0">Rush Service</h6>
+                                                    <p class="text-muted mb-0">24-Hour Turnaround</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">-</td>
+                                            <td class="text-center p-3">-</td>
+                                            <td class="text-center p-3">1</td>
+                                            <td class="text-end p-3">$10.00</td>
+                                            <td class="text-end p-3">$10.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-lg-8 col-md-6">
+                                    <div class="card border-0 rounded shadow p-4">
+                                        <h5 class="mb-3">Notes:</h5>
+                                        <p class="text-muted mb-0">Thank you for your business! Your digitized files have been delivered to your email and are also available for download in your account dashboard.</p>
+                                        
+                                        <div class="mt-4">
+                                            <h5 class="mb-3">Terms & Conditions:</h5>
+                                            <ul class="list-unstyled text-muted mb-0">
+                                                <li class="mb-1"><i class="ti ti-circle-check text-primary me-2"></i> All files are checked for quality before delivery</li>
+                                                <li class="mb-1"><i class="ti ti-circle-check text-primary me-2"></i> One free revision included with each order</li>
+                                                <li class="mb-1"><i class="ti ti-circle-check text-primary me-2"></i> Additional formats available upon request</li>
+                                                <li><i class="ti ti-circle-check text-primary me-2"></i> 100% satisfaction guarantee</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 mt-4 mt-sm-0">
+                                    <div class="card border-0 rounded shadow p-4">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6 class="mb-0">Subtotal:</h6>
+                                            <p class="mb-0">$45.00</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6 class="mb-0">Tax (0%):</h6>
+                                            <p class="mb-0">$0.00</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6 class="mb-0">Discount:</h6>
+                                            <p class="mb-0 text-danger">- $0.00</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between border-top pt-3">
+                                            <h5 class="mb-0">Total:</h5>
+                                            <h5 class="mb-0 fw-bold">$45.00</h5>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-2 text-center no-print">
+                                            <div class="d-grid">
+                                                <button id="printInvoice" class="btn btn-warning">
+                                                    <i data-feather="printer" class="fea icon-sm me-2"></i> Print Invoice
+                                                </button>
+                                            </div>
+                                            <div class="d-grid mt-2">
+                                                <button id="downloadPDF" class="btn btn-primary">
+                                                    <i data-feather="download" class="fea icon-sm me-2"></i> Download PDF
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="invoice-footer border-top pt-4">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="text-sm-start text-muted">
+                                        <h6 class="mb-0">Customer Support:</h6>
+                                        <a href="mailto:info@highfivedigitizing.com" class="text-warning">info@highfivedigitizing.com</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-sm-end text-muted">
+                                        <h6 class="mb-0">Order Reference:</h6>
+                                        <p class="mb-0">#ORD-185487</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4 no-print">
+            <div class="col-12 text-center">
+                <a href="#" class="btn btn-primary" onclick="window.history.back()">
+                    <i data-feather="arrow-left" class="fea icon-sm me-1"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include jsPDF and html2canvas libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- Print Specific Styles -->
+<style>
+    /* General Styles */
+    .badge.bg-success {
+        background-color: #28a745 !important;
+    }
+    
+    .text-primary {
+        color: #ffc107 !important;
+    }
+    
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+    }
+    
+    .btn-warning:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+        color: #212529;
+    }
+    
+    .btn-soft-warning {
+        background-color: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+    
+    .btn-soft-warning:hover {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    
+    .text-warning {
+        color: #ffc107 !important;
+    }
+    
+    .table-padding td, .table-padding th {
+        padding: 15px;
+    }
+    
+    .bg-dark {
+        background-color: #1f2d3d !important;
+    }
+    
+    /* Print Styles */
+    @media print {
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        html, body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        
+        body * {
+            visibility: hidden;
+        }
+        
+        #invoice-content, #invoice-content * {
+            visibility: visible;
+        }
+        
+        #invoice-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            margin: 0;
+            box-shadow: none;
+        }
+        
+        .no-print, .no-print * {
+            display: none !important;
+        }
+        
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Force background colors in print */
+        .badge.bg-success {
+            background-color: #28a745 !important;
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        .text-primary {
+            color: #ffc107 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        .text-warning {
+            color: #ffc107 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        .text-danger {
+            color: #dc3545 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        .bg-dark {
+            background-color: #1f2d3d !important;
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        thead.bg-dark th {
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        /* Improve table appearance in print */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th {
+            background-color: #1f2d3d !important;
+            color: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        .table th, .table td {
+            padding: 12px !important;
+            border-bottom: 1px solid #dee2e6;
+        }
+    }
+</style>
+
+<!-- JavaScript for Print and PDF functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Feather icons if they're being used
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+        
+        // Print Invoice functionality - using a better approach for printing
+        document.getElementById('printInvoice').addEventListener('click', function() {
+            // Create a print-specific stylesheet
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @media print {
+                    @page {
+                        size: A4;
+                        margin: 0;
+                    }
+                    
+                    html, body {
+                        width: 210mm;
+                        height: 297mm;
+                        margin: 0;
+                        padding: 0;
+                        background-color: white;
+                    }
+                    
+                    body * {
+                        visibility: hidden;
+                    }
+                    
+                    #invoice-content, #invoice-content * {
+                        visibility: visible;
+                    }
+                    
+                    #invoice-content {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        background-color: white;
+                        padding: 20px;
+                        margin: 0;
+                        box-shadow: none;
+                    }
+                    
+                    .no-print, .no-print * {
+                        display: none !important;
+                    }
+                    
+                    .card {
+                        border: none !important;
+                        box-shadow: none !important;
+                    }
+                    
+                    /* Force background colors in print */
+                    .badge.bg-success {
+                        background-color: #28a745 !important;
+                        color: white !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    .text-primary {
+                        color: #ffc107 !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    .text-warning {
+                        color: #ffc107 !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    .text-danger {
+                        color: #dc3545 !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    .bg-dark {
+                        background-color: #1f2d3d !important;
+                        color: white !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    thead.bg-dark th {
+                        color: white !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    /* Improve table appearance in print */
+                    .table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    
+                    .table th {
+                        background-color: #1f2d3d !important;
+                        color: white !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    
+                    .table th, .table td {
+                        padding: 12px !important;
+                        border-bottom: 1px solid #dee2e6;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Use a timeout to ensure styles are applied before printing
+            setTimeout(function() {
+                window.print();
+                // Remove the style element after printing
+                document.head.removeChild(style);
+            }, 100);
+        });
+        
+        // Download PDF functionality
+        document.getElementById('downloadPDF').addEventListener('click', function() {
+            // Show loading indicator
+            const downloadBtn = document.getElementById('downloadPDF');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i data-feather="loader" class="fea icon-sm me-2"></i> Generating PDF...';
+            downloadBtn.disabled = true;
+            
+            // Create a clone of the invoice to manipulate for PDF generation
+            const element = document.getElementById('invoice-content');
+            const clone = element.cloneNode(true);
+            
+            // Remove no-print elements from the clone
+            const noPrintElements = clone.querySelectorAll('.no-print');
+            noPrintElements.forEach(el => el.remove());
+            
+            // Create a temporary container with white background
+            const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '-9999px';
+            container.style.width = '816px'; // A4 width in pixels at 96 DPI
+            container.style.backgroundColor = 'white';
+            container.style.padding = '20px';
+            container.appendChild(clone);
+            document.body.appendChild(container);
+            
+            // Use html2canvas with better settings
+            html2canvas(container, {
+                scale: 2, // Higher scale for better quality
+                useCORS: true, // Enable CORS for images
+                allowTaint: true, // Allow tainted canvas
+                backgroundColor: '#ffffff', // Ensure white background
+                logging: false,
+                onclone: function(clonedDoc) {
+                    // Force background colors to show in the cloned document
+                    const styles = document.createElement('style');
+                    styles.innerHTML = `
+                        .badge.bg-success { background-color: #28a745 !important; color: white !important; }
+                        .text-primary { color: #ffc107 !important; }
+                        .text-warning { color: #ffc107 !important; }
+                        .bg-dark { background-color: #1f2d3d !important; color: white !important; }
+                        .text-danger { color: #dc3545 !important; }
+                        thead.bg-dark th { color: white !important; }
+                    `;
+                    clonedDoc.head.appendChild(styles);
+                }
+            }).then(canvas => {
+                // Remove the temporary container
+                document.body.removeChild(container);
+                
+                // Create PDF with jsPDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'pt', 'a4');
+                
+                // Calculate the PDF width and height
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                // Add the image to the PDF
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+                
+                // Save the PDF
+                pdf.save('invoice-INV-001-123.pdf');
+                
+                // Restore button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+                
+                // Re-initialize Feather icons if needed
+                if (typeof feather !== 'undefined') {
+                    feather.replace();
+                }
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                alert('There was an error generating the PDF. Please try again.');
+                
+                // Restore button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+                
+                // Re-initialize Feather icons if needed
+                if (typeof feather !== 'undefined') {
+                    feather.replace();
+                }
+            });
+        });
+    });
+</script>
+{% endblock body %}

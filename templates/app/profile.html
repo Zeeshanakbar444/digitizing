@@ -1,0 +1,1131 @@
+{% extends "app/base.html" %}
+
+{% block body %}
+<style>
+    .table-responsive .table-center th{
+        white-space: nowrap;
+    }
+    .profile-tab-button {
+        background-color: transparent;
+        border: none;
+        padding: 12px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: #ffffff;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 8px;
+        gap: 6px;
+        color: black;
+    }
+
+    .profile-tab-button.active {
+        background-color: #090676;
+        color: #ffffff;
+    }
+
+    .profile-tab-button:not(.active):hover {
+        background-color: #0a06762f;
+        color: rgb(0, 0, 0);
+    }
+
+    .profile-tab-button i {
+        margin-right: 10px;
+        width: 20px;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .order-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .order-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .status-pending {
+        background-color: #ffecb3;
+        color: #856404;
+    }
+
+    .status-completed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-processing {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+
+    .status-cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .form-control:focus {
+        border-color: #090676;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+
+    .btn-warning {
+        background-color: #090676;
+        border-color: #090676;
+        color: #fff;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+        color: #fff;
+    }
+
+    .btn-outline-warning {
+        color: #090676;
+        border-color: #090676;
+    }
+
+    .btn-outline-warning:hover {
+        background-color: #090676;
+        color: #fff;
+    }
+
+    .avatar-upload {
+        position: relative;
+        max-width: 120px;
+        margin: 0 auto;
+    }
+
+    .avatar-edit {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        z-index: 1;
+    }
+
+    .avatar-edit input {
+        display: none;
+    }
+
+    .avatar-edit label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #090676;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        position: relative;
+        border-radius: 100%;
+        /* border: 4px solid #f8f9fa; */
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-preview>div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .saved-address-card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .saved-address-card .address-actions {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .saved-address-card.default {
+        border-color: #090676;
+        background-color: rgba(255, 193, 7, 0.05);
+    }
+
+    .saved-address-card.default::before {
+        content: "Default";
+        position: absolute;
+        top: -10px;
+        left: 15px;
+        background-color: #090676;
+        color: #fff;
+        padding: 2px 10px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .payment-method-card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .payment-method-card .card-icon {
+        font-size: 24px;
+        margin-right: 15px;
+    }
+
+    .payment-method-card .card-details {
+        flex-grow: 1;
+    }
+
+    .payment-method-card .card-actions {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .payment-method-card.default {
+        border-color: #090676;
+        background-color: rgba(255, 193, 7, 0.05);
+    }
+
+    .payment-method-card.default::before {
+        content: "Default";
+        position: absolute;
+        top: -10px;
+        left: 15px;
+        background-color: #090676;
+        color: #fff;
+        padding: 2px 10px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .notification-item {
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .notification-item:hover {
+        background-color: rgba(255, 193, 7, 0.05);
+    }
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .notification-item .notification-time {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .notification-item .notification-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .notification-item .notification-text {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+
+    .notification-item .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 193, 7, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #090676;
+    }
+
+    .notification-item.unread {
+        background-color: rgba(255, 193, 7, 0.05);
+    }
+
+    .notification-item.unread::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        background-color: #090676;
+        border-radius: 50%;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+</style>
+
+<!-- Top Header -->
+
+<div class="container-fluid">
+    <div class="layout-specing">
+        {% if messages %}
+        {% for message in messages|slice:"1" %}
+        <div class="message bg-soft-{{ message.tags }} text-center p-2">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        <div class="d-md-flex justify-content-between align-items-center">
+            <h5 class="mb-0">My Profile</h5>
+
+            <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                    <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                    <li class="breadcrumb-item text-capitalize active" aria-current="page">My Profile</li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-lg-3 col-md-4 col-12">
+                <div class="card border-0 rounded shadow p-4 mb-4">
+                    <div class="text-center mb-4">
+                        <div class="avatar-upload">
+                            {% comment %} <div class="avatar-edit">
+                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                <label for="imageUpload"><i data-feather="edit-2" class="fea icon-sm"></i></label>
+                            </div> {% endcomment %}
+                            <div class="avatar-preview">
+                                <div id="imagePreview"
+                                    style="background-image: url('/static/app/assets/images/place1.png');"></div>
+                            </div>
+                        </div>
+                        <h5 class="mt-3 mb-1">{{request.user.first_name}}</h5>
+                        <p class="text-muted mb-0">Customer since {{ user.date_joined|date:"F d, Y" }}</p>
+
+                    </div>
+
+                    <div class="mt-2">
+                        <button class="profile-tab-button active" data-tab="profile-details">
+                            <i data-feather="user" class="fea icon-sm"></i> Profile Details
+                        </button>
+                        <button class="profile-tab-button" data-tab="edit-profile">
+                            <i data-feather="edit" class="fea icon-sm"></i> Edit Profile
+                        </button>
+                        <button class="profile-tab-button" data-tab="change-password">
+                            <i data-feather="lock" class="fea icon-sm"></i> Change Password
+                        </button>
+                        <!-- <button class="profile-tab-button" data-tab="orders">
+                            <i data-feather="shopping-bag" class="fea icon-sm"></i> My Orders
+                        </button> -->
+                        <!-- <button class="profile-tab-button" data-tab="saved-designs">
+                                            <i data-feather="save" class="fea icon-sm"></i> Saved Designs
+                                        </button>
+                                        <button class="profile-tab-button" data-tab="billing">
+                                            <i data-feather="credit-card" class="fea icon-sm"></i> Billing
+                                        </button>
+                                        <button class="profile-tab-button" data-tab="addresses">
+                                            <i data-feather="map-pin" class="fea icon-sm"></i> Addresses
+                                        </button> -->
+                        <!-- <button class="profile-tab-button" data-tab="notifications">
+                            <i data-feather="bell" class="fea icon-sm"></i> Notifications
+                        </button> -->
+                    </div>
+                </div>
+
+                <div class="card border-0 rounded shadow p-4">
+                    <h5 class="mb-0">Need Help?</h5>
+                    <div class="mt-4">
+                        {% comment %} <div class="d-flex align-items-center mb-3">
+                            <i data-feather="phone" class="fea icon-sm text-warning me-2"></i>
+                            <div>
+                                <h6 class="mb-0">Call Support</h6>
+                                <a href="tel:+18005551234" class="text-muted">+1 (800) 555-1234</a>
+                            </div>
+                        </div> {% endcomment %}
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <i data-feather="mail" class="fea icon-sm text-warning me-2"></i>
+                            <div>
+                                <h6 class="mb-0">Email Us</h6>
+                                <a href="mailto:info@highfivedigitizing.com" class="text-muted">info@highfivedigitizing.com</a>
+                            </div>
+                        </div>
+                        
+                        {% comment %} <div class="d-flex align-items-center mb-3">
+                            <i data-feather="clock" class="fea icon-sm text-warning me-2"></i>
+                            <div>
+                                <h6 class="mb-0">Support Hours</h6>
+                                <p class="text-muted mb-0">Mon-Fri: 9AM - 6PM EST</p>
+                            </div>
+                        </div> {% endcomment %}
+                        
+                        <!-- <div class="d-flex align-items-center mb-4">
+                            <i data-feather="message-circle" class="fea icon-sm text-warning me-2"></i>
+                            <div>
+                                <h6 class="mb-0">Live Chat</h6>
+                                <p class="text-muted mb-0">Available during business hours</p>
+                            </div>
+                        </div> -->
+                        
+                        {% comment %} <a href="/open_ticket/" class="btn btn-warning w-100">
+                            <i data-feather="life-buoy" class="fea icon-sm me-2"></i> Open Support Ticket
+                        </a> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-8 col-12 mt-4 mt-sm-0">
+                <!-- Profile Details Tab -->
+                <div id="profile-details-tab" class="tab-content active">
+                    <div class="card border-0 rounded shadow p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">Account Statistics</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-6 mt-4 pt-2">
+                                <div class="card border-0 text-center px-0 py-2 shadow">
+                                    <div class="card-body p-0">
+                                        <i data-feather="shopping-bag" class="fea icon-medium text-primary mb-0"></i>
+                                        <h5 class="mt-4 mb-0">{{total_orders}}</h5>
+                                        <p class="text-muted mb-0">Total Orders</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-6 mt-4 pt-2">
+                                <div class="card border-0 text-center px-0 py-2 shadow">
+                                    <div class="card-body p-0">
+                                        <i data-feather="shopping-bag" class="fea icon-medium text-primary mb-0"></i>
+                                        <h5 class="mt-4 mb-0">{{total_pending_orders}}</h5>
+                                        <p class="text-muted mb-0">Pending Orders</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-4 col-6 mt-4 pt-2">
+                                <div class="card border-0 text-center px-0 py-2 shadow">
+                                    <div class="card-body p-0">
+                                        <i data-feather="award" class="fea icon-medium text-primary mb-0"></i>
+                                        {% if get_pricing %}
+  <h5 class="mt-4 mb-0">{{ get_pricing }}</h5>
+{% else %}
+  <h5 class="mt-4 mb-0">No Plan Selected</h5>
+{% endif %}
+                                        <p class="text-muted mb-0">Selected Plan</p>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="card border-0 rounded shadow p-4 mt-4">
+                        <h5 class="mb-0">Profile Details</h5>
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Full Name</label>
+                                    <p class="text-muted mb-0">{{ user.first_name }}</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Email Address</label>
+                                    <p class="text-muted mb-0">{{ user.email }}</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Phone Number</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.mobile_no %}
+                                            {{ get_profile.mobile_no }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Country</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.country %}
+                                            {{ get_profile.country }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Company Name</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.company %}
+                                            {{ get_profile.company }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Address</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.address %}
+                                            {{ get_profile.address }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">State</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.postal_code %}
+                                            {{ get_profile.state }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">City</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.city %}
+                                            {{ get_profile.city }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Office Phone Number</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.business_phone_no %}
+                                            {{ get_profile.business_phone_no }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Website</label>
+                                    <p class="text-muted mb-0">
+                                        {% if get_profile.website %}
+                                            {{ get_profile.website }}
+                                        {% else %}
+                                            Unspecified
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Member Since</label>
+                                    <p class="text-muted mb-0">{{ user.date_joined|date:"F d, Y" }}</p>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+
+                   
+
+                    
+                </div>
+
+                <!-- Edit Profile Tab -->
+                <div id="edit-profile-tab" class="tab-content">
+                    <div class="card border-0 rounded shadow p-4">
+                        <h5 class="mb-0">Edit Profile</h5>
+                        <form method="POST" class="mt-4" action="/update_profile/">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Full Name </label>
+                                        <input type="text" name="full_name" class="form-control" placeholder="Full Name" value="{{ user.first_name }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Office Phone Number </label>
+                                        <input type="text" name="business_phone_no" class="form-control" placeholder="Business Phone Number" value="{{ get_profile.business_phone_no }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Company </label>
+                                        <input type="text" name="company" class="form-control" placeholder="Company" value="{{ get_profile.company }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Country </label>
+                                        <input type="text" name="country" class="form-control" placeholder="Country" value="{{ get_profile.country }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Mobile Number </label>
+                                        <input type="text" name="mobile_no" class="form-control" placeholder="Mobile Number" value="{{ get_profile.mobile_no }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">State </label>
+                                        <input type="text" name="state" class="form-control" placeholder="Postal Code" value="{{ get_profile.state }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Website </label>
+                                        <input type="text" name="website" class="form-control" placeholder="Postal Code" value="{{ get_profile.website }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">City </label>
+                                        <input type="text" name="city" class="form-control" placeholder="City" value="{{ get_profile.city }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Address </label>
+                                        <input type="text" name="address" class="form-control" placeholder="Address" value="{{ get_profile.address }}">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email </label>
+                                        <input type="email" class="form-control" placeholder="Email" value="{{ user.email }}" disabled>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <button type="submit" class="btn btn-warning">Save Changes</button>
+                        </form>
+                        
+                    </div>
+                </div>
+
+                <!-- Change Password Tab -->
+                <div id="change-password-tab" class="tab-content">
+                    <div class="card border-0 rounded shadow p-4">
+                        <h5 class="mb-0">Change Password</h5>
+                        <form id="change-password-form" class="mt-4">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Current Password <span class="text-danger">*</span></label>
+                                        <input type="password" name="current_password" class="form-control" placeholder="Current Password" required="">
+                                        <div id="current-password-error" class="text-danger mt-2"></div>
+                                    </div>
+                                </div>
+                        
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">New Password <span class="text-danger">*</span></label>
+                                        <input type="password" name="new_password" class="form-control" placeholder="New Password" required="">
+                                        <div id="new-password-error" class="text-danger mt-2"></div>
+                                    </div>
+                                </div>
+                        
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required="">
+                                        <div id="confirm-password-error" class="text-danger mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Change Password</button>
+                        </form>
+                        
+                        <div id="success-message" class="alert alert-success mt-3" style="display:none;"></div>
+                        
+                    </div>
+                </div>
+
+                <!-- Orders Tab -->
+                <!-- <div id="orders-tab" class="tab-content">
+                    <div class="card border-0 rounded shadow p-4">
+                        <h5 class="mb-0">My Orders</h5>
+                        <div class="table-responsive mt-4">
+                            <table class="table table-center table-padding mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3">Order ID</th>
+                                        <th class="border-bottom p-3">Date</th>
+                                        <th class="border-bottom p-3">Design Name</th>
+                                        <th class="border-bottom p-3">Stitches</th>
+                                        <th class="border-bottom p-3">Status</th>
+                                        <th class="border-bottom p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-3">185487</td>
+                                        <td class="p-3">08/03/2025</td>
+                                        <td class="p-3">Devil-Wallpaper-Image</td>
+                                        <td class="p-3">3728</td>
+                                        <td class="p-3"><span class="badge bg-soft-warning rounded-pill">Pending
+                                                Payment</span></td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">185486</td>
+                                        <td class="p-3">07/28/2025</td>
+                                        <td class="p-3">Company-Logo-Digitizing</td>
+                                        <td class="p-3">5421</td>
+                                        <td class="p-3"><span
+                                                class="badge bg-soft-success rounded-pill">Completed</span></td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">185485</td>
+                                        <td class="p-3">07/15/2025</td>
+                                        <td class="p-3">Custom-Patch-Design</td>
+                                        <td class="p-3">8932</td>
+                                        <td class="p-3"><span class="badge bg-soft-info rounded-pill">Processing</span>
+                                        </td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">185484</td>
+                                        <td class="p-3">07/10/2025</td>
+                                        <td class="p-3">3D-Puff-Logo</td>
+                                        <td class="p-3">6254</td>
+                                        <td class="p-3"><span
+                                                class="badge bg-soft-success rounded-pill">Completed</span></td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">185483</td>
+                                        <td class="p-3">06/25/2025</td>
+                                        <td class="p-3">Monogram-Design</td>
+                                        <td class="p-3">2145</td>
+                                        <td class="p-3"><span
+                                                class="badge bg-soft-success rounded-pill">Completed</span></td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">185482</td>
+                                        <td class="p-3">06/18/2025</td>
+                                        <td class="p-3">Team-Logo-Applique</td>
+                                        <td class="p-3">9876</td>
+                                        <td class="p-3"><span
+                                                class="badge bg-soft-success rounded-pill">Completed</span></td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Saved Designs Tab -->
+                <div id="saved-designs-tab" class="tab-content">
+                    <div class="card border-0 rounded shadow p-4">
+                        <h5 class="mb-0">Saved Designs</h5>
+                        <div class="row mt-4">
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card border-0 shadow-sm order-card">
+                                    <div class="digitizing-sample">
+                                        <img src="/static/app/assets/images/portfolio/embroidery-1.jpg"
+                                            alt="Saved Design" class="img-fluid rounded-top">
+                                    </div>
+                                    <div class="p-3">
+                                        <h6 class="mb-1">Company Logo</h6>
+                                        <p class="text-muted small mb-2">Saved on: 08/01/2025</p>
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="btn btn-sm btn-soft-warning">Order Now</a>
+                                            <a href="#" class="btn btn-sm btn-outline-danger"><i data-feather="trash-2"
+                                                    class="fea icon-sm"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card border-0 shadow-sm order-card">
+                                    <div class="digitizing-sample">
+                                        <img src="/static/app/assets/images/portfolio/embroidery-3.jpg"
+                                            alt="Saved Design" class="img-fluid rounded-top">
+                                    </div>
+                                    <div class="p-3">
+                                        <h6 class="mb-1">Monogram Design</h6>
+                                        <p class="text-muted small mb-2">Saved on: 07/25/2025</p>
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="btn btn-sm btn-soft-warning">Order Now</a>
+                                            <a href="#" class="btn btn-sm btn-outline-danger"><i data-feather="trash-2"
+                                                    class="fea icon-sm"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card border-0 shadow-sm order-card">
+                                    <div class="digitizing-sample">
+                                        <img src="/static/app/assets/images/portfolio/embroidery-5.jpg"
+                                            alt="Saved Design" class="img-fluid rounded-top">
+                                    </div>
+                                    <div class="p-3">
+                                        <h6 class="mb-1">3D Puff Design</h6>
+                                        <p class="text-muted small mb-2">Saved on: 07/15/2025</p>
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="btn btn-sm btn-soft-warning">Order Now</a>
+                                            <a href="#" class="btn btn-sm btn-outline-danger"><i data-feather="trash-2"
+                                                    class="fea icon-sm"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing Tab -->
+                <div id="billing-tab" class="tab-content">
+                    <div class="card border-0 rounded shadow p-4">
+                        <h5 class="mb-0">Payment Methods</h5>
+                        <div class="mt-4">
+                            <div class="payment-method-card default">
+                                <div class="card-icon">
+                                    <i class="ti ti-credit-card"></i>
+                                </div>
+                                <div class="card-details">
+                                    <h6 class="mb-1">Visa ending in 4242</h6>
+                                    <p class="text-muted mb-0">Expires 12/2025</p>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="#" class="btn btn-sm btn-soft-warning me-2">Edit</a>
+                                </div>
+                            </div>
+                            <div class="payment-method-card">
+                                <div class="card-icon">
+                                    <i class="ti ti-credit-card"></i>
+                                </div>
+                                <div class="card-details">
+                                    <h6 class="mb-1">Mastercard ending in 8888</h6>
+                                    <p class="text-muted mb-0">Expires 09/2026</p>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="#" class="btn btn-sm btn-soft-warning me-2">Edit</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger"><i data-feather="trash-2"
+                                            class="fea icon-sm"></i></a>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <a href="#" class="btn btn-warning">Add Payment Method</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 rounded shadow p-4 mt-4">
+                        <h5 class="mb-0">Billing History</h5>
+                        <div class="table-responsive mt-4">
+                            <table class="table table-center table-padding mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3">Invoice ID</th>
+                                        <th class="border-bottom p-3">Date</th>
+                                        <th class="border-bottom p-3">Amount</th>
+                                        <th class="border-bottom p-3">Status</th>
+                                        <th class="border-bottom p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-3">INV-001-123</td>
+                                        <td class="p-3">08/03/2025</td>
+                                        <td class="p-3">$45.00</td>
+                                        <td class="p-3"><span class="badge bg-soft-success rounded-pill">Paid</span>
+                                        </td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-soft-warning">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">INV-001-122</td>
+                                        <td class="p-3">07/28/2025</td>
+                                        <td class="p-3">$75.00</td>
+                                        <td class="p-3"><span class="badge bg-soft-success rounded-pill">Paid</span>
+                                        </td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-soft-warning">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">INV-001-121</td>
+                                        <td class="p-3">07/15/2025</td>
+                                        <td class="p-3">$120.00</td>
+                                        <td class="p-3"><span class="badge bg-soft-success rounded-pill">Paid</span>
+                                        </td>
+                                        <td class="p-3"><a href="#" class="btn btn-sm btn-soft-warning">Download</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Addresses Tab -->
+                <div id="addresses-tab" class="tab-content">
+                    <div class="card border-0 rounded shadow p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Saved Addresses</h5>
+                            <a href="#" class="btn btn-sm btn-warning">Add New Address</a>
+                        </div>
+                        <div class="saved-address-card default">
+                            <h6>Home Address</h6>
+                            <p class="text-muted mb-2">123 Main Street, Apt 4B<br>New York, NY 10001<br>United States
+                            </p>
+                            <p class="text-muted mb-0">Phone: +1 (123) 456-7890</p>
+                            <div class="address-actions">
+                                <a href="#" class="btn btn-sm btn-soft-warning me-2">Edit</a>
+                            </div>
+                        </div>
+                        <div class="saved-address-card">
+                            <h6>Office Address</h6>
+                            <p class="text-muted mb-2">456 Business Ave, Suite 200<br>San Francisco, CA 94107<br>United
+                                States</p>
+                            <p class="text-muted mb-0">Phone: +1 (987) 654-3210</p>
+                            <div class="address-actions">
+                                <a href="#" class="btn btn-sm btn-soft-warning me-2">Edit</a>
+                                <a href="#" class="btn btn-sm btn-outline-danger"><i data-feather="trash-2"
+                                        class="fea icon-sm"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Tab -->
+                <div id="notifications-tab" class="tab-content">
+                    <!-- <div class="card border-0 rounded shadow p-4">
+                                        <h5 class="mb-0">Notification Settings</h5>
+                                        <div class="mt-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h6 class="mb-0">Email Notifications</h6>
+                                                    <p class="text-muted mb-0 small">Receive emails about your account activity</p>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                                                    <label class="form-check-label" for="emailNotif"></label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h6 class="mb-0">Order Updates</h6>
+                                                    <p class="text-muted mb-0 small">Receive updates about your order status</p>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="orderUpdates" checked>
+                                                    <label class="form-check-label" for="orderUpdates"></label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h6 class="mb-0">Promotional Emails</h6>
+                                                    <p class="text-muted mb-0 small">Receive emails about promotions and special offers</p>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="promoEmails">
+                                                    <label class="form-check-label" for="promoEmails"></label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0">SMS Notifications</h6>
+                                                    <p class="text-muted mb-0 small">Receive text messages for important updates</p>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="smsNotif" checked>
+                                                    <label class="form-check-label" for="smsNotif"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                    <div class="card border-0 rounded shadow p-4 ">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Recent Notifications</h5>
+                            <a href="#" class="btn btn-sm btn-soft-warning">Mark All as Read</a>
+                        </div>
+                        <div class="notification-item unread">
+                            <div class="d-flex">
+                                <div class="notification-icon me-3">
+                                    <i data-feather="check-circle" class="fea icon-sm"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="notification-title">Order Completed</h6>
+                                    <p class="notification-text">Your order #185486 has been completed and is ready for
+                                        download.</p>
+                                    <p class="notification-time">2 hours ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="d-flex">
+                                <div class="notification-icon me-3">
+                                    <i data-feather="alert-circle" class="fea icon-sm"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="notification-title">Payment Received</h6>
+                                    <p class="notification-text">We've received your payment of $75.00 for order
+                                        #185486.</p>
+                                    <p class="notification-time">1 day ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="d-flex">
+                                <div class="notification-icon me-3">
+                                    <i data-feather="info" class="fea icon-sm"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="notification-title">New Feature Available</h6>
+                                    <p class="notification-text">We've added new digitizing options for 3D puff
+                                        embroidery.</p>
+                                    <p class="notification-time">3 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/app/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/static/app/assets/js/feather.min.js"></script>
+<script>
+    // Initialize Feather icons
+    document.addEventListener('DOMContentLoaded', function () {
+        feather.replace();
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.profile-tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId + '-tab').classList.add('active');
+            });
+        });
+
+        // View all orders button
+        const viewAllOrdersBtn = document.getElementById('view-all-orders');
+        if (viewAllOrdersBtn) {
+            viewAllOrdersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to orders button
+                document.querySelector('.profile-tab-button[data-tab="orders"]').classList.add('active');
+
+                // Show orders content
+                document.getElementById('orders-tab').classList.add('active');
+            });
+        }
+
+        // Image upload preview
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        const imageUpload = document.getElementById('imageUpload');
+        if (imageUpload) {
+            imageUpload.addEventListener('change', function () {
+                readURL(this);
+            });
+        }
+    });
+
+
+
+    $(document).ready(function() {
+    $('#change-password-form').on('submit', function(e) {
+        e.preventDefault();  // Prevent form from submitting traditionally
+
+        // Clear previous error messages
+        $('#current-password-error').text('');
+        $('#new-password-error').text('');
+        $('#confirm-password-error').text('');
+        $('#success-message').hide();
+
+        // Gather form data
+        var formData = {
+            'current_password': $('input[name="current_password"]').val(),
+            'new_password': $('input[name="new_password"]').val(),
+            'confirm_password': $('input[name="confirm_password"]').val(),
+        };
+
+        // Send data using jQuery Ajax
+        $.ajax({
+            url: '/change-password/',  // URL to the Django view
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            headers: {
+                'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val(), // CSRF token for security
+            },
+            success: function(response) {
+                if (response.status === 'error') {
+                    // Show error messages if any
+                    if (response.errors.current_password) {
+                        $('#current-password-error').text(response.errors.current_password);
+                    }
+                    if (response.errors.new_password) {
+                        $('#new-password-error').text(response.errors.new_password);
+                    }
+                    if (response.errors.confirm_password) {
+                        $('#confirm-password-error').text(response.errors.confirm_password);
+                    }
+                } else if (response.status === 'success') {
+                    // Show success message
+                    $('#success-message').text(response.message).show();
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+                alert("Oops! Something went wrong. Please try again.");
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

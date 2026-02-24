@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #33658d;
+            --primary-hover: #33658d;
+            --secondary-color: #f9fafb;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: var(--text-color);
+        }
+        
+        .page-title {
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .card-header h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.625rem 0.75rem;
+            font-size: 0.95rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.1);
+        }
+        
+        .input-group-text {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.625rem 1.25rem;
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-primary:focus {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .btn-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        
+        .item-row {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .item-row:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .remove-item {
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .remove-item:hover {
+            transform: scale(1.1);
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .badge-section {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge-section i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .create-btn {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .create-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        /* Remove arrows from number inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .item-row {
+                padding: 0.75rem;
+            }
+        }
+        
+        /* Animation for adding new items */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .new-item {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        /* Custom select styling */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            padding-right: 2rem !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h2 class="page-title text-center mb-4">Create New Invoice</h2>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="discount_input_amount" id="discount_input_amount">
+            <input type="hidden" name="discount_input_title" id="discount_input_title">
+            <input type="hidden" name="shipping_input_amount" id="shipping_input_amount">
+            <input type="hidden" name="shipping_input_title" id="shipping_input_title">
+            <input type="hidden" name="other_input_amount" id="other_input_amount">
+            <input type="hidden" name="other_input_title" id="other_input_title">
+            <input type="hidden" name="subtotal" id="subtotal">
+            <input type="hidden" name="total" id="total">
+            
+            <div class="row g-4">
+                <!-- Left Column -->
+                <div class="col-lg-12 m-auto">
+    <!-- Customer Information Card -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="bi bi-person me-2"></i>Customer Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <label for="customerSelect" class="form-label">Bill to</label>
+                <select name="user" id="customerSelect" class="form-select">
+                    <option value="">Select Customer</option>
+                    {% for user in all_users %}
+                    <option value="{{user.id}}">{{user.first_name}} - {{user.email}}</option>
+                    {% endfor %}
+                </select>
+                <a href="/admin/auth/user/add/" target="_blank" class="btn btn-primary mt-3">
+                    <i class="bi bi-plus-circle me-2"></i>Add User
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Orders Card -->
+    <div class="card mb-4" id="ordersCard" style="display: none;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5><i class="bi bi-cart me-2"></i>Customer Orders</h5>
+            <span class="badge bg-light text-dark">Selected: <span id="selectedCount">0</span> orders</span>
+        </div>
+        <div class="card-body">
+            <div id="loadingOrders" style="display: none;">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading orders...</p>
+                </div>
+            </div>
+            
+            <div id="ordersTable" style="display: none;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="50">
+                                    <input type="checkbox" id="selectAll" class="form-check-input">
+                                </th>
+                                <th>Order No</th>
+                                <th>Po No</th>
+                                <th>Design Names</th>
+                                <th>Order Date</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be loaded here via AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Total Selected Amount: $<span id="totalAmount">0.00</span></strong>
+                    </div>
+                    <button type="button" id="generateInvoiceBtn" class="btn btn-success" disabled>
+                        <i class="bi bi-file-earmark-text me-2"></i>Generate Invoice
+                    </button>
+                </div>
+            </div>
+            
+            <div id="noOrders" style="display: none;">
+                <div class="text-center text-muted">
+                    <i class="bi bi-inbox display-4"></i>
+                    <p class="mt-2">No orders found for this customer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const customerSelect = document.getElementById('customerSelect');
+    const ordersCard = document.getElementById('ordersCard');
+    const loadingOrders = document.getElementById('loadingOrders');
+    const ordersTable = document.getElementById('ordersTable');
+    const noOrders = document.getElementById('noOrders');
+    const ordersTableBody = document.getElementById('ordersTableBody');
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const selectedCountSpan = document.getElementById('selectedCount');
+    const totalAmountSpan = document.getElementById('totalAmount');
+    const generateInvoiceBtn = document.getElementById('generateInvoiceBtn');
+
+    // When customer is selected
+    customerSelect.addEventListener('change', function() {
+        const userId = this.value;
+        if (userId) {
+            fetchUserOrders(userId);
+        } else {
+            ordersCard.style.display = 'none';
+        }
+    });
+
+    // Select all functionality
+    selectAllCheckbox.addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.order-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        updateSelectedCount();
+        updateTotalAmount();
+        updateGenerateButton();
+    });
+
+    // Generate invoice button
+    generateInvoiceBtn.addEventListener('click', function() {
+        const selectedOrders = getSelectedOrders();
+        if (selectedOrders.length > 0) {
+            generateInvoice(selectedOrders);
+        }
+    });
+
+    function fetchUserOrders(userId) {
+        ordersCard.style.display = 'block';
+        loadingOrders.style.display = 'block';
+        ordersTable.style.display = 'none';
+        noOrders.style.display = 'none';
+
+        fetch(`/api/user-orders/${userId}/`)
+            .then(response => response.json())
+            .then(data => {
+                loadingOrders.style.display = 'none';
+                if (data.orders && data.orders.length > 0) {
+                    displayOrders(data.orders);
+                    ordersTable.style.display = 'block';
+                } else {
+                    noOrders.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching orders:', error);
+                loadingOrders.style.display = 'none';
+                noOrders.style.display = 'block';
+            });
+    }
+
+    function displayOrders(orders) {
+        ordersTableBody.innerHTML = '';
+        orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <input type="checkbox" class="form-check-input order-checkbox" 
+                           value="${order.id}" data-amount="${order.total_amount}">
+                </td>
+                <td><strong>${order.order_number}</strong></td>
+                <td><strong>${order.po_number}</strong></td>
+                <td><strong>${order.design_name}</strong></td>
+                <td>${formatDate(order.created_at)}</td>
+                <td>${order.type}</td>
+                <td>
+                    <span class="badge ${getStatusBadgeClass(order.status)}">${order.status}</span>
+                </td>
+                <td>$${parseFloat(order.total_amount).toFixed(2)}</td>
+            `;
+            ordersTableBody.appendChild(row);
+        });
+
+        // Add event listeners to checkboxes
+        document.querySelectorAll('.order-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateSelectedCount();
+                updateTotalAmount();
+                updateGenerateButton();
+                updateSelectAllCheckbox();
+            });
+        });
+    }
+
+    function updateSelectedCount() {
+        const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+        selectedCountSpan.textContent = selectedCheckboxes.length;
+    }
+
+    function updateTotalAmount() {
+        const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+        let total = 0;
+        selectedCheckboxes.forEach(checkbox => {
+            total += parseFloat(checkbox.dataset.amount);
+        });
+        totalAmountSpan.textContent = total.toFixed(2);
+    }
+
+    function updateGenerateButton() {
+        const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+        generateInvoiceBtn.disabled = selectedCheckboxes.length === 0;
+    }
+
+    function updateSelectAllCheckbox() {
+        const allCheckboxes = document.querySelectorAll('.order-checkbox');
+        const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+        
+        if (selectedCheckboxes.length === 0) {
+            selectAllCheckbox.indeterminate = false;
+            selectAllCheckbox.checked = false;
+        } else if (selectedCheckboxes.length === allCheckboxes.length) {
+            selectAllCheckbox.indeterminate = false;
+            selectAllCheckbox.checked = true;
+        } else {
+            selectAllCheckbox.indeterminate = true;
+        }
+    }
+
+    function getSelectedOrders() {
+        const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+        return Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+    }
+
+    function generateInvoice(orderIds) {
+        const userId = customerSelect.value;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/generate-invoice/';
+        
+        // Add CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+        
+        // Add user ID
+        const userInput = document.createElement('input');
+        userInput.type = 'hidden';
+        userInput.name = 'user_id';
+        userInput.value = userId;
+        form.appendChild(userInput);
+        
+        // Add order IDs
+        orderIds.forEach(orderId => {
+            const orderInput = document.createElement('input');
+            orderInput.type = 'hidden';
+            orderInput.name = 'order_ids';
+            orderInput.value = orderId;
+            form.appendChild(orderInput);
+        });
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString();
+    }
+
+    function getStatusBadgeClass(status) {
+        switch(status.toLowerCase()) {
+            case 'on progress': return 'bg-info';
+            case 'delivered': return 'bg-success';
+            case 'edited': return 'bg-success';
+            default: return 'bg-secondary';
+        }
+    }
+});
+</script>
+                
+                <!-- Right Column -->
+                <div class="col-lg-4 d-none">
+                    <!-- Invoice Details Card -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="bi bi-file-earmark-text me-2"></i>Invoice Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="invoiceNumber" class="form-label">Invoice number</label>
+                                <input type="text" class="form-control" id="invoiceNumber" value="{{invoice_no}}" readonly>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="invoiceDate" class="form-label">Invoice date</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" id="invoiceDate" required readonly>
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="dueDate" class="form-label">Due date</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" id="dueDate" name="due_date" required>
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="bi bi-calculator me-2"></i>Invoice Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="summary-item">
+                                <span>Subtotal</span>
+                                <span id="subtotalAmount">US$1.00</span>
+                            </div>
+                            
+                            <!-- Optional Sections -->
+                            <div id="discountSection" class="summary-item d-none">
+                                <span id="discountTitle">Discount</span>
+                                <div class="d-flex align-items-center">
+                                    <span id="discountAmount">US$0.00</span>
+                                    <button type="button" class="btn btn-link p-0 ms-2 remove-section" data-section="discount">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="shippingSection" class="summary-item d-none">
+                                <span id="shippingTitle">Shipping</span>
+                                <div class="d-flex align-items-center">
+                                    <span id="shippingAmount">US$0.00</span>
+                                    <button type="button" class="btn btn-link p-0 ms-2 remove-section" data-section="shipping">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="otherAmountSection" class="summary-item d-none">
+                                <span id="otherTitle">Other amount</span>
+                                <div class="d-flex align-items-center">
+                                    <span id="otherAmount">US$0.00</span>
+                                    <button type="button" class="btn btn-link p-0 ms-2 remove-section" data-section="otherAmount">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Add Optional Sections -->
+                            <div class="mt-3 mb-3">
+                                <div id="discountAdd" class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted">Add discount</span>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="addDiscountBtn">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                                
+                                <div id="shippingAdd" class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted">Add shipping</span>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="addShippingBtn">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                                
+                                <div id="otherAmountAdd" class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Add other amount</span>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="addOtherAmountBtn">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Total -->
+                            <div class="summary-total d-flex justify-content-between">
+                                <span>Total <small class="fw-normal text-muted">(tax excl.)</small></span>
+                                <span id="totalAmount">US$1.00</span>
+                            </div>
+                            
+                            <button type="submit" class="create-btn">
+                                <i class="bi bi-check-circle me-2"></i>Create Invoice
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Modal for adding optional amounts -->
+    <div class="modal fade" id="amountModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Add Amount</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="amountDescription" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="amountDescription">
+                    </div>
+                    <div class="mb-3">
+                        <label for="amountValue" class="form-label">Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="amountValue" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveAmountBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Set current date as default
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            $('#invoiceDate').val(formattedDate);
+            
+            // Character counter for message
+            $('#customerMessage').on('input', function() {
+                const maxLength = 700;
+                const currentLength = $(this).val().length;
+                $('#charCounter').text(currentLength + '/' + maxLength);
+                
+                if (currentLength > maxLength * 0.9) {
+                    $('#charCounter').addClass('text-danger');
+                } else {
+                    $('#charCounter').removeClass('text-danger');
+                }
+            });
+            
+            // Add new item row
+            $('#addItemBtn').click(function() {
+                const newItemRow = `
+                    <div class="item-row new-item">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Item Description</label>
+                                <input type="text" class="form-control item-name" placeholder="Item name" name="item_name[]">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-control item-qty" name="item_qty[]" placeholder="Qty" value="1" min="1">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Unit Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control item-price" name="item_amount[]" placeholder="Price" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end justify-content-center">
+                                <button type="button" class="remove-item" title="Remove item">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-medium">Total:</span>
+                                    <span class="item-total">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $('#itemsContainer').append(newItemRow);
+                updateTotals();
+            });
+            
+            // Remove item row
+            $(document).on('click', '.remove-item', function() {
+                $(this).closest('.item-row').remove();
+                updateTotals();
+            });
+            
+            // Update item total when quantity or price changes
+            $(document).on('input', '.item-qty, .item-price', function() {
+                const row = $(this).closest('.item-row');
+                updateItemTotal(row);
+                updateTotals();
+            });
+            
+            // Calculate individual item total
+            function updateItemTotal(row) {
+                const qty = parseFloat(row.find('.item-qty').val()) || 0;
+                const price = parseFloat(row.find('.item-price').val()) || 0;
+                const total = qty * price;
+                
+                row.find('.item-total').text('$' + total.toFixed(2));
+                return total;
+            }
+            
+            // Calculate and update all totals
+            function updateTotals() {
+                let subtotal = 0;
+                
+                $('.item-row').each(function() {
+                    subtotal += updateItemTotal($(this));
+                });
+                
+                // Update displayed totals
+                $('#itemsTotal').text('US$' + subtotal.toFixed(2));
+                $('#subtotalAmount').text('US$' + subtotal.toFixed(2));
+                $('#subtotal').val(subtotal.toFixed(2));
+                
+                // Calculate final total
+                let total = subtotal;
+                
+                // Subtract discount if present
+                if (!$('#discountSection').hasClass('d-none')) {
+                    const discount = parseFloat($('#discountAmount').text().replace('US$', '')) || 0;
+                    total -= discount;
+                }
+                
+                // Add shipping if present
+                if (!$('#shippingSection').hasClass('d-none')) {
+                    const shipping = parseFloat($('#shippingAmount').text().replace('US$', '')) || 0;
+                    total += shipping;
+                }
+                
+                // Add other amount if present
+                if (!$('#otherAmountSection').hasClass('d-none')) {
+                    const otherAmount = parseFloat($('#otherAmount').text().replace('US$', '')) || 0;
+                    total += otherAmount;
+                }
+                
+                $('#totalAmount').text('US$' + total.toFixed(2));
+                $('#total').val(total.toFixed(2));
+            }
+            
+            // Modal handling for optional amounts
+            let currentSection = '';
+            
+            $('#addDiscountBtn').click(function() {
+                currentSection = 'discount';
+                $('#modalTitle').text('Add Discount');
+                $('#amountDescription').val('Discount');
+                $('#amountValue').val('');
+                $('#amountModal').modal('show');
+            });
+            
+            $('#addShippingBtn').click(function() {
+                currentSection = 'shipping';
+                $('#modalTitle').text('Add Shipping');
+                $('#amountDescription').val('Shipping');
+                $('#amountValue').val('');
+                $('#amountModal').modal('show');
+            });
+            
+            $('#addOtherAmountBtn').click(function() {
+                currentSection = 'otherAmount';
+                $('#modalTitle').text('Add Other Amount');
+                $('#amountDescription').val('');
+                $('#amountValue').val('');
+                $('#amountModal').modal('show');
+            });
+            
+            // Save amount from modal
+            $('#saveAmountBtn').click(function() {
+                const amount = parseFloat($('#amountValue').val()) || 0;
+                const description = $('#amountDescription').val();
+                
+                if (currentSection === 'discount') {
+                    $('#discountAmount').text('US$' + amount.toFixed(2));
+                    $('#discountTitle').text(description);
+                    $('#discountSection').removeClass('d-none');
+                    $('#discountAdd').addClass('d-none');
+                    $('#discount_input_amount').val(amount);
+                    $('#discount_input_title').val(description);
+                } else if (currentSection === 'shipping') {
+                    $('#shippingAmount').text('US$' + amount.toFixed(2));
+                    $('#shippingTitle').text(description);
+                    $('#shippingSection').removeClass('d-none');
+                    $('#shippingAdd').addClass('d-none');
+                    $('#shipping_input_amount').val(amount);
+                    $('#shipping_input_title').val(description);
+                } else if (currentSection === 'otherAmount') {
+                    $('#otherAmount').text('US$' + amount.toFixed(2));
+                    $('#otherTitle').text(description);
+                    $('#otherAmountSection').removeClass('d-none');
+                    $('#otherAmountAdd').addClass('d-none');
+                    $('#other_input_amount').val(amount);
+                    $('#other_input_title').val(description);
+                }
+                
+                $('#amountModal').modal('hide');
+                updateTotals();
+            });
+            
+            // Remove optional sections
+            $(document).on('click', '.remove-section', function() {
+                const section = $(this).data('section');
+                
+                if (section === 'discount') {
+                    $('#discountSection').addClass('d-none');
+                    $('#discountAdd').removeClass('d-none');
+                    $('#discount_input_amount').val('');
+                    $('#discount_input_title').val('');
+                } else if (section === 'shipping') {
+                    $('#shippingSection').addClass('d-none');
+                    $('#shippingAdd').removeClass('d-none');
+                    $('#shipping_input_amount').val('');
+                    $('#shipping_input_title').val('');
+                } else if (section === 'otherAmount') {
+                    $('#otherAmountSection').addClass('d-none');
+                    $('#otherAmountAdd').removeClass('d-none');
+                    $('#other_input_amount').val('');
+                    $('#other_input_title').val('');
+                }
+                
+                updateTotals();
+            });
+            
+            // Initialize with default values
+            updateTotals();
+        });
+    </script>
+</body>
+</html>

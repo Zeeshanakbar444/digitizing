@@ -1,0 +1,275 @@
+{% extends "app/base.html" %}
+
+
+{% block body %}
+
+
+<div class="container-fluid">
+    <div class="layout-specing">
+        <div class="row">
+            <!-- <div class="col-md-5 col-lg-4 order-md-last mt-4">
+                <div class="card rounded shadow p-4 border-0">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="h5 mb-0">Your cart</span>
+                        <span class="badge bg-primary rounded-pill">3</span>
+                    </div>
+                    <ul class="list-group mb-3 border">
+                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                            <div>
+                                <h6 class="my-0">Product name</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$12</span>
+                        </li>
+                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                            <div>
+                                <h6 class="my-0">Second product</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$8</span>
+                        </li>
+                        <li class="d-flex justify-content-between lh-sm p-3 border-bottom">
+                            <div>
+                                <h6 class="my-0">Third item</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$5</span>
+                        </li>
+                        <li class="d-flex justify-content-between bg-light p-3 border-bottom">
+                            <div class="text-success">
+                                <h6 class="my-0">Promo code</h6>
+                                <small>EXAMPLECODE</small>
+                            </div>
+                            <span class="text-success">−$5</span>
+                        </li>
+                        <li class="d-flex justify-content-between p-3">
+                            <span>Total (USD)</span>
+                            <strong>$20</strong>
+                        </li>
+                    </ul>
+                    <form>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Promo code">
+                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+            <!--end col-->
+
+            <div class="col-md-9 col-lg-9 m-auto">
+                <div class="d-md-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Place Digitizing Quote</h5>
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">High Five Digitizing</a></li>
+                            <li class="breadcrumb-item text-capitalize">Place Quote</li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">New Digitizing Quote</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="card rounded shadow p-4 border-0">
+                    <form class="needs-validation" novalidate method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="design_name" class="form-label">Design name</label>
+                                <input type="text" class="form-control" id="design_name" name="design_name" placeholder="Design Name" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid Design name is required.
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="po_no" class="form-label">Po No</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" id="po_no" name="po_no" placeholder="Po No">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="no_of_colors" class="form-label">Number Of Colors</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" id="no_of_colors" name="no_of_colors" placeholder="Number Of Colors" >
+                                    <div class="invalid-feedback">No Of Colors is required.</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="placement" class="form-label">Placement</label>
+                                <select class="form-select form-control" id="placement" name="placement" onchange="handleOtherSelect(this)" data-toggle-target="other_placement" required>
+                                    <option value="" selected="">~ Select</option>
+                                    <option value="Chest">Chest</option>
+                                    <option value="Cap">Cap</option>
+                                    <option value="Gloves">Gloves</option>
+                                    <option value="Front Cap">Front Cap</option>
+                                    <option value="Back Cap">Back Cap</option>
+                                    <option value="Side Cap">Side Cap</option>
+                                    <option value="Visor">Visor</option>
+                                    <option value="Jacket Back">Jacket Back</option>
+                                    <option value="Sleeve">Sleeve</option>
+                                    <option value="Towel">Towel</option>
+                                    <option value="Hand Glove">Hand Glove</option>
+                                    <option value="Other" id="other_placement_option">Other</option>
+                                </select>
+                                <input type="text" name="other_placement" id="other_placement" class="form-control" style="display: none;" placeholder="Other..">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="design_format" class="form-label">Required Format</label>
+                                <select class="form-select form-control" id="design_format" name="design_format" required onchange="handleOtherSelect(this)" data-toggle-target="other_format">
+                                    <option value="" selected="">~ Select</option>
+                                    <option value="pes">pes</option>
+                                    <option value="dst">dst</option>
+                                    <option value="cnd">cnd</option>
+                                    <option value="dsb">dsb</option>
+                                    <option value="exp">exp</option>
+                                    <option value="jef">jef</option>
+                                    <option value="xxx">xxx</option>
+                                    <option value="emb">emb</option>
+                                    <option value="pxf">pxf</option>
+                                    <option value="pof">pof</option>
+                                    <option value="Other" id="other_format_option">Other</option>
+                                </select>
+                                <input type="text" name="other_format" id="other_format" class="form-control" style="display: none;" placeholder="Other...">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="type" class="form-label">Fabric</label>
+                                <select class="form-select form-control" id="type" name="type" required onchange="handleOtherSelect(this)" data-toggle-target="other_type">
+                                    <option value="" selected="">~ Select</option>
+                                    <option value="Cotton">Cotton</option>
+                                    <option value="Pique">Pique</option>
+                                    <option value="Twill">Twill</option>
+                                    <option value="Fleece">Fleece</option>
+                                    <option value="Polyester">Polyester</option>
+                                    <option value="Jersey">Jersey</option>
+                                    <option value="Cotton Woven">Cotton Woven</option>
+                                    <option value="Sherpa">Sherpa</option>
+                                    <option value="Leather">Leather</option>
+                                    <option value="Suti">Suti</option>
+                                    <option value="Towel">Towel</option>
+                                    <option value="Jarci">Jarci</option>
+                                    <option value="Silk">Silk</option>
+                                    <option value="Flannel">Flannel</option>
+                                    <option value="Denim">Denim</option>
+                                    <option value="Other" id="other_type_option">Other</option>
+                                </select>
+                                <input type="text" name="other_type" id="other_type" class="form-control" style="display: none;" placeholder="Other...">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="unit" class="form-label">Unit</label>
+                                <select class="form-select form-control" id="unit" name="unit" required>
+                                    <option value="">Choose...</option>
+                                    <option value="inches">Inches</option>
+                                    <option value="mm">mm</option>
+                                    <option value="cm">cm</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please choose a valid Unit
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="Height" class="form-label">Height</label>
+                                <input type="text" class="form-control" id="Height" name="Height" placeholder="Height">
+                                <div class="invalid-feedback">
+                                    Please enter a valid Height
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="Width" class="form-label">Width</label>
+                                <input type="text" class="form-control" id="Width" name="Width" placeholder="Width">
+                                <div class="invalid-feedback">
+                                    Please enter a valid Width
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="blending" class="form-label">Do You Require Blending</label>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="blending" value="Yes">
+                                        <label class="form-check-label" for="yesOption">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="blending" value="No">
+                                        <label class="form-check-label" for="noOption">No</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="blending" value="Not Sure" checked>
+                                        <label class="form-check-label">Not Sure</label>
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-sm-6">
+                                <label for="sew_out_sample" class="form-label">Real Sew Out</label>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sew_out_sample" value="Yes">
+                                        <label class="form-check-label" for="yesOption">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sew_out_sample" value="No">
+                                        <label class="form-check-label" for="noOption">No</label>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            <div class="col-sm-12 mt-3" id="stitchesRow" style="display: none;">
+                                <label for="kind_stitches" class="form-label">Kind Stitches</label>
+                                <select class="form-select form-control" id="kind_stitches" name="kind_stitches">
+                                    <option value="">Choose...</option>
+                                    <option value="Zig Zag Stitch">Zig Zag Stitch</option>
+                                    <option value="Satin Stitch">Satin Stitch</option>
+                                    <option value="Run Stitch">Run Stitch</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="add_inst" class="form-label">Additional Instructions</label>
+                                <textarea name="add_inst" id="add_inst" class="form-control"></textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Attach Your Artwork</label>
+                                <div id="artwork-wrapper">
+                                    <input type="file" class="form-control mb-2" name="artwork[]">
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1" onclick="addArtwork()" style="margin-top: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1a6 6 0 1 0 0 12A6 6 0 0 0 8 2z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v2.5H11a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V8.5H5a.5.5 0 0 1 0-1h2.5V4.5A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                    Add More Artworks
+                                </button>
+                            </div>
+                        </div>
+                        <button class="w-100 btn btn-primary place-order-btn" type="submit">Place Quote</button>
+                    </form>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+</div>
+
+<!--end container-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const yesOption = document.getElementById('yesOption');
+        const noOption = document.getElementById('noOption');
+        const stitchesRow = document.getElementById('stitchesRow');
+        const kindStitches = document.getElementById('kind_stitches');
+
+        function toggleStitchesRow() {
+            if (yesOption.checked) {
+                stitchesRow.style.display = 'block';
+            } else {
+                stitchesRow.style.display = 'none';
+                kindStitches.value = ""; // Reset the dropdown
+            }
+        }
+
+        yesOption.addEventListener('change', toggleStitchesRow);
+        noOption.addEventListener('change', toggleStitchesRow);
+    });
+</script>
+
+<!--end container-->
+
+
+
+
+{% endblock body %}
