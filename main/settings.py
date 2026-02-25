@@ -33,6 +33,17 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
+# Security settings for production
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-0f487.up.railway.app',
+    'https://*.up.railway.app',
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+
+
 
 
 # Application definition
